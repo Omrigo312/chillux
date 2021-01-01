@@ -1,0 +1,28 @@
+# Register
+POST http://localhost:3001/api/users HTTP/1.1
+content-type: application/json
+
+{
+    "firstName": "Omri",
+    "lastName":"Goldstein",
+    "email": "omrigo312@gmail.com",
+    "password": "omrigo312"
+}
+###
+
+# Get all vacations
+GET http://localhost:3001/api/vacations HTTP/1.1
+###
+
+# Create a vacation
+POST http://localhost:3001/api/vacations HTTP/1.1
+content-type: application/json
+
+{
+    "description": "Come stay at out wonderful beach resort",
+    "destination":"Vietnam",
+    "imageUrl": "",
+    "price": 5000,
+    "startDate": "2021-01-16T22:00:00.000Z",
+    "endDate": "2021-01-25T22:00:00.000Z"
+}

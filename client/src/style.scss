@@ -1,17 +1,17 @@
-.register-form {
+.form {
   display: grid;
   max-width: 40rem;
-  justify-self: center;
   margin: 2rem auto;
   box-shadow: 0 0 1em #ccc;
   border-radius: 2px;
   padding: 1rem 1rem 1rem;
-
+  color: black;
   @media (min-width: 768px) {
     padding: 3rem 3rem 1.5rem;
   }
+
   h2 {
-    margin: 0 0 3rem;
+    margin: 0 0 1.5rem;
     text-align: center;
     font-size: 2rem;
     color: #615858;
@@ -19,10 +19,21 @@
     border-bottom: solid 1px #e5e5e5;
   }
   .input-field {
-    margin: 0 0 1.5rem;
+    margin: 1.5rem 0 0;
   }
-  button {
-    max-width: 10rem;
+  .form-button {
+    max-width: 15rem;
+    width: 50%;
+    margin-top: 1.5rem;
     justify-self: center;
+    justify-content: center;
+  }
+  .google-button > span {
+    color: black;
+    text-align: center;
+  }
+  p {
+    margin-top: 2rem;
+    text-align: center;
   }
 }

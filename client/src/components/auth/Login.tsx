@@ -1,11 +1,11 @@
 import { Button, IconButton, InputAdornment, TextField } from '@material-ui/core';
 import axios from 'axios';
+import GoogleLogin from 'react-google-login';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import LockIcon from '@material-ui/icons/Lock';
 import EmailIcon from '@material-ui/icons/Email';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import PasswordStrengthBar from 'react-password-strength-bar';
 
 export default function Register() {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -17,6 +17,15 @@ export default function Register() {
   };
 
   const onShowPasswordClicked = () => setShowPassword(!showPassword);
+
+  const googleSuccessResponse = (response: any) => {
+    console.log(`Success ${response.wt.cu}`);
+    console.log(response);
+  };
+
+  const googleFailureResponse = (response: any) => {
+    console.log(`Failure ${response.wt.cu}`);
+  };
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -45,7 +54,7 @@ export default function Register() {
 
   return (
     <form className="form" autoComplete="on" onSubmit={onSubmit} method="post">
-      <h2>Create Account</h2>
+      <h2>Log In</h2>
       <TextField
         type="email"
         value={email}
@@ -70,11 +79,10 @@ export default function Register() {
         value={password}
         className="input-field"
         label="Password"
-        error={password.length < 6 && password.length > 0}
         variant="outlined"
-        placeholder="New Password..."
+        placeholder="Your Password..."
         name="password"
-        autoComplete="new-password"
+        autoComplete="current-password"
         onChange={onFieldChange}
         InputProps={{
           startAdornment: (
@@ -89,15 +97,23 @@ export default function Register() {
               </IconButton>
             </InputAdornment>
           ),
-          inputProps: { minLength: 6, maxLength: 30 },
+          inputProps: { min: 0, max: 10 },
         }}
       />
-      {password.length > 0 && <PasswordStrengthBar minLength={6} password={password} />}
       <Button className="form-button" variant="contained" color="primary" type="submit">
-        Sign Up
+        Login
       </Button>
+      <GoogleLogin
+        className="form-button google-button"
+        clientId="1333376791-188hppfhtekbpieohomh2j1a2tsrv3ip.apps.googleusercontent.com"
+        buttonText="Continue with Google"
+        onSuccess={googleSuccessResponse}
+        onFailure={googleFailureResponse}
+        cookiePolicy={'single_host_origin'}
+        // isSignedIn={true}
+      />
       <p>
-        Already have an account? <a href="/login">Sign in</a>
+        Not a member? <a href="/register">Sign up now!</a>
       </p>
     </form>
   );

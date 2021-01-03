@@ -57,22 +57,37 @@
   }
 
   .search {
+    margin: auto auto;
+    width: 40%;
     background: rgba(255, 255, 255, 0.15);
     border-radius: 8px;
   }
 
+  .search * {
+    border: 0;
+  }
+
+  .search > div {
+    width: 100%;
+  }
+
   .search:hover {
     background: rgba(255, 255, 255, 0.25);
+  }
 
   .search div {
     color: white;
   }
 
+  .logo-container {
+    width: 20%;
+  }
+
   .logo {
     cursor: pointer;
     border-radius: 16px;
-    width: 60%;
     margin: 0.5rem 0.5rem;
+    width: 100%;
   }
 
   .logo:hover {

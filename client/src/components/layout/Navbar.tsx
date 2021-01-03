@@ -30,8 +30,10 @@ export default function Navbar() {
       alignItems="center"
       className="navbar-content"
     >
-      <Box p={1} className="search">
+      <Box className="search">
         <TextField
+          variant="outlined"
+          placeholder="Find a vacation..."
           onChange={() => {}}
           InputProps={{
             startAdornment: (
@@ -63,7 +65,7 @@ export default function Navbar() {
   return (
     <AppBar position="static" color="inherit">
       <Toolbar className="navbar" style={{ padding: 0 }}>
-        <Link to="/">
+        <Link className="logo-container" to="/">
           <img src={logo} className="logo" alt="logo" />
         </Link>
 

@@ -1,15 +1,19 @@
 import { Button, IconButton, InputAdornment, TextField } from '@material-ui/core';
-import axios from 'axios';
 import GoogleLogin from 'react-google-login';
+import { Redirect } from 'react-router-dom';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import LockIcon from '@material-ui/icons/Lock';
 import EmailIcon from '@material-ui/icons/Email';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 
-export default function Register() {
+const GOOGLE_CLIENT_ID = '1333376791-188hppfhtekbpieohomh2j1a2tsrv3ip.apps.googleusercontent.com';
+
+export default function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const { email, password } = formData;
 
   const onFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -19,38 +23,24 @@ export default function Register() {
   const onShowPasswordClicked = () => setShowPassword(!showPassword);
 
   const googleSuccessResponse = (response: any) => {
-    console.log(`Success ${response.wt.cu}`);
+    console.log(`Success ${JSON.stringify(response.profileObj)}`);
     console.log(response);
+    setIsLoggedIn(true);
   };
 
   const googleFailureResponse = (response: any) => {
-    console.log(`Failure ${response.wt.cu}`);
+    console.log(`Failure ${response}`);
   };
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
-
-    if (password.length < 6) {
-      return alert('Password is too short!');
-    }
-
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-    const body = JSON.stringify({ email, password });
-
-    try {
-      const res = await axios.post('http://localhost:3001/api/users', body, config);
-      console.log(`Server Response: ${JSON.stringify(res.data)}`);
-    } catch (error) {
-      const errors = error.response.data.errors;
-      errors.forEach((error: any) => {
-        alert(error.msg);
-      });
-    }
+    console.log('You are logged in');
+    setIsLoggedIn(true);
   };
+
+  if (isLoggedIn) {
+    return <Redirect to="/register" />;
+  }
 
   return (
     <form className="form" autoComplete="on" onSubmit={onSubmit} method="post">
@@ -105,7 +95,7 @@ export default function Register() {
       </Button>
       <GoogleLogin
         className="form-button google-button"
-        clientId="1333376791-188hppfhtekbpieohomh2j1a2tsrv3ip.apps.googleusercontent.com"
+        clientId={GOOGLE_CLIENT_ID}
         buttonText="Continue with Google"
         onSuccess={googleSuccessResponse}
         onFailure={googleFailureResponse}

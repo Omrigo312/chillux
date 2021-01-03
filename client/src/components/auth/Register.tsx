@@ -6,6 +6,9 @@ import EmailIcon from '@material-ui/icons/Email';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import PasswordStrengthBar from 'react-password-strength-bar';
+import GoogleLogin from 'react-google-login';
+
+const GOOGLE_CLIENT_ID = '1333376791-188hppfhtekbpieohomh2j1a2tsrv3ip.apps.googleusercontent.com';
 
 export default function Register() {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -17,6 +20,15 @@ export default function Register() {
   };
 
   const onShowPasswordClicked = () => setShowPassword(!showPassword);
+
+  const googleSuccessResponse = (response: any) => {
+    console.log(`Success ${JSON.stringify(response.profileObj)}`);
+    console.log(response);
+  };
+
+  const googleFailureResponse = (response: any) => {
+    console.log(`Failure ${response}`);
+  };
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -96,6 +108,14 @@ export default function Register() {
       <Button className="form-button" variant="contained" color="primary" type="submit">
         Sign Up
       </Button>
+      <GoogleLogin
+        className="form-button google-button"
+        clientId={GOOGLE_CLIENT_ID}
+        buttonText="Continue with Google"
+        onSuccess={googleSuccessResponse}
+        onFailure={googleFailureResponse}
+        cookiePolicy={'single_host_origin'}
+      />
       <p>
         Already have an account? <a href="/login">Sign in</a>
       </p>

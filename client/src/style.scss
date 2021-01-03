@@ -37,3 +37,50 @@
     text-align: center;
   }
 }
+
+.navbar {
+  background-image: linear-gradient(to left, rgba(74, 209, 243, 0.582), rgb(2, 73, 105));
+  color: white;
+
+  button {
+    color: white;
+    width: 100%;
+    font-size: 1.2rem;
+  }
+
+  button:hover {
+    color: rgb(90, 90, 90);
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .search {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+  }
+
+  .search:hover {
+    background: rgba(255, 255, 255, 0.25);
+
+  .search div {
+    color: white;
+  }
+
+  .logo {
+    cursor: pointer;
+    border-radius: 16px;
+    width: 60%;
+    margin: 0.5rem 0.5rem;
+  }
+
+  .logo:hover {
+    box-shadow: 0 0 0.5em rgb(53, 53, 53);
+    filter: brightness(90%);
+  }
+}
+
+body {
+  margin: 0;
+}

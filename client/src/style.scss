@@ -1,3 +1,7 @@
+body {
+  margin: 0;
+}
+
 .form {
   display: grid;
   max-width: 40rem;
@@ -18,9 +22,11 @@
     padding: 0 0 1rem;
     border-bottom: solid 1px #e5e5e5;
   }
+
   .input-field {
     margin: 1.5rem 0 0;
   }
+
   .form-button {
     max-width: 15rem;
     width: 50%;
@@ -28,10 +34,12 @@
     justify-self: center;
     justify-content: center;
   }
+
   .google-button > span {
     color: black;
     text-align: center;
   }
+
   p {
     margin-top: 2rem;
     text-align: center;
@@ -67,15 +75,12 @@
     border: 0;
   }
 
-  .search > div {
-    width: 100%;
-  }
-
   .search:hover {
     background: rgba(255, 255, 255, 0.25);
   }
 
   .search div {
+    width: 100%;
     color: white;
   }
 
@@ -94,8 +99,4 @@
     box-shadow: 0 0 0.5em rgb(53, 53, 53);
     filter: brightness(90%);
   }
-}
-
-body {
-  margin: 0;
 }

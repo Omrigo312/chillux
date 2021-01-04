@@ -1,19 +1,7 @@
-import {
-  AppBar,
-  Box,
-  Button,
-  IconButton,
-  Slider,
-  Toolbar,
-  Typography,
-  InputBase,
-  TextField,
-  InputAdornment,
-} from '@material-ui/core';
-import React, { Component } from 'react';
+import { AppBar, Box, Button, Toolbar } from '@material-ui/core';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/images/logo-wide.png';
-import SearchIcon from '@material-ui/icons/Search';
 
 export default function Navbar() {
   const isAuthenticated = false;
@@ -23,14 +11,13 @@ export default function Navbar() {
     <Box
       width="100%"
       display="flex"
-      p={1}
-      m={1}
       flexDirection="row"
       justifyContent="flex-end"
       alignItems="center"
       className="navbar-content"
+      m={1}
     >
-      <Box className="search">
+      {/* <Box className="search">
         <TextField
           variant="outlined"
           placeholder="Find a vacation..."
@@ -43,18 +30,18 @@ export default function Navbar() {
             ),
           }}
         />
-      </Box>
-      <Box p={1}>
+      </Box> */}
+      <Box>
         <Link to="/offers">
           <Button>All Offers</Button>
         </Link>
       </Box>
-      <Box p={1}>
+      <Box>
         <Link to="/register">
           <Button>Register</Button>
         </Link>
       </Box>
-      <Box p={1}>
+      <Box>
         <Link to="/login">
           <Button>Login</Button>
         </Link>

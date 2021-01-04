@@ -90,7 +90,7 @@ export default function Navbar() {
   );
 
   return (
-    <AppBar position="static" color="inherit">
+    <AppBar position="fixed" color="inherit">
       <Toolbar className="navbar" style={{ padding: 0 }}>
         <Link className="logo-container" to="/">
           <img src={logo} className="logo" alt="logo" />

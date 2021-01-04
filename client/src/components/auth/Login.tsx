@@ -63,68 +63,70 @@ export default function Login() {
   }
 
   return (
-    <form className="form" autoComplete="on" onSubmit={onSubmit} method="post">
-      <h2>Log In</h2>
-      <TextField
-        type="email"
-        value={email}
-        required
-        className="input-field"
-        label="Email"
-        variant="outlined"
-        placeholder="Your Email..."
-        name="email"
-        onChange={onFieldChange}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <EmailIcon />
-            </InputAdornment>
-          ),
-        }}
-      />
-      <TextField
-        type={showPassword ? 'text' : 'password'}
-        required
-        value={password}
-        className="input-field"
-        label="Password"
-        variant="outlined"
-        placeholder="Your Password..."
-        name="password"
-        autoComplete="current-password"
-        onChange={onFieldChange}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <LockIcon />
-            </InputAdornment>
-          ),
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton aria-label="toggle password visibility" onClick={onShowPasswordClicked}>
-                {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-              </IconButton>
-            </InputAdornment>
-          ),
-          inputProps: { min: 0, max: 10 },
-        }}
-      />
-      <Button className="form-button" variant="contained" color="primary" type="submit">
-        Login
-      </Button>
-      <GoogleLogin
-        className="form-button google-button"
-        clientId={GOOGLE_CLIENT_ID}
-        buttonText="Continue with Google"
-        onSuccess={googleSuccessResponse}
-        onFailure={googleFailureResponse}
-        cookiePolicy={'single_host_origin'}
-        // isSignedIn={true}
-      />
-      <p>
-        Not a member? <a href="/register">Sign up now!</a>
-      </p>
-    </form>
+    <section className="island-background-darken">
+      <form className="form" autoComplete="on" onSubmit={onSubmit} method="post">
+        <h2>Log In</h2>
+        <TextField
+          type="email"
+          value={email}
+          required
+          className="input-field"
+          label="Email"
+          variant="outlined"
+          placeholder="Your Email..."
+          name="email"
+          onChange={onFieldChange}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <EmailIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+        <TextField
+          type={showPassword ? 'text' : 'password'}
+          required
+          value={password}
+          className="input-field"
+          label="Password"
+          variant="outlined"
+          placeholder="Your Password..."
+          name="password"
+          autoComplete="current-password"
+          onChange={onFieldChange}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <LockIcon />
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton aria-label="toggle password visibility" onClick={onShowPasswordClicked}>
+                  {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                </IconButton>
+              </InputAdornment>
+            ),
+            inputProps: { min: 0, max: 10 },
+          }}
+        />
+        <Button className="form-button" variant="contained" color="primary" type="submit">
+          Login
+        </Button>
+        <GoogleLogin
+          className="form-button google-button"
+          clientId={GOOGLE_CLIENT_ID}
+          buttonText="Continue with Google"
+          onSuccess={googleSuccessResponse}
+          onFailure={googleFailureResponse}
+          cookiePolicy={'single_host_origin'}
+          // isSignedIn={true}
+        />
+        <p>
+          Not a member? <a href="/register">Sign up now!</a>
+        </p>
+      </form>
+    </section>
   );
 }

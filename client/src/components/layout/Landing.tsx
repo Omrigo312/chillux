@@ -1,7 +1,3 @@
-import React, { Component } from 'react';
-
-export default class Landing extends Component {
-  render() {
-    return <div></div>;
-  }
+export default function Landing() {
+  return <div className="island-background"></div>;
 }

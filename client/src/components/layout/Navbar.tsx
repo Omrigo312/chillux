@@ -9,7 +9,7 @@ import NavbarLink from '../../models/NavbarLink';
 import { AuthContext } from '../../context/AuthContext';
 
 export default function Navbar() {
-  const { state, logout } = useContext(AuthContext);
+  const { authState, logout } = useContext(AuthContext);
   const location = useLocation();
 
   const [currentTab, setCurrentTab] = useState(location.pathname);
@@ -105,7 +105,7 @@ export default function Navbar() {
           m={1}
           p={1}
         >
-          {state.isAuthenticated ? (state.userType === 'USER' ? userBar : adminBar) : guestBar}
+          {authState.isAuthenticated ? (authState.userType === 'USER' ? userBar : adminBar) : guestBar}
         </Box>
       </Toolbar>
     </AppBar>

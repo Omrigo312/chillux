@@ -1,9 +1,9 @@
-const connection = require('./connection-wrapper');
+const connection = require('./connectionWrapper');
 const ErrorType = require('../errors/errorType');
 const ServerError = require('../errors/serverError');
 
 const login = async (user) => {
-  const sql = 'SELECT * FROM users where username =? and password =?';
+  const sql = 'SELECT * FROM users where email =? and password =?';
 
   const parameters = [user.email, user.password];
 
@@ -16,10 +16,10 @@ const login = async (user) => {
     throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(user), error);
   }
 
-  // A functional (!) issue which means - the userName + password do not match
-  if (usersLoginResult == null || usersLoginResult.length == 0) {
-    throw new ServerError(ErrorType.UNAUTHORIZED);
-  }
+  // A functional (!) issue which means - the email + password do not match
+  // if (usersLoginResult == null || usersLoginResult.length == 0) {
+  //   throw new ServerError(ErrorType.UNAUTHORIZED);
+  // }
 
   console.log('All good ! ');
   return usersLoginResult[0];

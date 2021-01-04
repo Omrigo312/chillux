@@ -8,13 +8,13 @@ interface AuthStateInterFace {
 }
 
 interface StateInterface {
-  state: AuthStateInterFace;
+  authState: AuthStateInterFace;
   login: (loginData: LoginData) => void;
   logout: () => void;
 }
 
 const initialState: StateInterface = {
-  state: { isAuthenticated: false, token: '', userType: '' },
+  authState: { isAuthenticated: false, token: '', userType: '' },
   login: null,
   logout: null,
 };
@@ -32,5 +32,5 @@ export const AuthProvider = ({ children }: any) => {
     setAuthState({ isAuthenticated: false, token: '', userType: '' });
   };
 
-  return <AuthContext.Provider value={{ state: authState, login, logout }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ authState, login, logout }}>{children}</AuthContext.Provider>;
 };

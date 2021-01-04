@@ -45,7 +45,7 @@ export default function Register() {
     const body = JSON.stringify({ email, password });
 
     try {
-      const res = await axios.post('http://localhost:3001/api/users', body, config);
+      const res = await axios.post('http://localhost:3001/api/users/register', body, config);
       console.log(`Server Response: ${JSON.stringify(res.data)}`);
     } catch (error) {
       const errors = error.response.data.errors;

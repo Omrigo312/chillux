@@ -15,7 +15,7 @@ const GOOGLE_CLIENT_ID = '1333376791-188hppfhtekbpieohomh2j1a2tsrv3ip.apps.googl
 export default function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
-  const { state: authState, login } = useContext(AuthContext);
+  const { authState, login } = useContext(AuthContext);
 
   const { email, password } = formData;
 
@@ -28,7 +28,6 @@ export default function Login() {
   const googleSuccessResponse = (response: any) => {
     console.log(`Success ${JSON.stringify(response.profileObj)}`);
     console.log(response);
-    // setIsAuthenticated(true);
   };
 
   const googleFailureResponse = (response: any) => {
@@ -46,14 +45,16 @@ export default function Login() {
     const body = JSON.stringify({ email, password });
 
     try {
-      const res = await axios.post('http://localhost:3001/api/auth', body, config);
+      const res = await axios.post('http://localhost:3001/api/users/login', body, config);
       console.log(`Server Response: ${JSON.stringify(res.data)}`);
       login(new LoginData(res.data.token, res.data.userType));
     } catch (error) {
       const errors = error.response.data.errors;
-      errors.forEach((error: any) => {
-        alert(error.msg);
-      });
+      if (errors) {
+        errors.forEach((error: any) => {
+          alert(error.msg);
+        });
+      }
     }
   };
 

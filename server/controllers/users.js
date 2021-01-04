@@ -1,4 +1,5 @@
 const express = require('express');
+const usersLogic = require('../logic/users');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
 
@@ -48,9 +49,8 @@ router.post(
     const user = { email, password, type: 'USER' };
 
     try {
-      console.log(user);
       const successfulLoginData = await usersLogic.login(user);
-      response.json(successfulLoginData);
+      res.json(successfulLoginData);
     } catch (error) {
       console.log(error.message);
       res.status(500).send('Server error.');

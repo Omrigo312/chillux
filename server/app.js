@@ -9,6 +9,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/users', require('./controllers/users'));
+app.use('/api/users', require('./controllers/users'));
 app.use('/api/vacations', require('./controllers/vacations'));
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

@@ -33,7 +33,7 @@ router.get('/', async (req, res) => {
     res.json(vacations);
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ msg: 'Server error.' });
+    res.status(500).send('Server error.');
   }
 });
 

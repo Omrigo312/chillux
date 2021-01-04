@@ -1,18 +1,21 @@
 import { Button, IconButton, InputAdornment, TextField } from '@material-ui/core';
 import GoogleLogin from 'react-google-login';
 import { Redirect } from 'react-router-dom';
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useContext, useState } from 'react';
 import LockIcon from '@material-ui/icons/Lock';
 import EmailIcon from '@material-ui/icons/Email';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import axios from 'axios';
+import { AuthContext } from '../../context/AuthContext';
+import LoginData from '../../models/LoginData';
 
 const GOOGLE_CLIENT_ID = '1333376791-188hppfhtekbpieohomh2j1a2tsrv3ip.apps.googleusercontent.com';
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { state: authState, login } = useContext(AuthContext);
 
   const { email, password } = formData;
 
@@ -25,7 +28,7 @@ export default function Login() {
   const googleSuccessResponse = (response: any) => {
     console.log(`Success ${JSON.stringify(response.profileObj)}`);
     console.log(response);
-    setIsLoggedIn(true);
+    // setIsAuthenticated(true);
   };
 
   const googleFailureResponse = (response: any) => {
@@ -34,11 +37,27 @@ export default function Login() {
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    console.log('You are logged in');
-    setIsLoggedIn(true);
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    const body = JSON.stringify({ email, password });
+
+    try {
+      const res = await axios.post('http://localhost:3001/api/auth', body, config);
+      console.log(`Server Response: ${JSON.stringify(res.data)}`);
+      login(new LoginData(res.data.token, res.data.userType));
+    } catch (error) {
+      const errors = error.response.data.errors;
+      errors.forEach((error: any) => {
+        alert(error.msg);
+      });
+    }
   };
 
-  if (isLoggedIn) {
+  if (authState.isAuthenticated) {
     return <Redirect to="/register" />;
   }
 

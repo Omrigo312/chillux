@@ -112,9 +112,11 @@ body {
 }
 
 .island-background {
-  display: flex;
+  display: grid;
   background: url('../../assets/images/landing-background.jpg') no-repeat center center/cover;
   height: 100vh;
+  justify-content: center;
+  align-items: center;
 
   @media (min-height: 633px) {
     height: 100vh;
@@ -125,8 +127,17 @@ body {
   display: grid;
   background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
     url('../../assets/images/landing-background.jpg') no-repeat center center/cover;
-
+  justify-content: center;
+  align-items: center;
   @media (min-height: 633px) {
     height: 100vh;
   }
+}
+
+.landing-buttons {
+  display: inline-block;
+}
+
+.landing-buttons > button {
+  margin: 0.5rem;
 }

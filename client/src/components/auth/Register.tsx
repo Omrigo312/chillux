@@ -7,6 +7,8 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import PasswordStrengthBar from 'react-password-strength-bar';
 import GoogleLogin from 'react-google-login';
+import logo from '../../assets/images/logo-wide.png';
+import { Link } from 'react-router-dom';
 
 const GOOGLE_CLIENT_ID = '1333376791-188hppfhtekbpieohomh2j1a2tsrv3ip.apps.googleusercontent.com';
 
@@ -58,6 +60,9 @@ export default function Register() {
   return (
     <section className="island-background-darken">
       <form className="form" autoComplete="on" onSubmit={onSubmit} method="post">
+        <Link className="logo-container-form" to="/">
+          <img src={logo} className="logo-form" alt="logo" />
+        </Link>
         <h2>Create Account</h2>
         <TextField
           type="email"

@@ -90,25 +90,29 @@ export default function Navbar() {
   );
 
   return (
-    <AppBar position="fixed" color="inherit">
-      <Toolbar className="navbar" style={{ padding: 0 }}>
-        <Link className="logo-container" to="/">
-          <img src={logo} className="logo" alt="logo" />
-        </Link>
-        <Box
-          width="100%"
-          display="flex"
-          flexDirection="row"
-          justifyContent="flex-end"
-          alignItems="center"
-          className="navbar-content"
-          m={1}
-          p={1}
-        >
-          {authState.isAuthenticated ? (authState.userType === 'USER' ? userBar : adminBar) : guestBar}
-        </Box>
-      </Toolbar>
-    </AppBar>
+    <Fragment>
+      {location.pathname !== '/login' && location.pathname !== '/register' && (
+        <AppBar position="fixed" color="transparent">
+          <Toolbar className="navbar" style={{ padding: 0 }}>
+            <Link className="logo-container" to="/">
+              <img src={logo} className="logo" alt="logo" />
+            </Link>
+            <Box
+              width="100%"
+              display="flex"
+              flexDirection="row"
+              justifyContent="flex-end"
+              alignItems="center"
+              className="navbar-content"
+              m={1}
+              p={1}
+            >
+              {authState.isAuthenticated ? (authState.userType === 'USER' ? userBar : adminBar) : guestBar}
+            </Box>
+          </Toolbar>
+        </AppBar>
+      )}
+    </Fragment>
   );
 }
 

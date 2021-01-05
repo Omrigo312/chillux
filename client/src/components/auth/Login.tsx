@@ -1,6 +1,6 @@
 import { Button, IconButton, InputAdornment, TextField } from '@material-ui/core';
 import GoogleLogin from 'react-google-login';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import React, { ChangeEvent, FormEvent, useContext, useState } from 'react';
 import LockIcon from '@material-ui/icons/Lock';
 import EmailIcon from '@material-ui/icons/Email';
@@ -9,6 +9,7 @@ import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
 import LoginData from '../../models/LoginData';
+import logo from '../../assets/images/logo-wide.png';
 
 const GOOGLE_CLIENT_ID = '1333376791-188hppfhtekbpieohomh2j1a2tsrv3ip.apps.googleusercontent.com';
 
@@ -65,6 +66,9 @@ export default function Login() {
   return (
     <section className="island-background-darken">
       <form className="form" autoComplete="on" onSubmit={onSubmit} method="post">
+        <Link className="logo-container-form" to="/">
+          <img src={logo} className="logo-form" alt="logo" />
+        </Link>
         <h2>Log In</h2>
         <TextField
           type="email"

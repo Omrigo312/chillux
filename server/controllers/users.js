@@ -12,7 +12,7 @@ router.post(
     check('email', 'Please include a valid email').isEmail(),
     check('password', 'Please enter a password with 6 or more characters').isLength({ min: 6 }),
   ],
-  async (req, res) => {
+  async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       console.log(errors.array());
@@ -26,8 +26,7 @@ router.post(
       const successfulRegisterData = await usersLogic.register(newUser);
       res.json(successfulRegisterData);
     } catch (error) {
-      console.log(error.message);
-      res.status(500).send('Server error.');
+      return next(error);
     }
   }
 );
@@ -38,7 +37,7 @@ router.post(
 router.post(
   '/login',
   [check('email', 'Please include a valid email').isEmail(), check('password', 'A password is required').notEmpty()],
-  async (req, res) => {
+  async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       console.log(errors.array());
@@ -51,8 +50,7 @@ router.post(
       const successfulLoginData = await usersLogic.login(user);
       res.json(successfulLoginData);
     } catch (error) {
-      console.log(error.message);
-      res.status(500).send('Server error.');
+      return next(error);
     }
   }
 );

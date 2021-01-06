@@ -6,19 +6,20 @@ const login = async (user) => {
   const sql = 'SELECT * FROM users where email =? and password =?';
   const parameters = [user.email, user.password];
 
+  let usersLoginResult;
   try {
-    const usersLoginResult = await connection.executeWithParameters(sql, parameters);
-
-    // User does not exist or incorrect password
-    if (!usersLoginResult || !usersLoginResult.length) {
-      throw new ServerError(ErrorType.UNAUTHORIZED);
-    }
-
-    console.log(`User ${user.email} logged in successfully!`);
-    return usersLoginResult[0];
+    usersLoginResult = await connection.executeWithParameters(sql, parameters);
   } catch (error) {
     throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(user), error);
   }
+
+  // User does not exist or incorrect password
+  if (!usersLoginResult || !usersLoginResult.length) {
+    throw new ServerError(ErrorType.UNAUTHORIZED);
+  }
+
+  console.log(`User ${user.email} logged in successfully!`);
+  return usersLoginResult[0];
 };
 
 const register = async (user) => {

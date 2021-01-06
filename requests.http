@@ -3,7 +3,7 @@ POST http://localhost:3001/api/users HTTP/1.1
 content-type: application/json
 
 {
-    "email": "omrigo314@gmail.com",
+    "email": "omrigo315@gmail.com",
     "password": "omrigo312"
 }
 ###

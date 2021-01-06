@@ -10,12 +10,13 @@ const login = async (user) => {
 };
 
 const register = async (newUser) => {
+  if (await usersDao.isUserExistByName(newUser.email)) {
+    throw new ServerError(ErrorType.USER_NAME_ALREADY_EXIST);
+  }
   const userRegisterData = await usersDao.register(newUser);
-  // Do something with cache and stuff.. token....
   console.log(userRegisterData);
 
-  const mockSuccessfulResponse = { token: '12AB', userType: 'USER' };
-  return mockSuccessfulResponse;
+  return userRegisterData;
 };
 
 module.exports = {

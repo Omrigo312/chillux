@@ -4,11 +4,10 @@ const cors = require('cors');
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-app.use(cors());
+// app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/api/users', require('./controllers/users'));
 app.use('/api/users', require('./controllers/users'));
 app.use('/api/vacations', require('./controllers/vacations'));
 

@@ -3,11 +3,11 @@ const usersLogic = require('../logic/users');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
 
-// @route     POST api/users
+// @route     POST api/users/register
 // @desc      Register user
 // @access    Public
 router.post(
-  '/register',
+  '/',
   [
     check('email', 'Please include a valid email').isEmail(),
     check('password', 'Please enter a password with 6 or more characters').isLength({ min: 6 }),
@@ -19,12 +19,12 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { email, password } = req.body;
+    let newUser = req.body;
+    newUser = { ...newUser, type: 'USER' };
 
     try {
-      const user = { email, password, type: 'USER' };
-      console.log(user);
-      res.json({ token: 'fdsfds', userType: 'USER' });
+      const successfulRegisterData = await usersLogic.register(newUser);
+      res.json(successfulRegisterData);
     } catch (error) {
       console.log(error.message);
       res.status(500).send('Server error.');
@@ -32,7 +32,7 @@ router.post(
   }
 );
 
-// @route     POST api/auth
+// @route     POST api/users/login
 // @desc      Login user
 // @access    Public
 router.post(
@@ -45,8 +45,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { email, password } = req.body;
-    const user = { email, password, type: 'USER' };
+    const user = req.body;
 
     try {
       const successfulLoginData = await usersLogic.login(user);

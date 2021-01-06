@@ -3,8 +3,16 @@ POST http://localhost:3001/api/users HTTP/1.1
 content-type: application/json
 
 {
-    "firstName": "Omri",
-    "lastName":"Goldstein",
+    "email": "omrigo314@gmail.com",
+    "password": "omrigo312"
+}
+###
+
+# Login
+POST http://localhost:3001/api/users/login HTTP/1.1
+content-type: application/json
+
+{
     "email": "omrigo312@gmail.com",
     "password": "omrigo312"
 }

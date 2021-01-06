@@ -3,8 +3,9 @@ const ErrorType = require('../errors/errorType');
 const ServerError = require('../errors/serverError');
 
 const login = async (user) => {
+  const { email, password } = user;
   const sql = 'SELECT * FROM users where email =? and password =?';
-  const parameters = [user.email, user.password];
+  const parameters = [email, password];
 
   let usersLoginResult;
   try {
@@ -18,21 +19,22 @@ const login = async (user) => {
     throw new ServerError(ErrorType.UNAUTHORIZED);
   }
 
-  console.log(`User ${user.email} logged in successfully!`);
+  console.log(`User ${email} logged in successfully!`);
   return usersLoginResult[0];
 };
 
-const register = async (user) => {
+const register = async (newUser) => {
+  const { email, password, type } = newUser;
   const sql = 'INSERT INTO users (email, password, type)  values(?, ?, ?)';
-  const parameters = [user.email, user.password, user.type, user.companyId];
+  const parameters = [email, password, type];
 
   try {
-    const userRegisterResult = await connection.executeWithParameters(sql, parameters);
+    const registerResult = await connection.executeWithParameters(sql, parameters);
 
-    console.log(`User ${user.email} registered successfully!`);
-    return userRegisterResult.insertId;
+    console.log(`User ${email} registered successfully!`);
+    return registerResult.insertId;
   } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(user), error);
+    throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(newUser), error);
   }
 };
 
@@ -41,7 +43,7 @@ const isUserExist = async (email) => {
   const parameters = [email];
   try {
     const result = await connection.executeWithParameters(sql, parameters);
-    return result ? true : false;
+    return result.length ? true : false;
   } catch (error) {
     throw new ServerError(ErrorType.GENERAL_ERROR, email, error);
   }

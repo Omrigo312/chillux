@@ -107,7 +107,7 @@ export default function Navbar() {
               m={1}
               p={1}
             >
-              {authState.isAuthenticated ? (authState.userType === 'USER' ? userBar : adminBar) : guestBar}
+              {authState.isAuthenticated ? (authState.userType === 'USER' ? adminBar : adminBar) : userBar}
             </Box>
           </Toolbar>
         </AppBar>

@@ -60,7 +60,7 @@ export default function Login() {
   };
 
   if (authState.isAuthenticated) {
-    return <Redirect to="/register" />;
+    return <Redirect to="/offers" />;
   }
 
   return (

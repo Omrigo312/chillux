@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Vacations() {
+export default function Offer() {
   return (
     <div>
       

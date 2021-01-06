@@ -32,13 +32,12 @@ router.post('/', async (req, res, next) => {
 // @route     DELETE api/vacations
 // @desc      Delete a vacation
 // @access    Private
-router.post('/:id', async (req, res, next) => {
-  let newVacation = req.body;
-  newVacation = { ...newVacation, followers: 0 };
+router.delete('/:id', async (req, res, next) => {
+  const id = req.params.id;
 
   try {
-    const newVacationId = await vacationsLogic.addVacation(newVacation);
-    res.json(newVacationId);
+    const deleteResponse = await vacationsLogic.deleteVacation(id);
+    res.json(deleteResponse);
   } catch (error) {
     return next(error);
   }

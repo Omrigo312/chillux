@@ -51,6 +51,8 @@ const validateVacationData = (vacation) => {
 };
 
 const deleteVacation = async (id) => {
+  if (!(await vacationsDao.isVacationExists(id))) throw new ServerError(ErrorType.VACATION_NOT_FOUND);
+
   const deleteResponse = await vacationsDao.deleteVacation(id);
   return deleteResponse;
 };

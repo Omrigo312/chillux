@@ -2,7 +2,7 @@ const Error = require('./Error');
 
 const ErrorType = {
   GENERAL_ERROR: new Error(1, 600, 'General error.', true),
-  USER_ALREADY_EXIST: new Error(2, 601, 'User already exists.', false),
+  USER_ALREADY_EXISTS: new Error(2, 601, 'User already exists.', false),
   UNAUTHORIZED: new Error(3, 401, 'Email or password is incorrect.', false),
   INVALID_EMAIL: new Error(4, 602, 'Please include a valid email.', false),
   EMPTY_PASSWORD: new Error(5, 602, 'A password is required.', false),

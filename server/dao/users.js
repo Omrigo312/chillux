@@ -4,7 +4,7 @@ const ServerError = require('../errors/serverError');
 
 const login = async (user) => {
   const { email, password } = user;
-  const sql = 'SELECT * FROM users where email =? and password =?';
+  const sql = 'SELECT * FROM users WHERE email =? AND password =?';
   const parameters = [email, password];
 
   let usersLoginResult;
@@ -25,7 +25,7 @@ const login = async (user) => {
 
 const register = async (newUser) => {
   const { email, password, type } = newUser;
-  const sql = 'INSERT INTO users (email, password, type)  values(?, ?, ?)';
+  const sql = 'INSERT INTO users (email, password, type) VALUES(?, ?, ?)';
   const parameters = [email, password, type];
 
   try {
@@ -38,8 +38,8 @@ const register = async (newUser) => {
   }
 };
 
-const isUserExist = async (email) => {
-  const sql = 'SELECT * FROM users where email =?';
+const isUserExists = async (email) => {
+  const sql = 'SELECT * FROM users WHERE email =?';
   const parameters = [email];
   try {
     const result = await connection.executeWithParameters(sql, parameters);
@@ -52,5 +52,5 @@ const isUserExist = async (email) => {
 module.exports = {
   login,
   register,
-  isUserExist,
+  isUserExist: isUserExists,
 };

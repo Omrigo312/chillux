@@ -30,7 +30,12 @@ content-type: application/json
     "description": "Come stay at out wonderful beach resort",
     "destination":"Vietnam",
     "imageUrl": "http://www.prettyimage.com",
-    "price": "5000",
+    "price": "6000",
     "startDate": "2021-01-06",
-    "endDate": "2021-01-06"
+    "endDate": "2021-01-07"
 }
+###
+
+# Delete a vacation
+DELETE http://localhost:3001/api/vacations/2 HTTP/1.1
+###

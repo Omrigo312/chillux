@@ -30,7 +30,7 @@ const addVacation = async (newVacation) => {
 };
 
 const deleteVacation = async (id) => {
-  const sql = 'DELETE FROM users WHERE id=?';
+  const sql = 'DELETE FROM vacations WHERE id=?';
   const parameters = [id];
 
   try {
@@ -42,8 +42,20 @@ const deleteVacation = async (id) => {
   }
 };
 
+const isVacationExists = async (id) => {
+  const sql = 'SELECT * FROM vacations WHERE id =?';
+  const parameters = [id];
+  try {
+    const result = await connection.executeWithParameters(sql, parameters);
+    return result.length ? true : false;
+  } catch (error) {
+    throw new ServerError(ErrorType.GENERAL_ERROR, `Vacation id: ${id}`, error);
+  }
+};
+
 module.exports = {
   getAllVacations,
   addVacation,
   deleteVacation,
+  isVacationExists,
 };

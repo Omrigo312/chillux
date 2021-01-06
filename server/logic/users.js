@@ -27,7 +27,7 @@ const register = async (newUser) => {
 
 const validateRegisterData = async (user) => {
   const { email, password } = user;
-  if (await usersDao.isUserExist(email)) throw new ServerError(ErrorType.USER_ALREADY_EXIST);
+  if (await usersDao.isUserExist(email)) throw new ServerError(ErrorType.USER_ALREADY_EXISTS);
   if (!validator.isEmail(email)) throw new ServerError(ErrorType.INVALID_EMAIL);
   if (!validator.isLength(password, { min: 6, max: 30 })) throw new ServerError(ErrorType.INVALID_PASSWORD);
 };

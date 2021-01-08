@@ -305,9 +305,13 @@
   max-height: 240px;
   font-family: 'Comfortaa', cursive;
 
-  .vacation-card-image {
-    background: url(../../assets/images/landing-background.jpg) no-repeat center center/cover;
+  .vacation-card-container {
+    // background: url(../../assets/images/landing-background.jpg) no-repeat center center/cover;
     height: 100%;
+  }
+
+  .vacation-card-image {
+    object-fit: cover;
   }
 
   .vacation-card-text {

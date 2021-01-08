@@ -4,7 +4,7 @@ import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import Landing from './components/layout/Landing';
 import Navbar from './components/layout/Navbar';
-import VacationCard from './components/vacations/VacationCard';
+import Vacations from './components/vacations/Vacations';
 
 export default function App() {
   return (
@@ -14,7 +14,7 @@ export default function App() {
         <Route exact path="/" component={Landing} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
-        <Route exact path="/vacations" component={VacationCard} />
+        <Route exact path="/vacations" component={Vacations} />
       </Switch>
     </Router>
   );

@@ -1,34 +1,25 @@
-import {
-  Button,
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Grid,
-  IconButton,
-  Tooltip,
-  Typography,
-} from '@material-ui/core';
+import { Button, Card, Grid, IconButton, Tooltip } from '@material-ui/core';
 import React from 'react';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
-import SkipNextIcon from '@material-ui/icons/SkipNext';
-import image from '../../assets/images/logo-circle.png';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { Link } from 'react-router-dom';
+import { Vacation } from '../../models/Vacation';
 
-export default function VacationCard() {
-  const description =
-    'Join our guided tour in paris and experience the city in a way you never had before. Visit the amazing museums, climb on top of the Eiffel tower, and shop at the Champs-Élysées. ';
+interface VacationCardProps {
+  vacation: Vacation;
+}
+
+export default function VacationCard({ vacation }: VacationCardProps) {
+  const { id, description, destination, imageUrl, price, followers, startDate, endDate } = vacation;
   const maxLength = 150;
   return (
     <div style={{ display: 'grid', marginTop: '7rem' }}>
       <Card className="vacation-card">
         <Grid container spacing={3}>
           <Grid item xs={5}>
-            <div className="vacation-card-image"></div>
+            <div className="vacation-card-container">
+              <img src={imageUrl} alt={destination} className="vacation-card-image" />
+            </div>
           </Grid>
           <Grid item xs={7}>
             <div className="vacation-card-text">

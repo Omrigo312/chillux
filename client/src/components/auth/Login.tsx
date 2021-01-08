@@ -9,7 +9,7 @@ import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
 import LoginData from '../../models/LoginData';
-import logo from '../../assets/images/logo-wide.png';
+import logo from '../../assets/images/logo-circle-transparent.png';
 
 const GOOGLE_CLIENT_ID = '1333376791-188hppfhtekbpieohomh2j1a2tsrv3ip.apps.googleusercontent.com';
 
@@ -50,26 +50,25 @@ export default function Login() {
       console.log(`Server Response: ${JSON.stringify(res.data)}`);
       login(new LoginData(res.data.token, res.data.userType));
     } catch (error) {
-      const errors = error.response.data.errors;
-      if (errors) {
-        errors.forEach((error: any) => {
-          alert(error.msg);
-        });
-      }
+      alert(error.response.data.message);
     }
   };
 
   if (authState.isAuthenticated) {
-    return <Redirect to="/offers" />;
+    return <Redirect to="/vacations" />;
   }
 
   return (
     <section className="island-background-darken">
       <form className="form" autoComplete="on" onSubmit={onSubmit} method="post">
-        <Link className="logo-container-form" to="/">
-          <img src={logo} className="logo-form" alt="logo" />
+        <Link className="logo-container" to="/">
+          <img src={logo} className="logo" alt="logo" />
+          <div className="logo-text">
+            <h2>Chillux</h2>
+            <p>Luxury Vacations</p>
+          </div>
         </Link>
-        <h2>Log In</h2>
+        <h2 className="form-header">Log In</h2>
         <TextField
           type="email"
           value={email}
@@ -127,7 +126,7 @@ export default function Login() {
           cookiePolicy={'single_host_origin'}
           // isSignedIn={true}
         />
-        <p>
+        <p className="form-footer">
           Not a member? <a href="/register">Sign up now!</a>
         </p>
       </form>

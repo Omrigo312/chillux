@@ -1,4 +1,5 @@
-import { createContext, useState } from 'react';
+import React, { createContext, useState } from 'react';
+import { Redirect, useHistory } from 'react-router-dom';
 import LoginData from '../models/LoginData';
 
 interface AuthStateInterFace {
@@ -23,13 +24,16 @@ export const AuthContext = createContext<StateInterface>(initialState);
 
 export const AuthProvider = ({ children }: any) => {
   const [authState, setAuthState] = useState({ isAuthenticated: false, token: '', userType: '' });
+  const history = useHistory();
 
   const login = (loginData: LoginData) => {
+    console.log(loginData);
     setAuthState({ isAuthenticated: true, token: loginData.token, userType: loginData.userType });
   };
 
   const logout = () => {
     setAuthState({ isAuthenticated: false, token: '', userType: '' });
+    window.location.replace(`/`);
   };
 
   return <AuthContext.Provider value={{ authState, login, logout }}>{children}</AuthContext.Provider>;

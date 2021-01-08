@@ -1,6 +1,6 @@
-const errorHandler = (error, request, response, next) => {
+const errorHandler = (error, req, res, next) => {
   if (error.errorType === undefined) {
-    return response.status(700).json({ error: 'General error' });
+    return res.status(700).json({ error: 'General error' });
   }
 
   if (error.errorType.isShowStackTrace) {
@@ -8,7 +8,7 @@ const errorHandler = (error, request, response, next) => {
   }
 
   const { httpCode, message } = error.errorType;
-  return response.status(httpCode).json({ error: message });
+  return res.status(httpCode).json({ message });
 };
 
 module.exports = errorHandler;

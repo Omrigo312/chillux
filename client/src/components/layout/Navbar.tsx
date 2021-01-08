@@ -2,7 +2,7 @@ import { AppBar, Box, Button, Toolbar, Divider } from '@material-ui/core';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import logo from '../../assets/images/logo-wide.png';
+import logo from '../../assets/images/logo-circle-transparent.png';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import NavbarLink from '../../models/NavbarLink';
@@ -23,20 +23,20 @@ export default function Navbar() {
   }, [location.pathname]);
 
   const userBarLinks = [
-    new NavbarLink('/offers', 'All Offers'),
+    new NavbarLink('/vacations', 'All Offers'),
     new NavbarLink('/account', 'Account', <PersonOutlineIcon />),
   ];
 
   const guestBarLinks = [
-    new NavbarLink('/offers', 'All Offers'),
+    new NavbarLink('/vacations', 'All Offers'),
     new NavbarLink('/register', 'Register'),
     new NavbarLink('/login', 'Login'),
   ];
 
   const adminBarLinks = [
-    new NavbarLink('/offers', 'All Offers'),
+    new NavbarLink('/vacations', 'All Offers'),
     new NavbarLink('/analytics', 'Analytics'),
-    new NavbarLink('/add-offer', 'Add offer'),
+    new NavbarLink('/add-vacation', 'Add vacation'),
     new NavbarLink('/account', 'Account', <PersonOutlineIcon />),
   ];
 
@@ -92,10 +92,14 @@ export default function Navbar() {
   return (
     <Fragment>
       {location.pathname !== '/login' && location.pathname !== '/register' && (
-        <AppBar position="fixed" color="transparent">
+        <AppBar position="fixed" color="transparent" style={{ boxShadow: 'none' }}>
           <Toolbar className="navbar" style={{ padding: 0 }}>
             <Link className="logo-container" to="/">
               <img src={logo} className="logo" alt="logo" />
+              <div className="logo-text">
+                <h2>Chillux</h2>
+                <p>Luxury Vacations</p>
+              </div>
             </Link>
             <Box
               width="100%"
@@ -107,7 +111,7 @@ export default function Navbar() {
               m={1}
               p={1}
             >
-              {authState.isAuthenticated ? (authState.userType === 'USER' ? adminBar : adminBar) : userBar}
+              {authState.isAuthenticated ? (authState.userType === 'ADMIN' ? adminBar : userBar) : guestBar}
             </Box>
           </Toolbar>
         </AppBar>

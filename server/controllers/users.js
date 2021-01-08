@@ -2,7 +2,7 @@ const express = require('express');
 const usersLogic = require('../logic/users');
 const router = express.Router();
 
-// @route     POST api/users/register
+// @route     POST api/users
 // @desc      Register user
 // @access    Public
 router.post('/', async (req, res, next) => {

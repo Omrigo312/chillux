@@ -1,6 +1,5 @@
 import React from 'react';
 
-export default function OfferForm
-  () {
+export default function VacationForm() {
   return <div></div>;
 }

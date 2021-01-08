@@ -7,7 +7,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import PasswordStrengthBar from 'react-password-strength-bar';
 import GoogleLogin from 'react-google-login';
-import logo from '../../assets/images/logo-wide.png';
+import logo from '../../assets/images/logo-circle-transparent.png';
 import { Link } from 'react-router-dom';
 
 const GOOGLE_CLIENT_ID = '1333376791-188hppfhtekbpieohomh2j1a2tsrv3ip.apps.googleusercontent.com';
@@ -47,23 +47,25 @@ export default function Register() {
     const body = JSON.stringify({ email, password });
 
     try {
-      const res = await axios.post('http://localhost:3001/api/users/register', body, config);
+      const res = await axios.post('http://localhost:3001/api/users', body, config);
       console.log(`Server Response: ${JSON.stringify(res.data)}`);
     } catch (error) {
-      const errors = error.response.data.errors;
-      errors.forEach((error: any) => {
-        alert(error.msg);
-      });
+      console.log(error);
+      alert(error.response.data.message);
     }
   };
 
   return (
     <section className="island-background-darken">
       <form className="form" autoComplete="on" onSubmit={onSubmit} method="post">
-        <Link className="logo-container-form" to="/">
-          <img src={logo} className="logo-form" alt="logo" />
+        <Link className="logo-container" to="/">
+          <img src={logo} className="logo" alt="logo" />
+          <div className="logo-text">
+            <h2>Chillux</h2>
+            <p>Luxury Vacations</p>
+          </div>
         </Link>
-        <h2>Create Account</h2>
+        <h2 className="form-header">Create Account</h2>
         <TextField
           type="email"
           value={email}
@@ -122,7 +124,7 @@ export default function Register() {
           onFailure={googleFailureResponse}
           cookiePolicy={'single_host_origin'}
         />
-        <p>
+        <p className="form-footer">
           Already have an account? <a href="/login">Sign in</a>
         </p>
       </form>

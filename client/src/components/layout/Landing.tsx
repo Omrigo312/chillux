@@ -1,16 +1,12 @@
 import { Button } from '@material-ui/core';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import showcase from '../../assets/videos/showcase.mp4';
 
 export default function Landing() {
   return (
     <div className="showcase" style={{ height: '100vh' }}>
-      <video
-        src="https://vod-progressive.akamaized.net/exp=1610079698~acl=%2A%2F1135811441.mp4%2A~hmac=a2756b4a6bd75fa3dccc34405dda7c3ab676e8180fe4f014918ed25b50ef0c18/vimeo-prod-skyfire-std-us/01/4585/11/297927791/1135811441.mp4"
-        muted
-        loop
-        autoPlay
-      ></video>
+      <video src={showcase} muted loop autoPlay></video>
       <div className="overlay"></div>
       <div className="landing">
         <div className="landing-header">

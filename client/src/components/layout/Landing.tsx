@@ -1,19 +1,26 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Button, CircularProgress } from '@material-ui/core';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import showcase from '../../assets/videos/showcase.mp4';
+import { WindowContext } from '../../context/WindowContext';
 
 export default function Landing() {
   const [isLoading, setIsLoading] = useState(true);
+  const { setTransparentNavbar } = useContext(WindowContext);
 
   useEffect(() => {
     document.getElementById('video').addEventListener(
       'loadeddata',
       () => {
         setIsLoading(false);
+        setTransparentNavbar(true);
       },
       false
     );
+  }, [setTransparentNavbar]);
+
+  useEffect(() => {
+    setTransparentNavbar(false);
   }, []);
 
   const background = isLoading ? 'white' : null;

@@ -11,8 +11,7 @@ import { WindowContext } from '../../context/WindowContext';
 
 export default function Navbar() {
   const { authState, logout } = useContext(AuthContext);
-  const { setWindowWidth } = useContext(WindowContext);
-  const { setNavbarHeight } = useContext(WindowContext);
+  const { setWindowWidth, setNavbarHeight, setTransparentNavbar, transparentNavbar } = useContext(WindowContext);
 
   const location = useLocation();
   const elementRef = useRef(null);
@@ -25,7 +24,12 @@ export default function Navbar() {
 
   useEffect(() => {
     setCurrentTab(location.pathname);
-  }, [location.pathname]);
+    if (location.pathname === '/') {
+      setTransparentNavbar(true);
+    } else {
+      setTransparentNavbar(false);
+    }
+  }, [location.pathname, setTransparentNavbar]);
 
   useEffect(() => {
     window.addEventListener('resize', (event: any) => setWindowWidth(event.target.innerWidth));
@@ -102,11 +106,14 @@ export default function Navbar() {
     </Fragment>
   );
 
+  const boxShadow = location.pathname === '/' ? 'none' : null;
+  const background = !transparentNavbar ? 'linear-gradient(to left, rgba(106, 212, 238, 0.85), rgba(2, 52, 75, 0.95))' : '';
+
   return (
     <Fragment>
       {location.pathname !== '/login' && location.pathname !== '/register' && (
-        <AppBar position="fixed" color="transparent" ref={elementRef} style={{ boxShadow: 'none' }}>
-          <Toolbar className="navbar" style={{ padding: 0 }}>
+        <AppBar position="fixed" color="transparent" ref={elementRef} style={{ boxShadow: boxShadow }}>
+          <Toolbar className="navbar" style={{ padding: 0, background: background }}>
             <Link className="logo-container" to="/">
               <img src={logo} className="logo" alt="logo" />
               <div className="logo-text">

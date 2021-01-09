@@ -3,7 +3,7 @@ const ErrorType = require('../errors/errorType');
 const ServerError = require('../errors/serverError');
 
 const getAllVacations = async () => {
-  const sql = 'SELECT * FROM vacations';
+  const sql = 'SELECT id, description, destination, price, followers, image_url as imageUrl, start_date as startDate, end_date as endDate FROM vacations';
 
   try {
     const allVacations = await connection.execute(sql);

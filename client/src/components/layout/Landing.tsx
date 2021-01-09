@@ -8,16 +8,18 @@ export default function Landing() {
   const [isLoading, setIsLoading] = useState(true);
   const { setTransparentNavbar } = useContext(WindowContext);
 
+  const onVideoLoad = () => {
+    setIsLoading(false);
+    setTransparentNavbar(true);
+  };
+
   useEffect(() => {
-    document.getElementById('video').addEventListener(
-      'loadeddata',
-      () => {
-        setIsLoading(false);
-        setTransparentNavbar(true);
-      },
-      false
-    );
+    const videoElement = document.getElementById('video');
+    videoElement.addEventListener('loadeddata', onVideoLoad, false);
     setTransparentNavbar(false);
+    return () => {
+      videoElement.removeEventListener('loadeddata', onVideoLoad, false);
+    };
   }, []);
 
   const background = isLoading ? 'white' : null;

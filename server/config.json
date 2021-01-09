@@ -1,0 +1,4 @@
+{
+  "jwtSecret": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImp0aSI6IjhmM2RkOGI0LTRkMWQtNDg0Ny05YWI3LTRlNDUyMWM2MjhiZCIsImlhdCI6MTYxMDIyNjU4NiwiZXhwIjoxNjEwMjMwMTg2fQ.SeLahJzymxqPlD4FGy3sw-aObpz8l-BjlHJDN_ynwM4",
+  "jwtTimeout": "2 days"
+}

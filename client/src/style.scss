@@ -39,6 +39,14 @@ $small: 768px;
     justify-content: center;
   }
 
+  .login-button {
+    background: linear-gradient(to left, rgb(74, 209, 243), rgb(2, 73, 105));
+  }
+
+  .register-button {
+    background: linear-gradient(to left, rgb(243, 128, 74), rgb(128, 36, 0));
+  }
+
   .google-button {
     span {
       color: black;
@@ -440,8 +448,8 @@ $small: 768px;
   }
 }
 
-.vacations {
+.all-vacations {
   display: grid;
   row-gap: 1rem;
-  // margin-top: 8rem;
+  margin-bottom: 1rem;
 }

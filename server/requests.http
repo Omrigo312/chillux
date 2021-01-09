@@ -27,12 +27,12 @@ POST http://localhost:3001/api/vacations HTTP/1.1
 content-type: application/json
 
 {
-    "description": "Come stay at out wonderful beach resort",
-    "destination":"Vietnam",
-    "imageUrl": "http://www.prettyimage.com",
-    "price": "6000",
-    "startDate": "2021-01-06",
-    "endDate": "2021-01-07"
+    "description": "Come to the wild safaris of Africa and enjoy a sight into the true nature.",
+    "destination":"Kenya & Tanzania",
+    "imageUrl": "https://safarisafricana.com/wp-content/uploads/2020/05/Copy-of-SAFAF-2X1-images-60.jpg",
+    "price": "699",
+    "startDate": "2021-07-04",
+    "endDate": "2021-08-13"
 }
 ###
 

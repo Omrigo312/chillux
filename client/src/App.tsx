@@ -5,7 +5,7 @@ import Register from './components/auth/Register';
 import RegisterSuccess from './components/auth/RegisterSuccess';
 import Landing from './components/layout/Landing';
 import Navbar from './components/layout/Navbar';
-import Vacations from './components/vacations/Vacations';
+import AllVacations from './components/vacations/AllVacations';
 
 export default function App() {
   return (
@@ -16,7 +16,7 @@ export default function App() {
         <Route exact path="/register" component={Register} />
         <Route exact path="/register-success" component={RegisterSuccess} />
         <Route exact path="/login" component={Login} />
-        <Route exact path="/vacations" component={Vacations} />
+        <Route exact path="/vacations" component={AllVacations} />
       </Switch>
     </Router>
   );

@@ -2,14 +2,21 @@ const validator = require('validator');
 const usersDao = require('../dao/users');
 const ErrorType = require('../errors/errorType');
 const ServerError = require('../errors/serverError');
+const jwt = require('jsonwebtoken');
+const config = require('../config.json');
 
 const login = async (user) => {
   validateLoginData(user);
 
   const authorizedUser = await usersDao.login(user);
+  const payload = {
+    user: {
+      id: authorizedUser.id,
+    },
+  };
 
-  const mockSuccessfulResponse = { token: '12AB', userType: 'USER' };
-  return mockSuccessfulResponse;
+  const token = jwt.sign(payload, config.jwtSecret, { expiresIn: config.jwtTimeout });
+  return { token, userType: 'USER' };
 };
 
 const validateLoginData = (user) => {

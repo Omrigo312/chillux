@@ -9,16 +9,18 @@ const getAllVacations = async () => {
 
   const mockAllVacations = [
     {
+		id:1,
       description: 'Climb Mount Everest',
       destination: 'Nepal',
-      imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/f6/Everest_kalapatthar.jpg',
+      imageUrl: 'https://cdn.britannica.com/17/83817-050-67C814CD/Mount-Everest.jpg',
       price: 5000,
       followers: 17,
       startDate: new Date(2021, 0, 15),
       endDate: new Date(2021, 1, 22),
     },
     {
-      description: "Relax on Thailand's beautiful beaches",
+		id:2,
+      description: "Relax on Thailand's beautiful beaches, Relax on Thailand's beautiful beaches, Relax on Thailand's beautiful beaches,  Relax on Thailand's beautiful beaches, Beaches",
       destination: 'Thailand',
       imageUrl: 'https://www.fodors.com/wp-content/uploads/2019/02/thai-beaches-hero-.jpg',
       price: 2300,

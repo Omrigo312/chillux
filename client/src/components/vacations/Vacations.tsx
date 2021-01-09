@@ -2,11 +2,13 @@
 import axios from 'axios';
 import React, { useContext, useEffect } from 'react';
 import { VacationsContext } from '../../context/VacationsContext';
+import { WindowContext } from '../../context/WindowContext';
 import { Vacation } from '../../models/Vacation';
 import VacationCard from './VacationCard';
 
 export default function Vacations() {
   const { vacations, setVacations } = useContext(VacationsContext);
+  const { navbarHeight } = useContext(WindowContext);
 
   const fetchVacations = async () => {
     try {
@@ -27,10 +29,11 @@ export default function Vacations() {
   useEffect(() => {
     fetchVacations();
   }, []);
+
   return (
-    <div>
+    <div className="vacations" style={{ marginTop: navbarHeight + 15 }}>
       {vacations.map((vacation: Vacation) => {
-        return <VacationCard vacation={vacation} />;
+        return <VacationCard vacation={vacation} key={vacation.id} />;
       })}
     </div>
   );

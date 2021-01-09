@@ -22,7 +22,7 @@ const initialState: StateInterface = {
 export const AuthContext = createContext<StateInterface>(initialState);
 
 export const AuthProvider = ({ children }: any) => {
-  const [authState, setAuthState] = useState({ isAuthenticated: false, token: '', userType: '' });
+  const [authState, setAuthState] = useState(initialState.authState);
 
   const login = (loginData: LoginData) => {
     console.log(loginData);

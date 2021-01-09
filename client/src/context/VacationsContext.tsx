@@ -14,7 +14,7 @@ const initialState: StateInterface = {
 export const VacationsContext = createContext<StateInterface>(initialState);
 
 export const VacationsProvider = ({ children }: any) => {
-  const [vacations, setVacations] = useState([]);
+  const [vacations, setVacations] = useState(initialState.vacations);
 
   return <VacationsContext.Provider value={{ vacations, setVacations }}>{children}</VacationsContext.Provider>;
 };

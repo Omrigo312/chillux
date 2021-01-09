@@ -1,5 +1,5 @@
 import { AppBar, Box, Button, Toolbar, Divider } from '@material-ui/core';
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/images/logo-circle-transparent.png';
@@ -7,10 +7,15 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import NavbarLink from '../../models/NavbarLink';
 import { AuthContext } from '../../context/AuthContext';
+import { WindowContext } from '../../context/WindowContext';
 
 export default function Navbar() {
   const { authState, logout } = useContext(AuthContext);
+  const { setWindowWidth } = useContext(WindowContext);
+  const { setNavbarHeight } = useContext(WindowContext);
+
   const location = useLocation();
+  const elementRef = useRef(null);
 
   const [currentTab, setCurrentTab] = useState(location.pathname);
 
@@ -21,6 +26,14 @@ export default function Navbar() {
   useEffect(() => {
     setCurrentTab(location.pathname);
   }, [location.pathname]);
+
+  useEffect(() => {
+    window.addEventListener('resize', (event: any) => setWindowWidth(event.target.innerWidth));
+  });
+
+  useEffect(() => {
+    setNavbarHeight(elementRef.current.clientHeight);
+  }, [setNavbarHeight]);
 
   const userBarLinks = [
     new NavbarLink('/vacations', 'All Offers'),
@@ -92,7 +105,7 @@ export default function Navbar() {
   return (
     <Fragment>
       {location.pathname !== '/login' && location.pathname !== '/register' && (
-        <AppBar position="fixed" color="transparent" style={{ boxShadow: 'none' }}>
+        <AppBar position="fixed" color="transparent" ref={elementRef} style={{ boxShadow: 'none' }}>
           <Toolbar className="navbar" style={{ padding: 0 }}>
             <Link className="logo-container" to="/">
               <img src={logo} className="logo" alt="logo" />

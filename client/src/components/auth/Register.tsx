@@ -56,7 +56,7 @@ export default function Register() {
   };
 
   return (
-    <section className="island-background-darken">
+    <div className="island-background-darken">
       <form className="form" autoComplete="on" onSubmit={onSubmit} method="post">
         <Link className="logo-container" to="/">
           <img src={logo} className="logo" alt="logo" />
@@ -128,6 +128,6 @@ export default function Register() {
           Already have an account? <a href="/login">Sign in</a>
         </p>
       </form>
-    </section>
+    </div>
   );
 }

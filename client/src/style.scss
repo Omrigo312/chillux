@@ -111,6 +111,23 @@ $small: 768px;
   }
 }
 
+.register-success {
+  display: grid;
+  row-gap: 2rem;
+  text-align: center;
+  padding: 1rem;
+
+  button {
+    background: linear-gradient(to left, rgb(74, 209, 243), rgb(2, 73, 105));
+    width: 50%;
+    justify-self: center;
+  }
+
+  a {
+    text-decoration: none;
+  }
+}
+
 .navbar {
   color: white;
 

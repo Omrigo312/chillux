@@ -10,6 +10,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { WindowContext } from '../../context/WindowContext';
 
 export default function Navbar() {
+  const [isShowNavbar, setIsShowNavbar] = useState(true);
   const { authState, logout } = useContext(AuthContext);
   const { setWindowWidth, setNavbarHeight, setTransparentNavbar, transparentNavbar } = useContext(WindowContext);
 
@@ -36,8 +37,10 @@ export default function Navbar() {
   });
 
   useEffect(() => {
-    setNavbarHeight(elementRef.current.clientHeight);
-  }, [setNavbarHeight]);
+    if (isShowNavbar) {
+      setNavbarHeight(elementRef.current.clientHeight);
+    }
+  }, [isShowNavbar, setNavbarHeight]);
 
   const userBarLinks = [
     new NavbarLink('/vacations', 'All Offers'),
@@ -106,12 +109,17 @@ export default function Navbar() {
     </Fragment>
   );
 
+  useEffect(() => {
+    const hiddenNavbarLinks = ['/login', '/register', '/register-success'];
+    setIsShowNavbar(hiddenNavbarLinks.includes(location.pathname) ? false : true);
+  }, [location.pathname]);
+
   const boxShadow = location.pathname === '/' ? 'none' : null;
   const background = !transparentNavbar ? 'linear-gradient(to left, rgba(106, 212, 238, 0.85), rgba(2, 52, 75, 0.95))' : '';
 
   return (
     <Fragment>
-      {location.pathname !== '/login' && location.pathname !== '/register' && (
+      {isShowNavbar && (
         <AppBar position="fixed" color="transparent" ref={elementRef} style={{ boxShadow: boxShadow }}>
           <Toolbar className="navbar" style={{ padding: 0, background: background }}>
             <Link className="logo-container" to="/">

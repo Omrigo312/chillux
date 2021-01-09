@@ -27,7 +27,14 @@ export const WindowProvider = ({ children }: any) => {
 
   return (
     <WindowContext.Provider
-      value={{ windowWidth, setWindowWidth, navbarHeight, setNavbarHeight, transparentNavbar, setTransparentNavbar }}
+      value={{
+        windowWidth,
+        setWindowWidth,
+        navbarHeight,
+        setNavbarHeight,
+        transparentNavbar,
+        setTransparentNavbar,
+      }}
     >
       {children}
     </WindowContext.Provider>

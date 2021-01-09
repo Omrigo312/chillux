@@ -113,7 +113,7 @@ export default function Register() {
           }}
         />
         {password.length > 0 && <PasswordStrengthBar minLength={6} password={password} />}
-        <Button className="form-button" variant="contained" color="primary" type="submit">
+        <Button className="form-button register-button" variant="contained" color="primary" type="submit">
           Sign Up
         </Button>
         <GoogleLogin

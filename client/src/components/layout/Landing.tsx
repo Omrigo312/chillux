@@ -17,9 +17,6 @@ export default function Landing() {
       },
       false
     );
-  }, [setTransparentNavbar]);
-
-  useEffect(() => {
     setTransparentNavbar(false);
   }, []);
 

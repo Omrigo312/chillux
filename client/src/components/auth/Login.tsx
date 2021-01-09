@@ -17,7 +17,6 @@ export default function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const { authState, login } = useContext(AuthContext);
-
   const { email, password } = formData;
 
   const onFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -114,7 +113,7 @@ export default function Login() {
             inputProps: { min: 0, max: 10 },
           }}
         />
-        <Button className="form-button" variant="contained" color="primary" type="submit">
+        <Button className="form-button login-button" variant="contained" color="primary" type="submit">
           Login
         </Button>
         <GoogleLogin

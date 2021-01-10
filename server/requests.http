@@ -36,6 +36,21 @@ content-type: application/json
 }
 ###
 
+# Modify a vacation
+PUT http://localhost:3001/api/vacations/9 HTTP/1.1
+content-type: application/json
+
+{
+    "description": "Enjoy the true city life of New York City",
+    "destination": "New York, USA",
+    "imageUrl": "https://media.architecturaldigest.com/photos/5da74823d599ec0008227ea8/16:9/w_2560%2Cc_limit/GettyImages-946087016.jpg",
+    "price": "399",
+    "startDate": "2021-03-04",
+    "endDate": "2021-03-09",
+    "followers": 0
+}
+###
+
 # Delete a vacation
 DELETE http://localhost:3001/api/vacations/2 HTTP/1.1
 ###

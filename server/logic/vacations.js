@@ -35,8 +35,18 @@ const deleteVacation = async (id) => {
   return deleteResponse;
 };
 
+const modifyVacation = async (id, modifiedVacation) => {
+  if (!(await vacationsDao.isVacationExists(id))) throw new ServerError(ErrorType.VACATION_NOT_FOUND);
+
+  validateVacationData(modifiedVacation);
+
+  const modifiedVacationId = await vacationsDao.modifyVacation(id, modifiedVacation);
+  return modifiedVacationId;
+};
+
 module.exports = {
   getAllVacations,
   addVacation,
   deleteVacation,
+  modifyVacation,
 };

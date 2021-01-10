@@ -106,6 +106,12 @@ $small: 768px;
     text-decoration: none;
   }
 
+  .form-duo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1rem;
+  }
+
   @media (max-width: $small) {
     padding: 1em 1em 1em;
     width: 100%;
@@ -252,14 +258,6 @@ $small: 768px;
   @media (min-height: 630px) {
     height: 100vh;
   }
-}
-
-.island-background {
-  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-    url('../../assets/images/landing-background.jpg') no-repeat center center/cover;
-  background-attachment: fixed;
-  display: flex;
-
 }
 
 .landing {
@@ -463,4 +461,9 @@ $small: 768px;
   row-gap: 1rem;
   margin-bottom: 1rem;
   width: 100%;
+}
+
+.add-vacation {
+  display: flex;
+  justify-content: center;
 }

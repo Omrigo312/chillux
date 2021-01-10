@@ -3,7 +3,8 @@ const ErrorType = require('../errors/errorType');
 const ServerError = require('../errors/serverError');
 
 const getAllVacations = async () => {
-  const sql = 'SELECT id, description, destination, price, followers, image_url as imageUrl, start_date as startDate, end_date as endDate FROM vacations';
+  const sql =
+    'SELECT id, description, destination, price, followers, image_url as imageUrl, start_date as startDate, end_date as endDate FROM vacations';
 
   try {
     const allVacations = await connection.execute(sql);
@@ -26,6 +27,21 @@ const addVacation = async (newVacation) => {
     return addVacationResult.insertId;
   } catch (error) {
     throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(newVacation), error);
+  }
+};
+
+const modifyVacation = async (id, modifiedVacation) => {
+  const { description, destination, imageUrl, price, followers, startDate, endDate } = modifiedVacation;
+  const sql = `UPDATE vacations SET description=?, destination=?, image_url=?, price=?, followers=?, start_date=?, end_date=? WHERE id=?`
+  const parameters = [description, destination, imageUrl, price, followers, startDate, endDate, id];
+
+  try {
+    const modifyVacationResult = await connection.executeWithParameters(sql, parameters);
+
+    console.log(`Vacation modified successfully!`);
+    return modifyVacationResult.insertId;
+  } catch (error) {
+    throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(modifiedVacation), error);
   }
 };
 
@@ -58,4 +74,5 @@ module.exports = {
   addVacation,
   deleteVacation,
   isVacationExists,
+  modifyVacation,
 };

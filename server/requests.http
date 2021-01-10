@@ -52,5 +52,5 @@ content-type: application/json
 ###
 
 # Delete a vacation
-DELETE http://localhost:3001/api/vacations/2 HTTP/1.1
+DELETE http://localhost:3001/api/vacations/10 HTTP/1.1
 ###

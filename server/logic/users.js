@@ -51,6 +51,7 @@ const validateRegisterData = async (user) => {
   if (!validator.isLength(password, { min: 6, max: 30 })) throw new ServerError(ErrorType.INVALID_PASSWORD);
 };
 
+
 module.exports = {
   login,
   register,

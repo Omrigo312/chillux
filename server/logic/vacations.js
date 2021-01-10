@@ -18,7 +18,7 @@ const addVacation = async (newVacation) => {
 
 const validateVacationData = (vacation) => {
   const { description, destination, imageUrl, price, startDate, endDate } = vacation;
-  if ((imageUrl.trim() && !validator.isURL(imageUrl)) || imageUrl.match(/\.(jpeg|jpg|gif|png)$/) === null)
+  if (imageUrl.trim() && (!validator.isURL(imageUrl) || imageUrl.match(/\.(jpeg|jpg|gif|png)$/) === null))
     throw new ServerError(ErrorType.INVALID_IMAGE_URL);
   if (!validator.isLength(description, { min: 10, max: 2000 })) throw new ServerError(ErrorType.DESCRIPTION_TOO_SHORT);
   if (validator.isEmpty(destination)) throw new ServerError(ErrorType.INVALID_DESTINATION);

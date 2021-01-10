@@ -80,12 +80,12 @@ export default function AddVacation() {
         'Content-Type': 'application/json',
       },
     };
-    const body = JSON.stringify({ destination, description, price, imageUrl, startDate, endDate });
+    const body = JSON.stringify(formData);
 
     try {
-      const res = await axios.post('http://localhost:3001/api/users', body, config);
+      const res = await axios.post('http://localhost:3001/api/vacations', body, config);
       console.log(`Server Response: ${JSON.stringify(res.data)}`);
-      window.location.replace('/register-success');
+      window.location.replace('/vacations');
     } catch (error) {
       console.log(error);
       alert(error.response.data.message);

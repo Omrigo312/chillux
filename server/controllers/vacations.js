@@ -19,7 +19,12 @@ router.get('/', async (req, res, next) => {
 // @access    Private
 router.post('/', async (req, res, next) => {
   let newVacation = req.body;
-  newVacation = { ...newVacation, followers: 0 };
+  newVacation = {
+    ...newVacation,
+    startDate: new Date(newVacation.startDate),
+    endDate: new Date(newVacation.endDate),
+    followers: 0,
+  };
 
   try {
     const newVacationId = await vacationsLogic.addVacation(newVacation);

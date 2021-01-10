@@ -42,7 +42,7 @@ export default function Login() {
         'Content-Type': 'application/json',
       },
     };
-    const body = JSON.stringify({ email, password });
+    const body = JSON.stringify(formData);
 
     try {
       const res = await axios.post('http://localhost:3001/api/users/login', body, config);

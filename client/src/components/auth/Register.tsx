@@ -44,7 +44,7 @@ export default function Register() {
         'Content-Type': 'application/json',
       },
     };
-    const body = JSON.stringify({ email, password });
+    const body = JSON.stringify(formData);
 
     try {
       const res = await axios.post('http://localhost:3001/api/users', body, config);

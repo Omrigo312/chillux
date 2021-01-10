@@ -5,8 +5,12 @@ const ServerError = require('../errors/serverError');
 
 const getAllVacations = async () => {
   const allVacations = await vacationsDao.getAllVacations();
-
   return allVacations;
+};
+
+const getVacationById = async (id) => {
+  const vacation = await vacationsDao.getVacationById(id);
+  return vacation;
 };
 
 const addVacation = async (newVacation) => {
@@ -14,18 +18,6 @@ const addVacation = async (newVacation) => {
 
   const newVacationId = await vacationsDao.addVacation(newVacation);
   return newVacationId;
-};
-
-const validateVacationData = (vacation) => {
-  const { description, destination, imageUrl, price, startDate, endDate } = vacation;
-  if (imageUrl.trim() && (!validator.isURL(imageUrl) || imageUrl.match(/\.(jpeg|jpg|gif|png)$/) === null))
-    throw new ServerError(ErrorType.INVALID_IMAGE_URL);
-  if (!validator.isLength(description, { min: 10, max: 2000 })) throw new ServerError(ErrorType.DESCRIPTION_TOO_SHORT);
-  if (validator.isEmpty(destination)) throw new ServerError(ErrorType.INVALID_DESTINATION);
-  if (!validator.isNumeric(price, { no_symbols: true })) throw new ServerError(ErrorType.INVALID_PRICE);
-  if (!validator.isDate(startDate)) throw new ServerError(ErrorType.INVALID_START_DATE);
-  if (!validator.isDate(endDate)) throw new ServerError(ErrorType.INVALID_END_DATE);
-  if (startDate >= endDate) throw new ServerError(ErrorType.INVALID_DURATION);
 };
 
 const deleteVacation = async (id) => {
@@ -44,9 +36,23 @@ const modifyVacation = async (id, modifiedVacation) => {
   return modifiedVacationId;
 };
 
+const validateVacationData = (vacation) => {
+  const { description, destination, imageUrl, price, startDate, endDate } = vacation;
+  if (imageUrl.trim() && (!validator.isURL(imageUrl) || imageUrl.match(/\.(jpeg|jpg|gif|png)$/) === null))
+    throw new ServerError(ErrorType.INVALID_IMAGE_URL);
+  if (!validator.isLength(description, { min: 10, max: 2000 })) throw new ServerError(ErrorType.DESCRIPTION_TOO_SHORT);
+  if (!validator.isLength(destination, { max: 20 })) throw new ServerError(ErrorType.INVALID_DESTINATION);
+  if (validator.isEmpty(destination)) throw new ServerError(ErrorType.INVALID_DESTINATION);
+  if (isNaN(price) && !validator.isNumeric(price, { no_symbols: true })) throw new ServerError(ErrorType.INVALID_PRICE);
+  if (!validator.isDate(startDate)) throw new ServerError(ErrorType.INVALID_START_DATE);
+  if (!validator.isDate(endDate)) throw new ServerError(ErrorType.INVALID_END_DATE);
+  if (startDate >= endDate) throw new ServerError(ErrorType.INVALID_DURATION);
+};
+
 module.exports = {
   getAllVacations,
   addVacation,
   deleteVacation,
   modifyVacation,
+  getVacationById,
 };

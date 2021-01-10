@@ -1,12 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import { Button, InputAdornment, TextField } from '@material-ui/core';
-import React, { ChangeEvent, FormEvent, useContext, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import { WindowContext } from '../../context/WindowContext';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
-export default function AddVacation() {
+export default function ModifyVacation() {
+  const params = useParams();
   const [formData, setFormData] = useState({
     destination: '',
     description: '',
@@ -16,6 +19,21 @@ export default function AddVacation() {
     endDate: null,
   });
   const { navbarHeight } = useContext(WindowContext);
+  const id = Object(params).id;
+
+  const getVacation = async () => {
+    try {
+      const res = await axios.get(`http://localhost:3001/api/vacations/${id}`);
+      setFormData(res.data);
+    } catch (error) {
+      console.log(error);
+      alert(error.response.data.message);
+    }
+  };
+
+  useEffect(() => {
+    getVacation();
+  }, []);
 
   const onFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -31,7 +49,7 @@ export default function AddVacation() {
     }
   };
 
-  const isStartDateValidated = () => {
+  const isStartDateValidated = (startDate: Date | null) => {
     if (startDate && isNaN(startDate.getTime())) {
       return [false, 'Invalid date input'];
     }
@@ -45,7 +63,7 @@ export default function AddVacation() {
     return [true];
   };
 
-  const isEndDateValidated = () => {
+  const isEndDateValidated = (endDate: Date | null) => {
     if (endDate && isNaN(endDate.getTime())) {
       return [false, 'Invalid date input'];
     }
@@ -67,11 +85,11 @@ export default function AddVacation() {
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
-    if (!isStartDateValidated()[0]) {
-      return alert(isStartDateValidated()[1]);
+    if (!isStartDateValidated(new Date(startDate))[0]) {
+      return alert(isStartDateValidated(new Date(startDate))[1]);
     }
-    if (!isEndDateValidated()[0]) {
-      return alert(isEndDateValidated()[1]);
+    if (!isEndDateValidated(new Date(endDate))[0]) {
+      return alert(isEndDateValidated(new Date(endDate))[1]);
     }
 
     const config = {
@@ -79,11 +97,10 @@ export default function AddVacation() {
         'Content-Type': 'application/json',
       },
     };
-
     const body = JSON.stringify(formData);
 
     try {
-      const res = await axios.post('http://localhost:3001/api/vacations', body, config);
+      const res = await axios.put(`http://localhost:3001/api/vacations/${id}`, body, config);
       console.log(`Server Response: ${JSON.stringify(res.data)}`);
       window.location.replace('/vacations');
     } catch (error) {
@@ -161,8 +178,8 @@ export default function AddVacation() {
               KeyboardButtonProps={{
                 'aria-label': 'change date',
               }}
-              error={!isStartDateValidated()[0]}
-              helperText={!isStartDateValidated()[0] && isStartDateValidated()[1]}
+              error={!isStartDateValidated(new Date(startDate))[0]}
+              helperText={!isStartDateValidated(new Date(startDate))[0] && isStartDateValidated(new Date(startDate))[1]}
             />
             <KeyboardDatePicker
               required
@@ -176,13 +193,13 @@ export default function AddVacation() {
               KeyboardButtonProps={{
                 'aria-label': 'change date',
               }}
-              error={!isEndDateValidated()[0]}
-              helperText={!isEndDateValidated()[0] && isEndDateValidated()[1]}
+              error={!isEndDateValidated(new Date(endDate))[0]}
+              helperText={!isEndDateValidated(new Date(endDate))[0] && isEndDateValidated(new Date(endDate))[1]}
             />
           </MuiPickersUtilsProvider>
         </div>
         <Button className="form-button login-button" variant="contained" color="primary" type="submit">
-          Create Vacation
+          Modify Vacation
         </Button>
       </form>
     </div>

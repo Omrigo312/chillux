@@ -374,7 +374,17 @@ $small: 768px;
 
         .star-icon {
           color: #333;
-          font-size: 1.5em;
+          font-size: 1.3em;
+        }
+
+        .delete-icon {
+          font-size: 1.3em;
+          color: rgb(200, 0, 0);
+        }
+
+        .modify-icon {
+          font-size: 1.3em;
+          color: rgb(2, 73, 105);
         }
 
         .star-button {

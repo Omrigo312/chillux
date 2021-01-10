@@ -7,6 +7,7 @@ import Landing from './components/layout/Landing';
 import Navbar from './components/layout/Navbar';
 import addVacation from './components/vacations/AddVacation';
 import AllVacations from './components/vacations/AllVacations';
+import ModifyVacation from './components/vacations/ModifyVacation';
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
         <Route exact path="/login" component={Login} />
         <Route exact path="/vacations" component={AllVacations} />
         <Route exact path="/add-vacation" component={addVacation} />
+        <Route  path="/modify-vacation/:id" component={ModifyVacation} />
       </Switch>
     </Router>
   );

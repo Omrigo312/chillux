@@ -14,6 +14,19 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+// @route     GET api/vacations/:id
+// @desc      Get vacations by id
+// @access    Public
+router.get('/:id', async (req, res, next) => {
+  const id = req.params.id;
+  try {
+    const vacation = await vacationsLogic.getVacationById(id);
+    res.json(vacation);
+  } catch (error) {
+    return next(error);
+  }
+});
+
 // @route     POST api/vacations
 // @desc      Create a vacation
 // @access    Private
@@ -53,7 +66,12 @@ router.delete('/:id', async (req, res, next) => {
 // @access    Private
 router.put('/:id', async (req, res, next) => {
   const id = req.params.id;
-  const modifiedVacation = req.body;
+  let modifiedVacation = req.body;
+  modifiedVacation = {
+    ...modifiedVacation,
+    startDate: new Date(modifiedVacation.startDate),
+    endDate: new Date(modifiedVacation.endDate),
+  };
 
   try {
     const modifyResponse = await vacationsLogic.modifyVacation(id, modifiedVacation);

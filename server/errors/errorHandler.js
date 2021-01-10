@@ -1,5 +1,6 @@
 const errorHandler = (error, req, res, next) => {
   if (error.errorType === undefined) {
+    console.log(error);
     return res.status(700).json({ error: 'General error' });
   }
 

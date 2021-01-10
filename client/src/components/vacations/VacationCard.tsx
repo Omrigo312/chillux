@@ -2,10 +2,15 @@ import { Button, Card, Grid, IconButton, Tooltip } from '@material-ui/core';
 import React, { useContext } from 'react';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+import CreateIcon from '@material-ui/icons/Create';
 import { Link } from 'react-router-dom';
 import { Vacation } from '../../models/Vacation';
 import noImage from '../../assets/images/no-image.png';
 import { WindowContext } from '../../context/WindowContext';
+import { AuthContext } from '../../context/AuthContext';
+import axios from 'axios';
+import AddVacation from './AddVacation';
 
 interface VacationCardProps {
   vacation: Vacation;
@@ -13,8 +18,9 @@ interface VacationCardProps {
 
 export default function VacationCard({ vacation }: VacationCardProps) {
   const { windowWidth } = useContext(WindowContext);
+  const { authState } = useContext(AuthContext);
 
-  const { description, destination, imageUrl, price, followers, startDate, endDate } = vacation;
+  const { id, description, destination, imageUrl, price, followers, startDate, endDate } = vacation;
   const startDateObj = new Date(startDate);
   const endDateObj = new Date(endDate);
   const image = imageUrl.length ? imageUrl : noImage;
@@ -23,6 +29,27 @@ export default function VacationCard({ vacation }: VacationCardProps) {
   const duration = (startDate: Date, endDate: Date): number => {
     const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  };
+
+  const onFollowButtonClicked = () => {};
+
+  const onDeleteButtonClicked = async () => {
+    if (!window.confirm('Are you sure you want to permanently remove this vacation?')) {
+      return;
+    }
+
+    try {
+      const res = await axios.delete(`http://localhost:3001/api/vacations/${id}`);
+      console.log(`Server Response: ${JSON.stringify(res.data)}`);
+      window.location.replace('/vacations');
+    } catch (error) {
+      console.log(error);
+      alert(error.response.data.message);
+    }
+  };
+
+  const onModifyButtonClicked = () => {
+    window.location.replace(`/modify-vacation/${id}`);
   };
 
   return (
@@ -45,14 +72,29 @@ export default function VacationCard({ vacation }: VacationCardProps) {
                 </p>
               </div>
 
-              <div className="vacation-card-star">
-                <Tooltip title="Follow">
-                  <IconButton className="star-button" aria-label="star">
-                    <FavoriteBorderIcon className="star-icon" />
-                  </IconButton>
-                </Tooltip>
-                <p>{followers}</p>
-              </div>
+              {authState.userType === 'ADMIN' ? (
+                <div className="vacation-card-star">
+                  <Tooltip title="Modify">
+                    <IconButton onClick={onModifyButtonClicked} className="star-button" aria-label="modify">
+                      <CreateIcon className="modify-icon" />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Delete">
+                    <IconButton onClick={onDeleteButtonClicked} className="star-button" aria-label="delete">
+                      <DeleteOutlineIcon className="delete-icon" />
+                    </IconButton>
+                  </Tooltip>
+                </div>
+              ) : (
+                <div className="vacation-card-star">
+                  <Tooltip title="Follow">
+                    <IconButton onClick={onFollowButtonClicked} className="star-button" aria-label="star">
+                      <FavoriteBorderIcon className="star-icon" />
+                    </IconButton>
+                  </Tooltip>
+                  <p>{followers}</p>
+                </div>
+              )}
             </div>
             <div className="vacation-card-mid">
               {description.length > maxLength ? (

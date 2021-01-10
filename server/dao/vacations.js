@@ -10,7 +10,20 @@ const getAllVacations = async () => {
     const allVacations = await connection.execute(sql);
     return allVacations;
   } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(user), error);
+    throw new ServerError(ErrorType.GENERAL_ERROR, 'Error while retrieving vacations', error);
+  }
+};
+
+const getVacationById = async (id) => {
+  const sql =
+    'SELECT id, description, destination, price, followers, image_url as imageUrl, start_date as startDate, end_date as endDate FROM vacations WHERE id=?';
+  const parameters = [id];
+
+  try {
+    const vacation = await connection.executeWithParameters(sql, parameters);
+    return vacation[0];
+  } catch (error) {
+    throw new ServerError(ErrorType.GENERAL_ERROR, `Error with retrieving vacation with id=${id}`, error);
   }
 };
 
@@ -32,7 +45,7 @@ const addVacation = async (newVacation) => {
 
 const modifyVacation = async (id, modifiedVacation) => {
   const { description, destination, imageUrl, price, followers, startDate, endDate } = modifiedVacation;
-  const sql = `UPDATE vacations SET description=?, destination=?, image_url=?, price=?, followers=?, start_date=?, end_date=? WHERE id=?`
+  const sql = `UPDATE vacations SET description=?, destination=?, image_url=?, price=?, followers=?, start_date=?, end_date=? WHERE id=?`;
   const parameters = [description, destination, imageUrl, price, followers, startDate, endDate, id];
 
   try {
@@ -75,4 +88,5 @@ module.exports = {
   deleteVacation,
   isVacationExists,
   modifyVacation,
+  getVacationById,
 };

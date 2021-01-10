@@ -116,7 +116,7 @@ export default function Navbar() {
 
   const boxShadow = location.pathname === '/' ? 'none' : null;
   const background = !transparentNavbar ? 'linear-gradient(to left, rgba(106, 212, 238, 0.85), rgba(2, 52, 75, 0.95))' : '';
-
+  
   return (
     <Fragment>
       {isShowNavbar && (

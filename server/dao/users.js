@@ -3,24 +3,23 @@ const ErrorType = require('../errors/errorType');
 const ServerError = require('../errors/serverError');
 
 const login = async (user) => {
-  const { email, password } = user;
-  const sql = 'SELECT * FROM users WHERE email =? AND password =?';
-  const parameters = [email, password];
+  const sql = 'SELECT * FROM users WHERE email =?';
+  const parameters = [user.email];
 
-  let usersLoginResult;
+  let loginResult;
   try {
-    usersLoginResult = await connection.executeWithParameters(sql, parameters);
+    loginResult = await connection.executeWithParameters(sql, parameters);
   } catch (error) {
     throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(user), error);
   }
 
   // User does not exist or incorrect password
-  if (!usersLoginResult || !usersLoginResult.length) {
+  if (!loginResult || !loginResult.length) {
     throw new ServerError(ErrorType.UNAUTHORIZED);
   }
 
-  console.log(`User ${email} logged in successfully!`);
-  return usersLoginResult[0];
+  console.log(`User ${user.email} logged in successfully!`);
+  return loginResult[0];
 };
 
 const register = async (newUser) => {

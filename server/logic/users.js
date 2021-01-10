@@ -4,11 +4,22 @@ const ErrorType = require('../errors/errorType');
 const ServerError = require('../errors/serverError');
 const jwt = require('jsonwebtoken');
 const config = require('../config.json');
+const bcrypt = require('bcryptjs');
 
 const login = async (user) => {
   validateLoginData(user);
 
   const authorizedUser = await usersDao.login(user);
+  console.log('hi');
+  const isMatch = await bcrypt.compare(user.password, authorizedUser.password);
+  console.log('hi2');
+
+  console.log(isMatch);
+
+  if (!isMatch) {
+    throw new ServerError(ErrorType.UNAUTHORIZED);
+  }
+
   const payload = {
     user: {
       id: authorizedUser.id,
@@ -16,7 +27,7 @@ const login = async (user) => {
   };
 
   const token = jwt.sign(payload, config.jwtSecret, { expiresIn: config.jwtTimeout });
-  return { token, userType: 'USER' };
+  return { token, userType: authorizedUser.type };
 };
 
 const validateLoginData = (user) => {
@@ -27,6 +38,11 @@ const validateLoginData = (user) => {
 
 const register = async (newUser) => {
   await validateRegisterData(newUser);
+
+  // Encrypt the password using bcrypt
+  const salt = await bcrypt.genSalt();
+  newUser.password = await bcrypt.hash(newUser.password, salt);
+
   const newUserId = await usersDao.register(newUser);
 
   return newUserId;

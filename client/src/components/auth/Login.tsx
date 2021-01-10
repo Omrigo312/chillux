@@ -58,7 +58,7 @@ export default function Login() {
   }
 
   return (
-    <div className="island-background-darken">
+    <div className="island-background-auth">
       <form className="form" autoComplete="on" onSubmit={onSubmit} method="post">
         <Link className="logo-container" to="/">
           <img src={logo} className="logo" alt="logo" />

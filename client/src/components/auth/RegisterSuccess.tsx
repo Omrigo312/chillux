@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 export default function RegisterSuccess() {
   return (
-    <div className="island-background-darken">
+    <div className="island-background-auth">
       <Card className="register-success">
         <h2>Success!</h2>
         <p>Congratulations, your account has been successfully created. </p>

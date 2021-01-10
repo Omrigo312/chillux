@@ -10,11 +10,7 @@ const login = async (user) => {
   validateLoginData(user);
 
   const authorizedUser = await usersDao.login(user);
-  console.log('hi');
   const isMatch = await bcrypt.compare(user.password, authorizedUser.password);
-  console.log('hi2');
-
-  console.log(isMatch);
 
   if (!isMatch) {
     throw new ServerError(ErrorType.UNAUTHORIZED);

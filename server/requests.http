@@ -27,12 +27,12 @@ POST http://localhost:3001/api/vacations HTTP/1.1
 content-type: application/json
 
 {
-    "description": "Come to the wild safaris of Africa and enjoy a sight into the true nature.",
-    "destination":"Kenya & Tanzania",
-    "imageUrl": "https://safarisafricana.com/wp-content/uploads/2020/05/Copy-of-SAFAF-2X1-images-60.jpg",
-    "price": "699",
-    "startDate": "2021-07-04",
-    "endDate": "2021-08-13"
+    "description": "Enjoy the true city life of New York City",
+    "destination":"New York, USA",
+    "imageUrl": "https://media.architecturaldigest.com/photos/5da74823d599ec0008227ea8/16:9/w_2560%2Cc_limit/GettyImages-946087016.jpg",
+    "price": "299",
+    "startDate": "2021-03-04",
+    "endDate": "2021-03-09"
 }
 ###
 

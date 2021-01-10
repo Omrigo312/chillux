@@ -17,6 +17,7 @@ $small: 768px;
   border-radius: 6px;
   padding: 1em 3em 1.5em;
   color: black;
+  width: 50%;
 
   .form-header {
     text-align: center;
@@ -107,6 +108,7 @@ $small: 768px;
 
   @media (max-width: $small) {
     padding: 1em 1em 1em;
+    width: 100%;
 
     h2 {
       margin-top: 0.5em;
@@ -240,8 +242,8 @@ $small: 768px;
   align-items: center;
 }
 
-.island-background-darken {
-  display: grid;
+.island-background-auth {
+  display: flex;
   background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
     url('../../assets/images/landing-background.jpg') no-repeat center center/cover;
   justify-content: center;
@@ -250,6 +252,14 @@ $small: 768px;
   @media (min-height: 630px) {
     height: 100vh;
   }
+}
+
+.island-background {
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url('../../assets/images/landing-background.jpg') no-repeat center center/cover;
+  background-attachment: fixed;
+  display: flex;
+
 }
 
 .landing {
@@ -452,4 +462,5 @@ $small: 768px;
   display: grid;
   row-gap: 1rem;
   margin-bottom: 1rem;
+  width: 100%;
 }

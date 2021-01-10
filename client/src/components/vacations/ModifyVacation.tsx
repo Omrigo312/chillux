@@ -24,7 +24,10 @@ export default function ModifyVacation() {
   const getVacation = async () => {
     try {
       const res = await axios.get(`http://localhost:3001/api/vacations/${id}`);
-      setFormData(res.data);
+      const vacation = res.data;
+      vacation.startDate = new Date(vacation.startDate);
+      vacation.endDate = new Date(vacation.endDate);
+      setFormData(vacation);
     } catch (error) {
       console.log(error);
       alert(error.response.data.message);
@@ -49,7 +52,7 @@ export default function ModifyVacation() {
     }
   };
 
-  const isStartDateValidated = (startDate: Date | null) => {
+  const isStartDateValidated = () => {
     if (startDate && isNaN(startDate.getTime())) {
       return [false, 'Invalid date input'];
     }
@@ -63,7 +66,7 @@ export default function ModifyVacation() {
     return [true];
   };
 
-  const isEndDateValidated = (endDate: Date | null) => {
+  const isEndDateValidated = () => {
     if (endDate && isNaN(endDate.getTime())) {
       return [false, 'Invalid date input'];
     }
@@ -85,11 +88,11 @@ export default function ModifyVacation() {
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
-    if (!isStartDateValidated(new Date(startDate))[0]) {
-      return alert(isStartDateValidated(new Date(startDate))[1]);
+    if (!isStartDateValidated()[0]) {
+      return alert(isStartDateValidated()[1]);
     }
-    if (!isEndDateValidated(new Date(endDate))[0]) {
-      return alert(isEndDateValidated(new Date(endDate))[1]);
+    if (!isEndDateValidated()[0]) {
+      return alert(isEndDateValidated()[1]);
     }
 
     const config = {
@@ -178,8 +181,8 @@ export default function ModifyVacation() {
               KeyboardButtonProps={{
                 'aria-label': 'change date',
               }}
-              error={!isStartDateValidated(new Date(startDate))[0]}
-              helperText={!isStartDateValidated(new Date(startDate))[0] && isStartDateValidated(new Date(startDate))[1]}
+              error={!isStartDateValidated()[0]}
+              helperText={!isStartDateValidated()[0] && isStartDateValidated()[1]}
             />
             <KeyboardDatePicker
               required
@@ -193,8 +196,8 @@ export default function ModifyVacation() {
               KeyboardButtonProps={{
                 'aria-label': 'change date',
               }}
-              error={!isEndDateValidated(new Date(endDate))[0]}
-              helperText={!isEndDateValidated(new Date(endDate))[0] && isEndDateValidated(new Date(endDate))[1]}
+              error={!isEndDateValidated()[0]}
+              helperText={!isEndDateValidated()[0] && isEndDateValidated()[1]}
             />
           </MuiPickersUtilsProvider>
         </div>

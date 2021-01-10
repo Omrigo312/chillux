@@ -64,8 +64,10 @@ const deleteVacation = async (id) => {
 
   try {
     await connection.executeWithParameters(sql, parameters);
-
-    return 'Vacation deleted successfully';
+    const getAllSql =
+      'SELECT id, description, destination, price, followers, image_url as imageUrl, start_date as startDate, end_date as endDate FROM vacations';
+    const allVacations = await connection.execute(getAllSql);
+    return allVacations;
   } catch (error) {
     throw new ServerError(ErrorType.GENERAL_ERROR, 'Error with deleting vacation.', error);
   }

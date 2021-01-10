@@ -54,8 +54,8 @@ router.delete('/:id', async (req, res, next) => {
   const id = req.params.id;
 
   try {
-    const deleteResponse = await vacationsLogic.deleteVacation(id);
-    res.json(deleteResponse);
+    const allVacations = await vacationsLogic.deleteVacation(id);
+    res.json(allVacations);
   } catch (error) {
     return next(error);
   }

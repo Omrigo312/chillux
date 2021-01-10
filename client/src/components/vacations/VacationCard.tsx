@@ -10,7 +10,7 @@ import noImage from '../../assets/images/no-image.png';
 import { WindowContext } from '../../context/WindowContext';
 import { AuthContext } from '../../context/AuthContext';
 import axios from 'axios';
-import AddVacation from './AddVacation';
+import { VacationsContext } from '../../context/VacationsContext';
 
 interface VacationCardProps {
   vacation: Vacation;
@@ -19,6 +19,7 @@ interface VacationCardProps {
 export default function VacationCard({ vacation }: VacationCardProps) {
   const { windowWidth } = useContext(WindowContext);
   const { authState } = useContext(AuthContext);
+  const { setVacations } = useContext(VacationsContext);
 
   const { id, description, destination, imageUrl, price, followers, startDate, endDate } = vacation;
   const startDateObj = new Date(startDate);
@@ -40,8 +41,7 @@ export default function VacationCard({ vacation }: VacationCardProps) {
 
     try {
       const res = await axios.delete(`http://localhost:3001/api/vacations/${id}`);
-      console.log(`Server Response: ${JSON.stringify(res.data)}`);
-      window.location.replace('/vacations');
+      setVacations(res.data);
     } catch (error) {
       console.log(error);
       alert(error.response.data.message);
@@ -72,7 +72,7 @@ export default function VacationCard({ vacation }: VacationCardProps) {
                 </p>
               </div>
 
-              {authState.userType === 'ADMIN' ? (
+              {authState.userType === '' ? (
                 <div className="vacation-card-star">
                   <Tooltip title="Modify">
                     <IconButton onClick={onModifyButtonClicked} className="star-button" aria-label="modify">

@@ -11,6 +11,7 @@ app.use(express.json());
 // Routes
 app.use('/api/users', require('./controllers/users'));
 app.use('/api/vacations', require('./controllers/vacations'));
+app.use('/api/followed-vacations', require('./controllers/followedVacations'));
 
 app.use(errorHandler);
 

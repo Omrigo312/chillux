@@ -4,17 +4,26 @@ import { Vacation } from '../models/Vacation';
 interface StateInterface {
   vacations: Vacation[];
   setVacations: (data: Vacation[]) => void;
+  followedVacations: Vacation[];
+  setFollowedVacations: (data: Vacation[]) => void;
 }
 
 const initialState: StateInterface = {
   vacations: [],
   setVacations: null,
+  followedVacations: [],
+  setFollowedVacations: null,
 };
 
 export const VacationsContext = createContext<StateInterface>(initialState);
 
 export const VacationsProvider = ({ children }: any) => {
   const [vacations, setVacations] = useState(initialState.vacations);
+  const [followedVacations, setFollowedVacations] = useState(initialState.followedVacations);
 
-  return <VacationsContext.Provider value={{ vacations, setVacations }}>{children}</VacationsContext.Provider>;
+  return (
+    <VacationsContext.Provider value={{ vacations, setVacations, followedVacations, setFollowedVacations }}>
+      {children}
+    </VacationsContext.Provider>
+  );
 };

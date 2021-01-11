@@ -10,14 +10,23 @@ import VacationCard from './VacationCard';
 export default function AllVacations() {
   const [loadingVacations, setLoadingVacations] = useState(true);
 
-  const { vacations, setVacations } = useContext(VacationsContext);
+  const { vacations, setVacations, followedVacations, setFollowedVacations } = useContext(VacationsContext);
   const { navbarHeight } = useContext(WindowContext);
 
   const fetchVacations = async () => {
     try {
       const res = await axios.get('http://localhost:3001/api/vacations');
-      setLoadingVacations(false);
       setVacations(res.data);
+    } catch (error) {
+      console.log(error);
+      alert(error.response.data.message);
+    }
+  };
+
+  const fetchFollowedVacations = async () => {
+    try {
+      const res = await axios.get('http://localhost:3001/api/followed-vacations');
+      setFollowedVacations(res.data);
     } catch (error) {
       console.log(error);
       alert(error.response.data.message);
@@ -26,6 +35,8 @@ export default function AllVacations() {
 
   useEffect(() => {
     fetchVacations();
+    fetchFollowedVacations();
+    setLoadingVacations(false);
   }, []);
 
   return (

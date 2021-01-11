@@ -32,7 +32,28 @@ export default function VacationCard({ vacation }: VacationCardProps) {
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   };
 
-  const onFollowButtonClicked = () => {};
+  const onFollowButtonClicked = async () => {
+    if (!authState.isAuthenticated) {
+      return alert('You are not logged in');
+    }
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const token = authState.token;
+    const body = JSON.stringify({ token, vacationId: id });
+
+    try {
+      const res = await axios.post('http://localhost:3001/api/followed-vacations', body, config);
+      console.log(`Server Response: ${JSON.stringify(res.data)}`);
+    } catch (error) {
+      console.log(error);
+      alert(error.response.data.message);
+    }
+  };
 
   const onDeleteButtonClicked = async () => {
     if (!window.confirm('Are you sure you want to permanently remove this vacation?')) {
@@ -72,7 +93,7 @@ export default function VacationCard({ vacation }: VacationCardProps) {
                 </p>
               </div>
 
-              {authState.userType === '' ? (
+              {authState.userType === 'ADMIN' ? (
                 <div className="vacation-card-star">
                   <Tooltip title="Modify">
                     <IconButton onClick={onModifyButtonClicked} className="star-button" aria-label="modify">

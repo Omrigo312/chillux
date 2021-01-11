@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
@@ -8,8 +8,24 @@ import Navbar from './components/layout/Navbar';
 import addVacation from './components/vacations/AddVacation';
 import AllVacations from './components/vacations/AllVacations';
 import ModifyVacation from './components/vacations/ModifyVacation';
+import { AuthContext } from './context/AuthContext';
+import { setToken } from './utils/setToken';
 
 export default function App() {
+  const { login, logout } = useContext(AuthContext);
+  useEffect(() => {
+    if (localStorage.token) {
+      setToken(localStorage.token);
+    }
+
+    // log user out from all tabs if they log out in one tab
+    window.addEventListener('storage', () => {
+      if (!localStorage.token) {
+        logout();
+      }
+    });
+  }, [login, logout]);
+
   return (
     <Router>
       <Navbar />
@@ -20,7 +36,7 @@ export default function App() {
         <Route exact path="/login" component={Login} />
         <Route exact path="/vacations" component={AllVacations} />
         <Route exact path="/add-vacation" component={addVacation} />
-        <Route  path="/modify-vacation/:id" component={ModifyVacation} />
+        <Route path="/modify-vacation/:id" component={ModifyVacation} />
       </Switch>
     </Router>
   );

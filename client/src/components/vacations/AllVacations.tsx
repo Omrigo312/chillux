@@ -13,12 +13,15 @@ export default function AllVacations() {
 
   const { vacations, setVacations, setFollowedVacations, followedVacations } = useContext(VacationsContext);
   const { navbarHeight } = useContext(WindowContext);
-  const { loadUser } = useContext(AuthContext);
+  const { loadUser, authState } = useContext(AuthContext);
 
   const fetchVacations = async () => {
     try {
       const res = await axios.get('http://localhost:3001/api/vacations');
       setVacations(res.data);
+      if (!authState.isAuthenticated) {
+        setLoadingVacations(false);
+      }
     } catch (error) {
       console.log(error);
       alert(error.response.data.message);
@@ -38,8 +41,10 @@ export default function AllVacations() {
 
   useEffect(() => {
     loadUser();
+    if (authState.isAuthenticated) {
+      fetchFollowedVacations();
+    }
     fetchVacations();
-    fetchFollowedVacations();
   }, []);
 
   return (

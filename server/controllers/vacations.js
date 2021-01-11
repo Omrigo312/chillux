@@ -1,6 +1,7 @@
 const express = require('express');
 const vacationsLogic = require('../logic/vacations');
 const router = express.Router();
+const auth = require('../middleware/auth');
 
 // @route     GET api/vacations
 // @desc      Get all vacations
@@ -30,7 +31,7 @@ router.get('/:id', async (req, res, next) => {
 // @route     POST api/vacations
 // @desc      Create a vacation
 // @access    Private
-router.post('/', async (req, res, next) => {
+router.post('/', auth, async (req, res, next) => {
   let newVacation = req.body;
   newVacation = {
     ...newVacation,
@@ -50,7 +51,7 @@ router.post('/', async (req, res, next) => {
 // @route     DELETE api/vacations/:id
 // @desc      Delete a vacation
 // @access    Private
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', auth, async (req, res, next) => {
   const id = req.params.id;
 
   try {
@@ -64,7 +65,7 @@ router.delete('/:id', async (req, res, next) => {
 // @route     PUT api/vacations/:id
 // @desc      Modify a vacation
 // @access    Private
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', auth, async (req, res, next) => {
   const id = req.params.id;
   let modifiedVacation = req.body;
   modifiedVacation = {

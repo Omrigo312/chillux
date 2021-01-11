@@ -1,6 +1,6 @@
 import { Button, IconButton, InputAdornment, TextField } from '@material-ui/core';
 import axios from 'axios';
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
 import LockIcon from '@material-ui/icons/Lock';
 import EmailIcon from '@material-ui/icons/Email';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -8,14 +8,24 @@ import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import PasswordStrengthBar from 'react-password-strength-bar';
 import GoogleLogin from 'react-google-login';
 import logo from '../../assets/images/logo-circle-transparent.png';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
+import { fadingBackground } from '../../utils/window';
+import { googleLogin } from '../../utils/auth';
+import LoginData from '../../models/LoginData';
 
 const GOOGLE_CLIENT_ID = '1333376791-188hppfhtekbpieohomh2j1a2tsrv3ip.apps.googleusercontent.com';
 
 export default function Register() {
+  const { authState, login } = useContext(AuthContext);
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const { email, password } = formData;
+
+  // background load effect
+  useEffect(() => {
+    fadingBackground();
+  }, []);
 
   const onFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -23,13 +33,14 @@ export default function Register() {
 
   const onShowPasswordClicked = () => setShowPassword(!showPassword);
 
-  const googleSuccessResponse = (response: any) => {
-    console.log(`Success ${JSON.stringify(response.profileObj)}`);
-    console.log(response);
+  const googleSuccessResponse = async (response: any) => {
+    const res = await googleLogin(response);
+    login(new LoginData(res.data.token, res.data.userType));
   };
 
   const googleFailureResponse = (response: any) => {
     console.log(`Failure ${response}`);
+    alert('Failed to log in with Google');
   };
 
   const onSubmit = async (event: FormEvent) => {
@@ -54,6 +65,10 @@ export default function Register() {
       alert(error.response.data.message);
     }
   };
+
+  if (authState.isAuthenticated) {
+    return <Redirect to="/vacations" />;
+  }
 
   return (
     <div className="island-background-auth">

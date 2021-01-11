@@ -10,11 +10,11 @@ import addVacation from './components/vacations/AddVacation';
 import AllVacations from './components/vacations/AllVacations';
 import ModifyVacation from './components/vacations/ModifyVacation';
 import { AuthContext } from './context/AuthContext';
-import { setToken } from './utils/setToken';
+import { setToken } from './utils/auth';
 
 export default function App() {
   const { logout, loadUser } = useContext(AuthContext);
-  
+
   useEffect(() => {
     if (localStorage.token) {
       setToken(localStorage.token);

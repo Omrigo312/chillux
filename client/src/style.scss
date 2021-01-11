@@ -250,14 +250,22 @@ $small: 768px;
 
 .island-background-auth {
   display: flex;
-  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-    url('../../assets/images/landing-background.jpg') no-repeat center center/cover;
   justify-content: center;
   align-items: center;
+  transition: 0.5s ease-out;
 
   @media (min-height: 630px) {
     height: 100vh;
   }
+}
+
+.bg-loading {
+  opacity: 0;
+}
+
+.bg-loaded {
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url('../../assets/images/landing-background.jpg') no-repeat center center/cover;
 }
 
 .landing {
@@ -467,6 +475,14 @@ $small: 768px;
 
     .vacation-card-text {
       grid-template-rows: 2fr 2fr 1fr;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    font-size: 0.8rem;
+    width: 98%;
+    .vacation-card-header {
+      font-size: 0.8em;
     }
   }
 }

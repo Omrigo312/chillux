@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { createContext, useState } from 'react';
 import LoginData from '../models/LoginData';
-import { setToken } from '../utils/setToken';
+import { setToken } from '../utils/auth';
 
 interface AuthStateInterFace {
   isAuthenticated: boolean;

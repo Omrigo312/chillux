@@ -42,6 +42,8 @@ export default function Navbar() {
     }
   }, [isShowNavbar, setNavbarHeight]);
 
+
+
   const userBarLinks = [
     new NavbarLink('/vacations', 'All Offers'),
     new NavbarLink('/account', 'Account', <PersonOutlineIcon />),

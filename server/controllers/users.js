@@ -38,6 +38,11 @@ router.post('/', async (req, res, next) => {
 router.post('/login', async (req, res, next) => {
   const user = req.body;
 
+  if (user.googleId) {
+    const successfulLoginData = await usersLogic.googleLogin(user);
+    return res.json(successfulLoginData);
+  }
+
   try {
     const successfulLoginData = await usersLogic.login(user);
     res.json(successfulLoginData);

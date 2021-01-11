@@ -35,6 +35,20 @@ const register = async (newUser) => {
   }
 };
 
+const googleRegister = async (newUser) => {
+  const { email, password, externalId, firstName, lastName, type } = newUser;
+  const sql = 'INSERT INTO users (email, password, type, external_id, first_name,last_name) VALUES(?, ?, ? ,? ,? ,?)';
+  const parameters = [email, password, type, externalId, firstName, lastName];
+
+  try {
+    const registerResult = await connection.executeWithParameters(sql, parameters);
+
+    return registerResult.insertId;
+  } catch (error) {
+    throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(newUser), error);
+  }
+};
+
 const isUserExists = async (email) => {
   const sql = 'SELECT * FROM users WHERE email =?';
   const parameters = [email];
@@ -49,5 +63,6 @@ const isUserExists = async (email) => {
 module.exports = {
   login,
   register,
-  isUserExist: isUserExists,
+  isUserExists,
+  googleRegister,
 };

@@ -37,7 +37,7 @@ export default function VacationCard({ vacation }: VacationCardProps) {
 
   const onFollowButtonClicked = async () => {
     if (!authState.isAuthenticated) {
-      return alert('You are not logged in');
+      return alert('You must be logged in to do that!');
     }
 
     const config = {
@@ -45,15 +45,17 @@ export default function VacationCard({ vacation }: VacationCardProps) {
         'Content-Type': 'application/json',
       },
     };
+
+    const updatedFollowers = followers + 1;
     const body = JSON.stringify({ vacationId: id });
-    const body2 = JSON.stringify({ ...vacation, followers: followers + 1 });
+    setFollowersState(updatedFollowers);
+    const body2 = JSON.stringify({ ...vacation, followers: updatedFollowers });
 
     try {
       await axios.post('http://localhost:3001/api/followed-vacations', body, config);
       await axios.put(`http://localhost:3001/api/vacations/${id}`, body2, config);
 
       setIsFollowed(true);
-      setFollowersState(followersState + 1);
     } catch (error) {
       console.log(error);
       alert(error.response.data.message);
@@ -62,7 +64,7 @@ export default function VacationCard({ vacation }: VacationCardProps) {
 
   const onUnfollowButtonClicked = async () => {
     if (!authState.isAuthenticated) {
-      return alert('You are not logged in');
+      return alert('You must be logged in to do that!');
     }
 
     const config = {
@@ -70,13 +72,15 @@ export default function VacationCard({ vacation }: VacationCardProps) {
         'Content-Type': 'application/json',
       },
     };
-    const body = JSON.stringify({ ...vacation, followers: followers - 1 });
+
+    const updatedFollowers = followersState - 1;
+    setFollowersState(updatedFollowers);
+    const body = JSON.stringify({ ...vacation, followers: updatedFollowers });
 
     try {
       await axios.delete(`http://localhost:3001/api/followed-vacations/${id}`);
       await axios.put(`http://localhost:3001/api/vacations/${id}`, body, config);
       setIsFollowed(false);
-      setFollowersState(followersState - 1);
     } catch (error) {
       console.log(error);
       alert(error.response.data.message);

@@ -83,8 +83,7 @@ export default function AddVacation() {
     const body = JSON.stringify(formData);
 
     try {
-      const res = await axios.post('http://localhost:3001/api/vacations', body, config);
-      console.log(`Server Response: ${JSON.stringify(res.data)}`);
+      await axios.post('http://localhost:3001/api/vacations', body, config);
       window.location.replace('/vacations');
     } catch (error) {
       console.log(error);

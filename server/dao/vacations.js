@@ -36,7 +36,6 @@ const addVacation = async (newVacation) => {
   try {
     const addVacationResult = await connection.executeWithParameters(sql, parameters);
 
-    console.log(`Vacation added successfully!`);
     return addVacationResult.insertId;
   } catch (error) {
     throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(newVacation), error);
@@ -51,7 +50,6 @@ const modifyVacation = async (id, modifiedVacation) => {
   try {
     const modifyVacationResult = await connection.executeWithParameters(sql, parameters);
 
-    console.log(`Vacation modified successfully!`);
     return modifyVacationResult.insertId;
   } catch (error) {
     throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(modifiedVacation), error);

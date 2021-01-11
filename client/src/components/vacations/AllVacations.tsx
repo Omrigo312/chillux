@@ -2,6 +2,7 @@
 import { CircularProgress } from '@material-ui/core';
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../../context/AuthContext';
 import { VacationsContext } from '../../context/VacationsContext';
 import { WindowContext } from '../../context/WindowContext';
 import { Vacation } from '../../models/Vacation';
@@ -10,8 +11,9 @@ import VacationCard from './VacationCard';
 export default function AllVacations() {
   const [loadingVacations, setLoadingVacations] = useState(true);
 
-  const { vacations, setVacations, followedVacations, setFollowedVacations } = useContext(VacationsContext);
+  const { vacations, setVacations, setFollowedVacations, followedVacations } = useContext(VacationsContext);
   const { navbarHeight } = useContext(WindowContext);
+  const { loadUser } = useContext(AuthContext);
 
   const fetchVacations = async () => {
     try {
@@ -27,6 +29,7 @@ export default function AllVacations() {
     try {
       const res = await axios.get('http://localhost:3001/api/followed-vacations');
       setFollowedVacations(res.data);
+      setLoadingVacations(false);
     } catch (error) {
       console.log(error);
       alert(error.response.data.message);
@@ -34,9 +37,9 @@ export default function AllVacations() {
   };
 
   useEffect(() => {
+    loadUser();
     fetchVacations();
     fetchFollowedVacations();
-    setLoadingVacations(false);
   }, []);
 
   return (
@@ -46,9 +49,11 @@ export default function AllVacations() {
       ) : !vacations.length ? (
         <h1 style={{ justifySelf: 'center' }}>No Vacations Found!</h1>
       ) : (
-        vacations.map((vacation: Vacation) => {
-          return <VacationCard vacation={vacation} key={vacation.id} />;
-        })
+        vacations
+          .sort((a: any, b: any) => +followedVacations.includes(b.id) - +followedVacations.includes(a.id))
+          .map((vacation: Vacation) => {
+            return <VacationCard vacation={vacation} key={vacation.id} />;
+          })
       )}
     </div>
   );

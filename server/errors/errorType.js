@@ -16,6 +16,7 @@ const ErrorType = {
   INVALID_DURATION: new Error(14, 603, 'End date must be after start date', false),
   VACATION_NOT_FOUND: new Error(15, 604, 'Cannot delete vacation. Not found.', true),
   INVALID_TOKEN: new Error(16, 605, 'Invalid token', true),
+  NO_TOKEN: new Error(17, 605, 'No token', false),
 };
 
 module.exports = ErrorType;

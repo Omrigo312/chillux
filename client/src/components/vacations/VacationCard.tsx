@@ -1,5 +1,5 @@
 import { Button, Card, Grid, IconButton, Tooltip } from '@material-ui/core';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
@@ -19,9 +19,12 @@ interface VacationCardProps {
 export default function VacationCard({ vacation }: VacationCardProps) {
   const { windowWidth } = useContext(WindowContext);
   const { authState } = useContext(AuthContext);
-  const { setVacations } = useContext(VacationsContext);
+  const { setVacations, followedVacations } = useContext(VacationsContext);
 
   const { id, description, destination, imageUrl, price, followers, startDate, endDate } = vacation;
+  const [isFollowed, setIsFollowed] = useState(followedVacations.includes(id));
+  const [followersState, setFollowersState] = useState(followers);
+
   const startDateObj = new Date(startDate);
   const endDateObj = new Date(endDate);
   const image = imageUrl.length ? imageUrl : noImage;
@@ -42,13 +45,38 @@ export default function VacationCard({ vacation }: VacationCardProps) {
         'Content-Type': 'application/json',
       },
     };
-
-    const token = authState.token;
-    const body = JSON.stringify({ token, vacationId: id });
+    const body = JSON.stringify({ vacationId: id });
+    const body2 = JSON.stringify({ ...vacation, followers: followers + 1 });
 
     try {
-      const res = await axios.post('http://localhost:3001/api/followed-vacations', body, config);
-      console.log(`Server Response: ${JSON.stringify(res.data)}`);
+      await axios.post('http://localhost:3001/api/followed-vacations', body, config);
+      await axios.put(`http://localhost:3001/api/vacations/${id}`, body2, config);
+
+      setIsFollowed(true);
+      setFollowersState(followersState + 1);
+    } catch (error) {
+      console.log(error);
+      alert(error.response.data.message);
+    }
+  };
+
+  const onUnfollowButtonClicked = async () => {
+    if (!authState.isAuthenticated) {
+      return alert('You are not logged in');
+    }
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    const body = JSON.stringify({ ...vacation, followers: followers - 1 });
+
+    try {
+      await axios.delete(`http://localhost:3001/api/followed-vacations/${id}`);
+      await axios.put(`http://localhost:3001/api/vacations/${id}`, body, config);
+      setIsFollowed(false);
+      setFollowersState(followersState - 1);
     } catch (error) {
       console.log(error);
       alert(error.response.data.message);
@@ -108,12 +136,21 @@ export default function VacationCard({ vacation }: VacationCardProps) {
                 </div>
               ) : (
                 <div className="vacation-card-star">
-                  <Tooltip title="Follow">
-                    <IconButton onClick={onFollowButtonClicked} className="star-button" aria-label="star">
-                      <FavoriteBorderIcon className="star-icon" />
-                    </IconButton>
-                  </Tooltip>
-                  <p>{followers}</p>
+                  {isFollowed ? (
+                    <Tooltip title="Unfollow">
+                      <IconButton onClick={onUnfollowButtonClicked} className="star-button" aria-label="unfollow">
+                        <FavoriteIcon className="star-icon-active" />
+                      </IconButton>
+                    </Tooltip>
+                  ) : (
+                    <Tooltip title="follow">
+                      <IconButton onClick={onFollowButtonClicked} className="star-button" aria-label="follow">
+                        <FavoriteBorderIcon className="star-icon" />
+                      </IconButton>
+                    </Tooltip>
+                  )}
+
+                  <p>{followersState}</p>
                 </div>
               )}
             </div>

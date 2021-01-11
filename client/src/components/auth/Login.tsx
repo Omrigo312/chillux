@@ -46,7 +46,6 @@ export default function Login() {
 
     try {
       const res = await axios.post('http://localhost:3001/api/users/login', body, config);
-      console.log(`Server Response: ${JSON.stringify(res.data)}`);
       login(new LoginData(res.data.token, res.data.userType));
     } catch (error) {
       alert(error.response.data.message);

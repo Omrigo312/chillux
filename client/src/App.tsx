@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Login from './components/auth/Login';
@@ -12,11 +13,14 @@ import { AuthContext } from './context/AuthContext';
 import { setToken } from './utils/setToken';
 
 export default function App() {
-  const { login, logout } = useContext(AuthContext);
+  const { logout, loadUser } = useContext(AuthContext);
+  
   useEffect(() => {
     if (localStorage.token) {
       setToken(localStorage.token);
     }
+
+    loadUser();
 
     // log user out from all tabs if they log out in one tab
     window.addEventListener('storage', () => {
@@ -24,7 +28,7 @@ export default function App() {
         logout();
       }
     });
-  }, [login, logout]);
+  }, []);
 
   return (
     <Router>

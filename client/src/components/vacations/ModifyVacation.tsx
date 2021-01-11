@@ -103,8 +103,7 @@ export default function ModifyVacation() {
     const body = JSON.stringify(formData);
 
     try {
-      const res = await axios.put(`http://localhost:3001/api/vacations/${id}`, body, config);
-      console.log(`Server Response: ${JSON.stringify(res.data)}`);
+      await axios.put(`http://localhost:3001/api/vacations/${id}`, body, config);
       window.location.replace('/vacations');
     } catch (error) {
       console.log(error);

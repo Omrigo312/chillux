@@ -1,6 +1,21 @@
 const express = require('express');
 const usersLogic = require('../logic/users');
 const router = express.Router();
+const auth = require('../middleware/auth');
+
+// @route    GET api/users
+// @desc     Authenticate user
+// @access   Public
+router.get('/', auth, async (req, res, next) => {
+  try {
+    if (req.user.id) {
+      return res.json(true);
+    }
+    return res.json(false);
+  } catch (error) {
+    return next(error);
+  }
+});
 
 // @route     POST api/users
 // @desc      Register user

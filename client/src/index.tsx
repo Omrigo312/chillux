@@ -7,13 +7,12 @@ import { WindowProvider } from './context/WindowContext';
 import './dist/css/style.min.css';
 
 ReactDOM.render(
-  <WindowProvider>
-    <VacationsProvider>
-      <AuthProvider>
+  <AuthProvider>
+    <WindowProvider>
+      <VacationsProvider>
         <App />
-      </AuthProvider>
-    </VacationsProvider>
-  </WindowProvider>,
-
+      </VacationsProvider>
+    </WindowProvider>
+  </AuthProvider>,
   document.getElementById('root')
 );

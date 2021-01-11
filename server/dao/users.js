@@ -18,7 +18,6 @@ const login = async (user) => {
     throw new ServerError(ErrorType.UNAUTHORIZED);
   }
 
-  console.log(`User ${user.email} logged in successfully!`);
   return loginResult[0];
 };
 
@@ -30,7 +29,6 @@ const register = async (newUser) => {
   try {
     const registerResult = await connection.executeWithParameters(sql, parameters);
 
-    console.log(`User ${email} registered successfully!`);
     return registerResult.insertId;
   } catch (error) {
     throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(newUser), error);

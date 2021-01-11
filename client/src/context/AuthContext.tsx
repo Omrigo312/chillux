@@ -1,5 +1,7 @@
+import axios from 'axios';
 import React, { createContext, useState } from 'react';
 import LoginData from '../models/LoginData';
+import { setToken } from '../utils/setToken';
 
 interface AuthStateInterFace {
   isAuthenticated: boolean;
@@ -31,20 +33,34 @@ export const AuthProvider = ({ children }: any) => {
     setAuthState({ isAuthenticated: true, token, userType });
     localStorage.setItem('token', token);
     localStorage.setItem('userType', userType);
+    loadUser();
   };
 
   const logout = () => {
     setAuthState({ isAuthenticated: false, token: '', userType: '' });
+    localStorage.removeItem('token');
+    localStorage.removeItem('userType');
     window.location.replace('/');
   };
 
-  const loadUser = () => {
-    setAuthState({
-      isAuthenticated: true,
-      token: localStorage.getItem('token'),
-      userType: localStorage.getItem('userType'),
-    });
+  const loadUser = async () => {
+    if (localStorage.token) {
+      setToken(localStorage.token);
+    }
+    try {
+      await axios.get('http://localhost:3001/api/users');
+
+      setAuthState({
+        isAuthenticated: true,
+        token: localStorage.getItem('token'),
+        userType: localStorage.getItem('userType'),
+      });
+    } catch (error) {
+      setAuthState({ isAuthenticated: false, token: '', userType: '' });
+      localStorage.removeItem('token');
+      localStorage.removeItem('userType');
+    }
   };
 
-  return <AuthContext.Provider value={{ authState, login, logout }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ authState, login, logout, loadUser }}>{children}</AuthContext.Provider>;
 };

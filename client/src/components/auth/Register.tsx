@@ -47,8 +47,7 @@ export default function Register() {
     const body = JSON.stringify(formData);
 
     try {
-      const res = await axios.post('http://localhost:3001/api/users', body, config);
-      console.log(`Server Response: ${JSON.stringify(res.data)}`);
+      await axios.post('http://localhost:3001/api/users', body, config);
       window.location.replace('/register-success');
     } catch (error) {
       console.log(error);

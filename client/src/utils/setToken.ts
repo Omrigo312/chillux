@@ -7,4 +7,3 @@ export const setToken = (token: string) => {
     delete axios.defaults.headers.common['x-auth-token'];
   }
 };
-

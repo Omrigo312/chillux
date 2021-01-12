@@ -15,7 +15,7 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import CreateIcon from '@material-ui/icons/Create';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Vacation } from '../../models/Vacation';
 import noImage from '../../assets/images/no-image.png';
 import { WindowContext } from '../../context/WindowContext';
@@ -34,6 +34,7 @@ export default function VacationCard({ vacation, index }: VacationCardProps) {
   const { windowWidth, addAlert } = useContext(WindowContext);
   const { authState } = useContext(AuthContext);
   const { setVacations, followedVacations } = useContext(VacationsContext);
+  const history = useHistory();
 
   const { id, description, destination, imageUrl, price, followers, startDate, endDate } = vacation;
   const [isFollowed, setIsFollowed] = useState(followedVacations.includes(id));
@@ -113,7 +114,7 @@ export default function VacationCard({ vacation, index }: VacationCardProps) {
   };
 
   const onModifyButtonClicked = () => {
-    window.location.replace(`/modify-vacation/${id}`);
+    history.push(`modify-vacation/${id}`);
   };
 
   const animationClass = index % 2 === 0 ? 'vacation-card enter-right' : ' vacation-card enter-left';

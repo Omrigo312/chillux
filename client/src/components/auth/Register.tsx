@@ -8,7 +8,7 @@ import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import PasswordStrengthBar from 'react-password-strength-bar';
 import GoogleLogin from 'react-google-login';
 import logo from '../../assets/images/logo-circle-transparent.png';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useHistory } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { fadingBackground } from '../../utils/window';
 import { googleLogin } from '../../utils/auth';
@@ -24,6 +24,7 @@ export default function Register() {
   const { addAlert } = useContext(WindowContext);
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
+  const history = useHistory();
   const { email, password } = formData;
 
   // background load effect
@@ -38,7 +39,7 @@ export default function Register() {
   const onShowPasswordClicked = () => setShowPassword(!showPassword);
 
   const googleSuccessResponse = async (response: any) => {
-    const res = await googleLogin(response,addAlert);
+    const res = await googleLogin(response, addAlert);
     login(new LoginData(res.data.token, res.data.userType));
   };
 
@@ -59,7 +60,7 @@ export default function Register() {
 
     try {
       await axios.post('http://localhost:3001/api/users', body, config);
-      window.location.replace('/register-success');
+      history.push('register-success');
     } catch (error) {
       handleError(error, addAlert);
     }

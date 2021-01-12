@@ -37,7 +37,7 @@ export default function Login() {
   const onShowPasswordClicked = () => setShowPassword(!showPassword);
 
   const googleSuccessResponse = async (response: any) => {
-    const res = await googleLogin(response,addAlert);
+    const res = await googleLogin(response, addAlert);
     login(new LoginData(res.data.token, res.data.userType));
   };
 

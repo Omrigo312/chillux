@@ -11,10 +11,10 @@ import VacationCard from './VacationCard';
 
 export default function AllVacations() {
   const [loadingVacations, setLoadingVacations] = useState(true);
+  const { loadUser, authState } = useContext(AuthContext);
 
   const { vacations, setVacations, setFollowedVacations, followedVacations } = useContext(VacationsContext);
   const { navbarHeight, addAlert } = useContext(WindowContext);
-  const { loadUser, authState } = useContext(AuthContext);
 
   const fetchVacations = async () => {
     try {
@@ -41,9 +41,7 @@ export default function AllVacations() {
 
   useEffect(() => {
     loadUser();
-    if (authState.isAuthenticated) {
-      fetchFollowedVacations();
-    }
+    fetchFollowedVacations();
     fetchVacations();
   }, []);
 

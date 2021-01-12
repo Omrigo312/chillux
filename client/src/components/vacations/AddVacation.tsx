@@ -7,6 +7,7 @@ import { WindowContext } from '../../context/WindowContext';
 import axios from 'axios';
 import Alert from '../../models/Alert';
 import { handleError } from '../../utils/error';
+import { useHistory } from 'react-router-dom';
 
 export default function AddVacation() {
   const [formData, setFormData] = useState({
@@ -18,6 +19,7 @@ export default function AddVacation() {
     endDate: null,
   });
   const { navbarHeight, addAlert } = useContext(WindowContext);
+  const history = useHistory();
 
   const onFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -86,7 +88,7 @@ export default function AddVacation() {
 
     try {
       await axios.post('http://localhost:3001/api/vacations', body, config);
-      window.location.replace('/vacations');
+      history.push('vacations');
     } catch (error) {
       handleError(error, addAlert);
     }

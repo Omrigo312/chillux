@@ -40,12 +40,16 @@ export const AuthProvider = ({ children }: any) => {
     setAuthState({ isAuthenticated: false, token: '', userType: '' });
     localStorage.removeItem('token');
     localStorage.removeItem('userType');
-    window.location.replace('/');
   };
 
   const loadUser = async () => {
     if (localStorage.token) {
       setToken(localStorage.token);
+      setAuthState({
+        isAuthenticated: true,
+        token: localStorage.getItem('token'),
+        userType: localStorage.getItem('userType'),
+      });
     }
     try {
       await axios.get('http://localhost:3001/api/users');

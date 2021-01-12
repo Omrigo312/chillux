@@ -6,7 +6,7 @@ import React, { ChangeEvent, FormEvent, useContext, useEffect, useState } from '
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import { WindowContext } from '../../context/WindowContext';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import Alert from '../../models/Alert';
 import { handleError } from '../../utils/error';
 
@@ -21,6 +21,7 @@ export default function ModifyVacation() {
     endDate: null,
   });
   const { navbarHeight, addAlert } = useContext(WindowContext);
+  const history = useHistory();
   const id = Object(params).id;
 
   const getVacation = async () => {
@@ -31,8 +32,7 @@ export default function ModifyVacation() {
       vacation.endDate = new Date(vacation.endDate);
       setFormData(vacation);
     } catch (error) {
-      console.log(error);
-      addAlert(new Alert(error.response.data.message, 'error', 3000));
+      handleError(error, addAlert);
     }
   };
 
@@ -110,7 +110,7 @@ export default function ModifyVacation() {
 
     try {
       await axios.put(`http://localhost:3001/api/vacations/${id}`, body, config);
-      window.location.replace('/vacations');
+      history.push('vacations');
     } catch (error) {
       handleError(error, addAlert);
     }

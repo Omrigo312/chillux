@@ -1,6 +1,6 @@
 import { AppBar, Box, Button, Toolbar, Divider, Hidden } from '@material-ui/core';
 import React, { Fragment, useContext, useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/images/logo-circle-transparent.png';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -15,11 +15,13 @@ export default function Navbar() {
   const { setWindowWidth, setNavbarHeight, setTransparentNavbar, transparentNavbar } = useContext(WindowContext);
 
   const location = useLocation();
+  const history = useHistory();
   const elementRef = useRef(null);
 
   const [currentTab, setCurrentTab] = useState(location.pathname);
 
   const onLogoutClicked = () => {
+    history.push('/login');
     logout();
   };
 

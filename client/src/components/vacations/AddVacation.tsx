@@ -154,7 +154,8 @@ export default function AddVacation() {
               variant="inline"
               format="dd/MM/yyyy"
               margin="normal"
-              label="Start date (dd/mm/yyyy)"
+              label="Start date"
+              placeholder="dd/mm/yyyy"
               value={startDate}
               onChange={onStartDateChange}
               KeyboardButtonProps={{
@@ -169,7 +170,8 @@ export default function AddVacation() {
               variant="inline"
               format="dd/MM/yyyy"
               margin="normal"
-              label="End date (dd/mm/yyyy)"
+              label="End date"
+              placeholder="dd/mm/yyyy"
               value={endDate}
               onChange={onEndDateChange}
               KeyboardButtonProps={{

@@ -10,6 +10,7 @@ const generator = require('generate-password');
 const login = async (user) => {
   validateLoginData(user);
 
+  
   const authorizedUser = await usersDao.login(user);
   const isMatch = await bcrypt.compare(user.password, authorizedUser.password);
 

@@ -1,4 +1,4 @@
-import { AppBar, Box, Button, Toolbar, Divider } from '@material-ui/core';
+import { AppBar, Box, Button, Toolbar, Divider, Hidden } from '@material-ui/core';
 import React, { Fragment, useContext, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -42,8 +42,6 @@ export default function Navbar() {
     }
   }, [isShowNavbar, setNavbarHeight]);
 
-
-
   const userBarLinks = [
     new NavbarLink('/vacations', 'All Offers'),
     new NavbarLink('/account', 'Account', <PersonOutlineIcon />),
@@ -74,7 +72,7 @@ export default function Navbar() {
               <Link to={to}>
                 <Button style={{ color: color }}>
                   {link.icon}
-                  {text}
+                  {link.icon ? <Hidden smDown>{text}</Hidden> : <Fragment>{text}</Fragment>}
                 </Button>
               </Link>
             </Box>
@@ -91,7 +89,7 @@ export default function Navbar() {
       <Box>
         <Button name="logout" onClick={onLogoutClicked}>
           <ExitToAppIcon />
-          Logout
+          <Hidden smDown>Logout</Hidden>
         </Button>
       </Box>
     </Fragment>
@@ -105,7 +103,7 @@ export default function Navbar() {
       <Box>
         <Button name="logout" onClick={onLogoutClicked}>
           <ExitToAppIcon />
-          Logout
+          <Hidden smDown>Logout</Hidden>
         </Button>
       </Box>
     </Fragment>
@@ -124,13 +122,15 @@ export default function Navbar() {
       {isShowNavbar && (
         <AppBar position="fixed" color="transparent" ref={elementRef} style={{ boxShadow: boxShadow }}>
           <Toolbar className="navbar" style={{ padding: 0, background: background }}>
-            <Link className="logo-container" to="/">
-              <img src={logo} className="logo" alt="logo" />
-              <div className="logo-text">
-                <h2>Chillux</h2>
-                <p>Luxury Vacations</p>
-              </div>
-            </Link>
+            <Hidden smDown>
+              <Link className="logo-container" to="/">
+                <img src={logo} className="logo" alt="logo" />
+                <div className="logo-text">
+                  <h2>Chillux</h2>
+                  <p>Luxury Vacations</p>
+                </div>
+              </Link>
+            </Hidden>
             <Box
               width="100%"
               display="flex"

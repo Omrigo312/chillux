@@ -56,8 +56,8 @@ export default function AllVacations() {
       ) : (
         vacations
           .sort((a: any, b: any) => +followedVacations.includes(b.id) - +followedVacations.includes(a.id))
-          .map((vacation: Vacation) => {
-            return <VacationCard vacation={vacation} key={vacation.id} />;
+          .map((vacation: Vacation, index: number) => {
+            return <VacationCard vacation={vacation} key={vacation.id} index={index} />;
           })
       )}
     </div>

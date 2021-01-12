@@ -221,6 +221,10 @@ $small: 768px;
     width: 100%;
     color: white;
   }
+
+  @media (max-width: $small) {
+    font-size: 0.5rem;
+  }
 }
 
 .showcase {
@@ -341,6 +345,30 @@ $small: 768px;
   }
 }
 
+.enter-left {
+  animation: enter-frame-left 2s;
+  @keyframes enter-frame-left {
+    0% {
+      transform: translateX(-50%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+}
+
+.enter-right {
+  animation: enter-frame-right 2s;
+  @keyframes enter-frame-right {
+    0% {
+      transform: translateX(50%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+}
+
 .vacation-card {
   width: 80%;
   justify-self: center;
@@ -455,6 +483,7 @@ $small: 768px;
   @media (max-width: $small) {
     font-size: 0.7rem;
     width: 98%;
+    max-height: 320px;
 
     .more-info-button {
       font-size: 0.7em;
@@ -477,7 +506,6 @@ $small: 768px;
       grid-template-rows: 2fr 2fr 1fr;
     }
   }
-
   @media (max-width: 1024px) {
     font-size: 0.8rem;
     width: 98%;
@@ -485,9 +513,17 @@ $small: 768px;
       font-size: 0.8em;
     }
   }
+
+  @media (max-width: 400px) {
+    h2 {
+      margin-right: 30px;
+    }
+    font-size: 0.6rem;
+  }
 }
 
 .all-vacations {
+  overflow-x: hidden;
   display: grid;
   row-gap: 1rem;
   margin-bottom: 1rem;

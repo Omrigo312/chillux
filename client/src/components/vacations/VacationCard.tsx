@@ -14,9 +14,10 @@ import { VacationsContext } from '../../context/VacationsContext';
 
 interface VacationCardProps {
   vacation: Vacation;
+  index: number;
 }
 
-export default function VacationCard({ vacation }: VacationCardProps) {
+export default function VacationCard({ vacation, index }: VacationCardProps) {
   const { windowWidth } = useContext(WindowContext);
   const { authState } = useContext(AuthContext);
   const { setVacations, followedVacations } = useContext(VacationsContext);
@@ -105,8 +106,10 @@ export default function VacationCard({ vacation }: VacationCardProps) {
     window.location.replace(`/modify-vacation/${id}`);
   };
 
+  const animationClass = index % 2 === 0 ? 'vacation-card enter-right' : ' vacation-card enter-left';
+
   return (
-    <Card className="vacation-card">
+    <Card className={animationClass}>
       <Grid container spacing={3}>
         <Grid item xs={5}>
           <div

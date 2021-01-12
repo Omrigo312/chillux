@@ -7,6 +7,8 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import { WindowContext } from '../../context/WindowContext';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import Alert from '../../models/Alert';
+import { handleError } from '../../utils/error';
 
 export default function ModifyVacation() {
   const params = useParams();
@@ -18,7 +20,7 @@ export default function ModifyVacation() {
     startDate: null,
     endDate: null,
   });
-  const { navbarHeight } = useContext(WindowContext);
+  const { navbarHeight, addAlert } = useContext(WindowContext);
   const id = Object(params).id;
 
   const getVacation = async () => {
@@ -30,7 +32,7 @@ export default function ModifyVacation() {
       setFormData(vacation);
     } catch (error) {
       console.log(error);
-      alert(error.response.data.message);
+      addAlert(new Alert(error.response.data.message, 'error', 3000));
     }
   };
 
@@ -89,10 +91,14 @@ export default function ModifyVacation() {
     event.preventDefault();
 
     if (!isStartDateValidated()[0]) {
-      return alert(isStartDateValidated()[1]);
+      return addAlert(new Alert(isStartDateValidated()[1], 'warning', 3000));
     }
     if (!isEndDateValidated()[0]) {
-      return alert(isEndDateValidated()[1]);
+      return addAlert(new Alert(isEndDateValidated()[1], 'warning', 3000));
+    }
+
+    if (!window.confirm('Do you confirm these changes?')) {
+      return;
     }
 
     const config = {
@@ -106,8 +112,7 @@ export default function ModifyVacation() {
       await axios.put(`http://localhost:3001/api/vacations/${id}`, body, config);
       window.location.replace('/vacations');
     } catch (error) {
-      console.log(error);
-      alert(error.response.data.message);
+      handleError(error, addAlert);
     }
   };
 
@@ -174,7 +179,8 @@ export default function ModifyVacation() {
               variant="inline"
               format="dd/MM/yyyy"
               margin="normal"
-              label="Start date (dd/mm/yyyy)"
+              label="Start date"
+              placeholder="dd/mm/yyyy"
               value={startDate}
               onChange={onStartDateChange}
               KeyboardButtonProps={{
@@ -189,7 +195,8 @@ export default function ModifyVacation() {
               variant="inline"
               format="dd/MM/yyyy"
               margin="normal"
-              label="End date (dd/mm/yyyy)"
+              label="End date"
+              placeholder="dd/mm/yyyy"
               value={endDate}
               onChange={onEndDateChange}
               KeyboardButtonProps={{

@@ -13,11 +13,15 @@ import { AuthContext } from '../../context/AuthContext';
 import { fadingBackground } from '../../utils/window';
 import { googleLogin } from '../../utils/auth';
 import LoginData from '../../models/LoginData';
+import { WindowContext } from '../../context/WindowContext';
+import Alert from '../../models/Alert';
+import { handleError } from '../../utils/error';
 
 const GOOGLE_CLIENT_ID = '1333376791-188hppfhtekbpieohomh2j1a2tsrv3ip.apps.googleusercontent.com';
 
 export default function Register() {
   const { authState, login } = useContext(AuthContext);
+  const { addAlert } = useContext(WindowContext);
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const { email, password } = formData;
@@ -39,16 +43,12 @@ export default function Register() {
   };
 
   const googleFailureResponse = (response: any) => {
-    console.log(`Failure ${response}`);
-    alert('Failed to log in with Google');
+    console.log(response);
+    addAlert(new Alert('Failed to log in with Google', 'error', 3000));
   };
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
-
-    if (password.length < 6) {
-      return alert('Password is too short!');
-    }
 
     const config = {
       headers: {
@@ -61,8 +61,7 @@ export default function Register() {
       await axios.post('http://localhost:3001/api/users', body, config);
       window.location.replace('/register-success');
     } catch (error) {
-      console.log(error);
-      alert(error.response.data.message);
+      handleError(error, addAlert);
     }
   };
 
@@ -81,7 +80,7 @@ export default function Register() {
           </div>
         </Link>
         <h2 className="form-header">Create Account</h2>
-        <div className="input-field">
+        <div className="input-field-icon">
           <EmailIcon style={{ marginRight: '0.5rem' }} />
           <TextField
             style={{ width: '100%' }}
@@ -95,7 +94,7 @@ export default function Register() {
             onChange={onFieldChange}
           />
         </div>
-        <div className="input-field">
+        <div className="input-field-icon">
           <LockIcon style={{ marginRight: '0.5rem' }} />
           <TextField
             style={{ width: '100%' }}

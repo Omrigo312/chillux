@@ -3,9 +3,9 @@ import { Vacation } from '../models/Vacation';
 
 interface StateInterface {
   vacations: Vacation[];
-  setVacations: (data: Vacation[]) => void;
+  setVacations: (vacations: Vacation[]) => void;
   followedVacations: number[];
-  setFollowedVacations: (data: number[]) => void;
+  setFollowedVacations: (followedVacationsId: number[]) => void;
 }
 
 const initialState: StateInterface = {

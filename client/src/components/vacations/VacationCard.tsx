@@ -2,6 +2,7 @@ import {
   Button,
   Card,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
@@ -21,6 +22,7 @@ import { WindowContext } from '../../context/WindowContext';
 import { AuthContext } from '../../context/AuthContext';
 import axios from 'axios';
 import { VacationsContext } from '../../context/VacationsContext';
+import { handleError } from '../../utils/error';
 
 interface VacationCardProps {
   vacation: Vacation;
@@ -29,7 +31,7 @@ interface VacationCardProps {
 
 export default function VacationCard({ vacation, index }: VacationCardProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { windowWidth } = useContext(WindowContext);
+  const { windowWidth, addAlert } = useContext(WindowContext);
   const { authState } = useContext(AuthContext);
   const { setVacations, followedVacations } = useContext(VacationsContext);
 
@@ -69,8 +71,7 @@ export default function VacationCard({ vacation, index }: VacationCardProps) {
 
       setIsFollowed(true);
     } catch (error) {
-      console.log(error);
-      alert(error.response.data.message);
+      handleError(error, addAlert);
     }
   };
 
@@ -94,8 +95,7 @@ export default function VacationCard({ vacation, index }: VacationCardProps) {
       await axios.put(`http://localhost:3001/api/vacations/${id}`, body, config);
       setIsFollowed(false);
     } catch (error) {
-      console.log(error);
-      alert(error.response.data.message);
+      handleError(error, addAlert);
     }
   };
 
@@ -108,8 +108,7 @@ export default function VacationCard({ vacation, index }: VacationCardProps) {
       const res = await axios.delete(`http://localhost:3001/api/vacations/${id}`);
       setVacations(res.data);
     } catch (error) {
-      console.log(error);
-      alert(error.response.data.message);
+      handleError(error, addAlert);
     }
   };
 
@@ -194,16 +193,20 @@ export default function VacationCard({ vacation, index }: VacationCardProps) {
       <Dialog
         open={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+        aria-labelledby="not-logged-in"
+        aria-describedby="must-be-logged-in"
       >
-        <DialogTitle id="alert-dialog-title">{"Use Google's location service?"}</DialogTitle>
+        <DialogTitle id="not-logged-in">{'You must be logged in to do that.'}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps
-            are running.
+          <DialogContentText id="must-be-logged-in">
+            Please <Link to="/login">log in</Link> to get the best experience possible!
           </DialogContentText>
         </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setIsDialogOpen(false)} color="primary">
+            Close
+          </Button>
+        </DialogActions>
       </Dialog>
     </Card>
   );

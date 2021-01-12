@@ -12,6 +12,9 @@ import LoginData from '../../models/LoginData';
 import logo from '../../assets/images/logo-circle-transparent.png';
 import { fadingBackground } from '../../utils/window';
 import { googleLogin } from '../../utils/auth';
+import { WindowContext } from '../../context/WindowContext';
+import Alert from '../../models/Alert';
+import { handleError } from '../../utils/error';
 
 const GOOGLE_CLIENT_ID = '1333376791-188hppfhtekbpieohomh2j1a2tsrv3ip.apps.googleusercontent.com';
 
@@ -19,6 +22,7 @@ export default function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const { authState, login } = useContext(AuthContext);
+  const { addAlert } = useContext(WindowContext);
   const { email, password } = formData;
 
   // background load effect
@@ -38,7 +42,8 @@ export default function Login() {
   };
 
   const googleFailureResponse = (response: any) => {
-    console.log(`Failure ${response}`);
+    console.log(response);
+    addAlert(new Alert('Failed to log in with Google', 'error', 3000));
   };
 
   const onSubmit = async (event: FormEvent) => {
@@ -55,7 +60,7 @@ export default function Login() {
       const res = await axios.post('http://localhost:3001/api/users/login', body, config);
       login(new LoginData(res.data.token, res.data.userType));
     } catch (error) {
-      alert(error.response.data.message);
+      handleError(error, addAlert);
     }
   };
 
@@ -74,7 +79,7 @@ export default function Login() {
           </div>
         </Link>
         <h2 className="form-header">Log In</h2>
-        <div className="input-field">
+        <div className="input-field-icon">
           <EmailIcon style={{ marginRight: '0.5rem' }} />
           <TextField
             style={{ width: '100%' }}
@@ -88,7 +93,7 @@ export default function Login() {
             onChange={onFieldChange}
           />
         </div>
-        <div className="input-field">
+        <div className="input-field-icon">
           <LockIcon style={{ marginRight: '0.5rem' }} />
           <TextField
             style={{ width: '100%' }}

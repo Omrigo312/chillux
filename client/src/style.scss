@@ -30,6 +30,10 @@ $small: 768px;
 
   .input-field {
     margin: 1.5em 0 0;
+  }
+
+  .input-field-icon {
+    margin: 1.5em 0 0;
     display: flex;
     align-items: center;
   }
@@ -230,6 +234,10 @@ $small: 768px;
 }
 
 .showcase {
+  display: grid;
+  background: black;
+  align-items: center;
+  
   video {
     position: absolute;
     top: 0;
@@ -248,10 +256,6 @@ $small: 768px;
     height: 100%;
     background: rgba(0, 0, 0, 0.3);
   }
-
-  display: grid;
-  background: black;
-  align-items: center;
 }
 
 .island-background-auth {
@@ -526,6 +530,7 @@ $small: 768px;
 
 .all-vacations {
   overflow-x: hidden;
+  overflow-y: hidden;
   display: grid;
   row-gap: 1rem;
   margin-bottom: 1rem;
@@ -535,4 +540,26 @@ $small: 768px;
 .add-vacation {
   display: flex;
   justify-content: center;
+}
+
+.alerts-box {
+  width: '100%';
+  position: fixed;
+  z-index: 100;
+  width: 100%;
+  display: grid;
+  justify-content: center;
+}
+
+.alert {
+  animation: fade-in 1s;
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 }

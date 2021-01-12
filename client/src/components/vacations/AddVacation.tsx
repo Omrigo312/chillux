@@ -5,6 +5,8 @@ import React, { ChangeEvent, FormEvent, useContext, useState } from 'react';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import { WindowContext } from '../../context/WindowContext';
 import axios from 'axios';
+import Alert from '../../models/Alert';
+import { handleError } from '../../utils/error';
 
 export default function AddVacation() {
   const [formData, setFormData] = useState({
@@ -15,7 +17,7 @@ export default function AddVacation() {
     startDate: null,
     endDate: null,
   });
-  const { navbarHeight } = useContext(WindowContext);
+  const { navbarHeight, addAlert } = useContext(WindowContext);
 
   const onFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -68,10 +70,10 @@ export default function AddVacation() {
     event.preventDefault();
 
     if (!isStartDateValidated()[0]) {
-      return alert(isStartDateValidated()[1]);
+      return addAlert(new Alert(isStartDateValidated()[1], 'warning', 3000));
     }
     if (!isEndDateValidated()[0]) {
-      return alert(isEndDateValidated()[1]);
+      return addAlert(new Alert(isEndDateValidated()[1], 'warning', 3000));
     }
 
     const config = {
@@ -86,8 +88,7 @@ export default function AddVacation() {
       await axios.post('http://localhost:3001/api/vacations', body, config);
       window.location.replace('/vacations');
     } catch (error) {
-      console.log(error);
-      alert(error.response.data.message);
+      handleError(error, addAlert);
     }
   };
 

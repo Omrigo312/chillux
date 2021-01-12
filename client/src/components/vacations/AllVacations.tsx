@@ -6,13 +6,14 @@ import { AuthContext } from '../../context/AuthContext';
 import { VacationsContext } from '../../context/VacationsContext';
 import { WindowContext } from '../../context/WindowContext';
 import { Vacation } from '../../models/Vacation';
+import { handleError } from '../../utils/error';
 import VacationCard from './VacationCard';
 
 export default function AllVacations() {
   const [loadingVacations, setLoadingVacations] = useState(true);
 
   const { vacations, setVacations, setFollowedVacations, followedVacations } = useContext(VacationsContext);
-  const { navbarHeight } = useContext(WindowContext);
+  const { navbarHeight, addAlert } = useContext(WindowContext);
   const { loadUser, authState } = useContext(AuthContext);
 
   const fetchVacations = async () => {
@@ -23,8 +24,8 @@ export default function AllVacations() {
         setLoadingVacations(false);
       }
     } catch (error) {
-      console.log(error);
-      alert(error.response.data.message);
+      setLoadingVacations(false);
+      handleError(error, addAlert);
     }
   };
 
@@ -34,8 +35,7 @@ export default function AllVacations() {
       setFollowedVacations(res.data);
       setLoadingVacations(false);
     } catch (error) {
-      console.log(error);
-      alert(error.response.data.message);
+      handleError(error, addAlert);
     }
   };
 

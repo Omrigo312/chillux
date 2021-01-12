@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import RegisterSuccess from './components/auth/RegisterSuccess';
+import Alerts from './components/layout/Alerts';
 import Landing from './components/layout/Landing';
 import Navbar from './components/layout/Navbar';
 import addVacation from './components/vacations/AddVacation';
@@ -33,6 +34,7 @@ export default function App() {
   return (
     <Router>
       <Navbar />
+      <Alerts />
       <Switch>
         <Route exact path="/" component={Landing} />
         <Route exact path="/register" component={Register} />

@@ -348,7 +348,7 @@ $small: 768px;
 }
 
 .enter-left {
-  animation: enter-frame-left 2s;
+  animation: enter-frame-left 1s;
   @keyframes enter-frame-left {
     0% {
       transform: translateX(-50%);
@@ -360,7 +360,7 @@ $small: 768px;
 }
 
 .enter-right {
-  animation: enter-frame-right 2s;
+  animation: enter-frame-right 1s;
   @keyframes enter-frame-right {
     0% {
       transform: translateX(50%);

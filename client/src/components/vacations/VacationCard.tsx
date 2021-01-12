@@ -1,4 +1,14 @@
-import { Button, Card, Grid, IconButton, Tooltip } from '@material-ui/core';
+import {
+  Button,
+  Card,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Grid,
+  IconButton,
+  Tooltip,
+} from '@material-ui/core';
 import React, { useContext, useState } from 'react';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -18,6 +28,7 @@ interface VacationCardProps {
 }
 
 export default function VacationCard({ vacation, index }: VacationCardProps) {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { windowWidth } = useContext(WindowContext);
   const { authState } = useContext(AuthContext);
   const { setVacations, followedVacations } = useContext(VacationsContext);
@@ -38,7 +49,7 @@ export default function VacationCard({ vacation, index }: VacationCardProps) {
 
   const onFollowButtonClicked = async () => {
     if (!authState.isAuthenticated) {
-      return alert('You must be logged in to do that!');
+      return setIsDialogOpen(true);
     }
 
     const config = {
@@ -65,7 +76,7 @@ export default function VacationCard({ vacation, index }: VacationCardProps) {
 
   const onUnfollowButtonClicked = async () => {
     if (!authState.isAuthenticated) {
-      return alert('You must be logged in to do that!');
+      return setIsDialogOpen(true);
     }
 
     const config = {
@@ -180,6 +191,20 @@ export default function VacationCard({ vacation, index }: VacationCardProps) {
           </div>
         </Grid>
       </Grid>
+      <Dialog
+        open={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Use Google's location service?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps
+            are running.
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 }

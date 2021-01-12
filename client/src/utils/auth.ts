@@ -1,4 +1,6 @@
 import axios from 'axios';
+import Alert from '../models/Alert';
+import { handleError } from './error';
 
 export const setToken = (token: string) => {
   if (token) {
@@ -8,7 +10,7 @@ export const setToken = (token: string) => {
   }
 };
 
-export const googleLogin = async (response: any) => {
+export const googleLogin = async (response: any, addAlert: (alert: Alert) => void) => {
   const googleProfile = response.profileObj;
 
   const config = {
@@ -21,7 +23,6 @@ export const googleLogin = async (response: any) => {
   try {
     return await axios.post('http://localhost:3001/api/users/login', body, config);
   } catch (error) {
-    console.log(error);
-    alert(error.response.data.message);
+    handleError(error, addAlert);
   }
 };

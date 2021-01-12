@@ -74,51 +74,45 @@ export default function Login() {
           </div>
         </Link>
         <h2 className="form-header">Log In</h2>
-        <TextField
-          type="email"
-          value={email}
-          required
-          className="input-field"
-          label="Email"
-          variant="outlined"
-          placeholder="Your Email..."
-          name="email"
-          onChange={onFieldChange}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <EmailIcon />
-              </InputAdornment>
-            ),
-          }}
-        />
-        <TextField
-          type={showPassword ? 'text' : 'password'}
-          required
-          value={password}
-          className="input-field"
-          label="Password"
-          variant="outlined"
-          placeholder="Your Password..."
-          name="password"
-          autoComplete="current-password"
-          onChange={onFieldChange}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <LockIcon />
-              </InputAdornment>
-            ),
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton aria-label="toggle password visibility" onClick={onShowPasswordClicked}>
-                  {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                </IconButton>
-              </InputAdornment>
-            ),
-            inputProps: { min: 0, max: 10 },
-          }}
-        />
+        <div className="input-field">
+          <EmailIcon style={{ marginRight: '0.5rem' }} />
+          <TextField
+            style={{ width: '100%' }}
+            type="email"
+            value={email}
+            required
+            label="Email"
+            variant="outlined"
+            placeholder="Your Email..."
+            name="email"
+            onChange={onFieldChange}
+          />
+        </div>
+        <div className="input-field">
+          <LockIcon style={{ marginRight: '0.5rem' }} />
+          <TextField
+            style={{ width: '100%' }}
+            type={showPassword ? 'text' : 'password'}
+            required
+            value={password}
+            label="Password"
+            variant="outlined"
+            placeholder="Your Password..."
+            name="password"
+            autoComplete="current-password"
+            onChange={onFieldChange}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton aria-label="toggle password visibility" onClick={onShowPasswordClicked}>
+                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+              inputProps: { min: 0, max: 10 },
+            }}
+          />
+        </div>
         <Button className="form-button login-button" variant="contained" color="primary" type="submit">
           Login
         </Button>

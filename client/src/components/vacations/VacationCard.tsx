@@ -17,7 +17,7 @@ import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import CreateIcon from '@material-ui/icons/Create';
 import { Link, useHistory } from 'react-router-dom';
 import { Vacation } from '../../models/Vacation';
-import noImage from '../../assets/images/no-image.png';
+import noImage from '../../assets/images/logo-no-image.png';
 import { WindowContext } from '../../context/WindowContext';
 import { AuthContext } from '../../context/AuthContext';
 import axios from 'axios';

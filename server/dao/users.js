@@ -53,10 +53,22 @@ const isUserExists = async (email) => {
   const sql = 'SELECT * FROM users WHERE email =?';
   const parameters = [email];
   try {
-    const result = await connection.executeWithParameters(sql, parameters);
-    return result.length ? true : false;
+    const results = await connection.executeWithParameters(sql, parameters);
+    return results.length ? true : false;
   } catch (error) {
     throw new ServerError(ErrorType.GENERAL_ERROR, email, error);
+  }
+};
+
+const isUserAdmin = async (id) => {
+  const sql = 'SELECT * FROM users WHERE id =?';
+  const parameters = [id];
+  try {
+    const results = await connection.executeWithParameters(sql, parameters);
+    const user = results[0]
+    return user.type === 'ADMIN' ? true : false;
+  } catch (error) {
+    throw new ServerError(ErrorType.GENERAL_ERROR, id, error);
   }
 };
 
@@ -64,5 +76,6 @@ module.exports = {
   login,
   register,
   isUserExists,
+  isUserAdmin,
   googleRegister,
 };

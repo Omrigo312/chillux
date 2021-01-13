@@ -11,7 +11,7 @@ import VacationCard from './VacationCard';
 
 export default function AllVacations() {
   const [loadingVacations, setLoadingVacations] = useState(true);
-  const { loadUser, authState } = useContext(AuthContext);
+  const { authState } = useContext(AuthContext);
 
   const { vacations, setVacations, setFollowedVacations, followedVacations } = useContext(VacationsContext);
   const { navbarHeight, addAlert } = useContext(WindowContext);
@@ -20,9 +20,7 @@ export default function AllVacations() {
     try {
       const res = await axios.get('http://localhost:3001/api/vacations');
       setVacations(res.data);
-      if (!authState.isAuthenticated) {
-        setLoadingVacations(false);
-      }
+      setLoadingVacations(false);
     } catch (error) {
       setLoadingVacations(false);
       handleError(error, addAlert);
@@ -33,21 +31,24 @@ export default function AllVacations() {
     try {
       const res = await axios.get('http://localhost:3001/api/followed-vacations');
       setFollowedVacations(res.data);
-      setLoadingVacations(false);
     } catch (error) {
       handleError(error, addAlert);
     }
   };
 
   useEffect(() => {
-    loadUser();
-    fetchFollowedVacations();
+    if (authState.loading) {
+      return;
+    }
+    if (authState.isAuthenticated) {
+      fetchFollowedVacations();
+    }
     fetchVacations();
-  }, []);
+  }, [authState]);
 
   return (
     <div className="all-vacations" style={{ marginTop: navbarHeight + 15 }}>
-      {loadingVacations ? (
+      {loadingVacations || authState.loading ? (
         <CircularProgress style={{ justifySelf: 'center' }} />
       ) : !vacations.length ? (
         <h1 style={{ justifySelf: 'center' }}>No Vacations Found!</h1>

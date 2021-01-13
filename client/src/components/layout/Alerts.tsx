@@ -16,4 +16,3 @@ export default function Alerts() {
     </section>
   );
 }
-//   <Alert severity="error">This is an error alert — check it out!</Alert>

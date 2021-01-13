@@ -2,6 +2,7 @@
 import React, { useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Login from './components/auth/Login';
+import PrivateRoute from './components/auth/PrivateRoute';
 import Register from './components/auth/Register';
 import RegisterSuccess from './components/auth/RegisterSuccess';
 import Alerts from './components/layout/Alerts';
@@ -41,8 +42,8 @@ export default function App() {
         <Route exact path="/register-success" component={RegisterSuccess} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/vacations" component={AllVacations} />
-        <Route exact path="/add-vacation" component={addVacation} />
-        <Route path="/modify-vacation/:id" component={ModifyVacation} />
+        <PrivateRoute exact path="/add-vacation" component={addVacation} />
+        <PrivateRoute path="/modify-vacation/:id" component={ModifyVacation} />
       </Switch>
     </Router>
   );

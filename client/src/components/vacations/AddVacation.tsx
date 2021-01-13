@@ -8,6 +8,7 @@ import axios from 'axios';
 import Alert from '../../models/Alert';
 import { handleError } from '../../utils/error';
 import { useHistory } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
 
 export default function AddVacation() {
   const [formData, setFormData] = useState({
@@ -19,6 +20,7 @@ export default function AddVacation() {
     endDate: null,
   });
   const { navbarHeight, addAlert } = useContext(WindowContext);
+  const { authState } = useContext(AuthContext);
   const history = useHistory();
 
   const onFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -97,98 +99,102 @@ export default function AddVacation() {
   const { destination, description, imageUrl, price, startDate, endDate } = formData;
 
   return (
-    <div className="add-vacation">
-      <form className="form" style={{ marginTop: navbarHeight + 15 }} autoComplete="off" onSubmit={onSubmit} method="post">
-        <h2 className="form-header">Add New Vacation</h2>
-        <div className="form-duo">
+    <div className="add-vacation" style={{ marginTop: navbarHeight + 15 }}>
+      {authState.userType !== 'ADMIN' ? (
+        <h2>You are not authorized to do that</h2>
+      ) : (
+        <form className="form" autoComplete="off" onSubmit={onSubmit} method="post">
+          <h2 className="form-header">Add New Vacation</h2>
+          <div className="form-duo">
+            <TextField
+              type="text"
+              value={destination}
+              required
+              className="input-field"
+              label="Destination"
+              variant="outlined"
+              name="destination"
+              onChange={onFieldChange}
+              inputProps={{ maxLength: 20 }}
+            />
+            <TextField
+              required
+              type="text"
+              value={price}
+              className="input-field"
+              label="Price"
+              variant="outlined"
+              name="price"
+              InputProps={{ endAdornment: <InputAdornment position="end">$</InputAdornment> }}
+              onChange={onPriceChange}
+            />
+          </div>
           <TextField
             type="text"
-            value={destination}
             required
+            value={description}
             className="input-field"
-            label="Destination"
+            label="Description"
+            multiline
+            rows={8}
+            error={description.length < 10 && description.length > 0}
+            helperText={description.length < 10 && description.length > 0 && 'Too short (<10)'}
             variant="outlined"
-            name="destination"
+            name="description"
             onChange={onFieldChange}
-            inputProps={{ maxLength: 20 }}
+            inputProps={{ minLength: 10, maxLength: 2000 }}
           />
           <TextField
-            required
             type="text"
-            value={price}
+            value={imageUrl}
             className="input-field"
-            label="Price"
+            label="Image URL"
             variant="outlined"
-            name="price"
-            InputProps={{ endAdornment: <InputAdornment position="end">$</InputAdornment> }}
-            onChange={onPriceChange}
+            name="imageUrl"
+            onChange={onFieldChange}
           />
-        </div>
-        <TextField
-          type="text"
-          required
-          value={description}
-          className="input-field"
-          label="Description"
-          multiline
-          rows={8}
-          error={description.length < 10 && description.length > 0}
-          helperText={description.length < 10 && description.length > 0 && 'Too short (<10)'}
-          variant="outlined"
-          name="description"
-          onChange={onFieldChange}
-          inputProps={{ minLength: 10, maxLength: 2000 }}
-        />
-        <TextField
-          type="text"
-          value={imageUrl}
-          className="input-field"
-          label="Image URL"
-          variant="outlined"
-          name="imageUrl"
-          onChange={onFieldChange}
-        />
 
-        <div className="form-duo">
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-              required
-              disableToolbar
-              variant="inline"
-              format="dd/MM/yyyy"
-              margin="normal"
-              label="Start date"
-              placeholder="dd/mm/yyyy"
-              value={startDate}
-              onChange={onStartDateChange}
-              KeyboardButtonProps={{
-                'aria-label': 'change date',
-              }}
-              error={!isStartDateValidated()[0]}
-              helperText={!isStartDateValidated()[0] && isStartDateValidated()[1]}
-            />
-            <KeyboardDatePicker
-              required
-              disableToolbar
-              variant="inline"
-              format="dd/MM/yyyy"
-              margin="normal"
-              label="End date"
-              placeholder="dd/mm/yyyy"
-              value={endDate}
-              onChange={onEndDateChange}
-              KeyboardButtonProps={{
-                'aria-label': 'change date',
-              }}
-              error={!isEndDateValidated()[0]}
-              helperText={!isEndDateValidated()[0] && isEndDateValidated()[1]}
-            />
-          </MuiPickersUtilsProvider>
-        </div>
-        <Button className="form-button login-button" variant="contained" color="primary" type="submit">
-          Create Vacation
-        </Button>
-      </form>
+          <div className="form-duo">
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                required
+                disableToolbar
+                variant="inline"
+                format="dd/MM/yyyy"
+                margin="normal"
+                label="Start date"
+                placeholder="dd/mm/yyyy"
+                value={startDate}
+                onChange={onStartDateChange}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
+                error={!isStartDateValidated()[0]}
+                helperText={!isStartDateValidated()[0] && isStartDateValidated()[1]}
+              />
+              <KeyboardDatePicker
+                required
+                disableToolbar
+                variant="inline"
+                format="dd/MM/yyyy"
+                margin="normal"
+                label="End date"
+                placeholder="dd/mm/yyyy"
+                value={endDate}
+                onChange={onEndDateChange}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
+                error={!isEndDateValidated()[0]}
+                helperText={!isEndDateValidated()[0] && isEndDateValidated()[1]}
+              />
+            </MuiPickersUtilsProvider>
+          </div>
+          <Button className="form-button login-button" variant="contained" color="primary" type="submit">
+            Create Vacation
+          </Button>
+        </form>
+      )}
     </div>
   );
 }

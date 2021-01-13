@@ -17,6 +17,7 @@ const ErrorType = {
   VACATION_NOT_FOUND: new Error(15, 604, 'Cannot delete vacation. Not found.', true),
   INVALID_TOKEN: new Error(16, 605, 'Invalid token', true),
   NO_TOKEN: new Error(17, 605, 'No token', false),
+  AUTHORIZATION: new Error(18, 605, 'You are not an admin', false),
 };
 
 module.exports = ErrorType;

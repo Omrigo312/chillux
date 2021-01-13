@@ -5,6 +5,7 @@ import { setToken } from '../utils/auth';
 
 interface AuthStateInterFace {
   isAuthenticated: boolean;
+  loading: boolean;
   token: string;
   userType: string;
 }
@@ -17,7 +18,7 @@ interface StateInterface {
 }
 
 const initialState: StateInterface = {
-  authState: { isAuthenticated: false, token: '', userType: '' },
+  authState: { isAuthenticated: false, loading: true, token: '', userType: '' },
   login: null,
   logout: null,
   loadUser: null,
@@ -30,14 +31,14 @@ export const AuthProvider = ({ children }: any) => {
 
   const login = (loginData: LoginData) => {
     const { token, userType } = loginData;
-    setAuthState({ isAuthenticated: true, token, userType });
+    setAuthState({ isAuthenticated: true, loading: false, token, userType });
     localStorage.setItem('token', token);
     localStorage.setItem('userType', userType);
     loadUser();
   };
 
   const logout = () => {
-    setAuthState({ isAuthenticated: false, token: '', userType: '' });
+    setAuthState({ isAuthenticated: false, loading: false, token: '', userType: '' });
     localStorage.removeItem('token');
     localStorage.removeItem('userType');
   };
@@ -45,22 +46,18 @@ export const AuthProvider = ({ children }: any) => {
   const loadUser = async () => {
     if (localStorage.token) {
       setToken(localStorage.token);
-      setAuthState({
-        isAuthenticated: true,
-        token: localStorage.getItem('token'),
-        userType: localStorage.getItem('userType'),
-      });
     }
     try {
       await axios.get('http://localhost:3001/api/users');
 
       setAuthState({
+        loading: false,
         isAuthenticated: true,
         token: localStorage.getItem('token'),
         userType: localStorage.getItem('userType'),
       });
     } catch (error) {
-      setAuthState({ isAuthenticated: false, token: '', userType: '' });
+      setAuthState({ isAuthenticated: false, loading: false, token: null, userType: null });
       localStorage.removeItem('token');
       localStorage.removeItem('userType');
     }

@@ -9,7 +9,8 @@ const auth = require('../middleware/auth');
 router.get('/', auth, async (req, res, next) => {
   try {
     if (req.user.id) {
-      return res.json(true);
+      const user = await usersLogic.getUserById(req.user.id);
+      res.json(user);
     }
     return res.json(false);
   } catch (error) {

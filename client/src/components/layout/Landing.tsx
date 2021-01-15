@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Button, CircularProgress } from '@material-ui/core';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { WindowContext, WindowProvider } from '../../context/WindowContext';
@@ -41,26 +41,30 @@ export default function Landing() {
 
         {authState.isAuthenticated ? (
           <Redirect to="/vacations" />
-        ) : isLoading ? (
-          <CircularProgress style={{ justifySelf: 'center' }} />
         ) : (
           <div className="landing">
-            <div className="landing-header">
-              <h2>Chillux</h2>
-              <p> Find your perfect vacation. Treat yourself better. Chillux.</p>
-            </div>
-            <div className="landing-buttons">
-              <Link to="/login">
-                <Button className="login-button" variant="contained" color="primary">
-                  Login
-                </Button>
-              </Link>
-              <Link to="/register">
-                <Button className="register-button" variant="contained" color="primary">
-                  Register
-                </Button>
-              </Link>
-            </div>
+            {isLoading ? (
+              <CircularProgress style={{ justifySelf: 'center' }} />
+            ) : (
+              <Fragment>
+                <div className="landing-header">
+                  <h2>Chillux</h2>
+                  <p> Find your perfect vacation. Treat yourself better. Chillux.</p>
+                </div>
+                <div className="landing-buttons">
+                  <Link to="/login">
+                    <Button className="login-button" variant="contained" color="primary">
+                      Login
+                    </Button>
+                  </Link>
+                  <Link to="/register">
+                    <Button className="register-button" variant="contained" color="primary">
+                      Register
+                    </Button>
+                  </Link>
+                </div>
+              </Fragment>
+            )}
           </div>
         )}
       </div>

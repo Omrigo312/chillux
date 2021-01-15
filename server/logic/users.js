@@ -10,7 +10,6 @@ const generator = require('generate-password');
 const login = async (user) => {
   validateLoginData(user);
 
-  
   const authorizedUser = await usersDao.login(user);
   const isMatch = await bcrypt.compare(user.password, authorizedUser.password);
 
@@ -83,8 +82,14 @@ const validateRegisterData = async (user) => {
   if (!validator.isLength(password, { min: 6, max: 30 })) throw new ServerError(ErrorType.INVALID_PASSWORD);
 };
 
+const getUserById = async (userId) => {
+  const user = await usersDao.getUserById(userId);
+  return user;
+};
+
 module.exports = {
   login,
   googleLogin,
   register,
+  getUserById,
 };

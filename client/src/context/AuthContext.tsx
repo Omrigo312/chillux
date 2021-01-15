@@ -8,6 +8,7 @@ interface AuthStateInterFace {
   loading: boolean;
   token: string;
   userType: string;
+  user: any;
 }
 
 interface StateInterface {
@@ -18,7 +19,7 @@ interface StateInterface {
 }
 
 const initialState: StateInterface = {
-  authState: { isAuthenticated: false, loading: true, token: '', userType: '' },
+  authState: { isAuthenticated: false, loading: true, token: null, userType: null, user: null },
   login: null,
   logout: null,
   loadUser: null,
@@ -29,16 +30,15 @@ export const AuthContext = createContext<StateInterface>(initialState);
 export const AuthProvider = ({ children }: any) => {
   const [authState, setAuthState] = useState(initialState.authState);
 
-  const login = (loginData: LoginData) => {
+  const login = async (loginData: LoginData) => {
     const { token, userType } = loginData;
-    setAuthState({ isAuthenticated: true, loading: false, token, userType });
     localStorage.setItem('token', token);
     localStorage.setItem('userType', userType);
-    loadUser();
+    await loadUser();
   };
 
   const logout = () => {
-    setAuthState({ isAuthenticated: false, loading: false, token: '', userType: '' });
+    setAuthState({ isAuthenticated: false, loading: false, token: null, userType: null, user: null });
     localStorage.removeItem('token');
     localStorage.removeItem('userType');
   };
@@ -48,18 +48,18 @@ export const AuthProvider = ({ children }: any) => {
       setToken(localStorage.token);
     }
     try {
-      await axios.get('http://localhost:3001/api/users');
+      const res = await axios.get('http://localhost:3001/api/users');
+      const user = res.data;
 
       setAuthState({
         loading: false,
         isAuthenticated: true,
         token: localStorage.getItem('token'),
         userType: localStorage.getItem('userType'),
+        user,
       });
     } catch (error) {
-      setAuthState({ isAuthenticated: false, loading: false, token: null, userType: null });
-      localStorage.removeItem('token');
-      localStorage.removeItem('userType');
+      logout();
     }
   };
 

@@ -15,7 +15,7 @@ const ErrorType = {
   INVALID_END_DATE: new Error(13, 603, 'Please include a valid end date.', false),
   INVALID_DURATION: new Error(14, 603, 'End date must be after start date', false),
   VACATION_NOT_FOUND: new Error(15, 604, 'Cannot delete vacation. Not found.', true),
-  INVALID_TOKEN: new Error(16, 605, 'Invalid token', true),
+  INVALID_TOKEN: new Error(16, 605, 'Invalid token', false),
   NO_TOKEN: new Error(17, 605, 'No token', false),
   AUTHORIZATION: new Error(18, 605, 'You are not an admin', false),
 };

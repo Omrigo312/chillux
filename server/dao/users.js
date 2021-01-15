@@ -60,12 +60,23 @@ const isUserExists = async (email) => {
   }
 };
 
+const getUserById = async (userId) => {
+  const sql = 'SELECT email, first_name as firstName, last_name as lastName FROM users WHERE id =?';
+  const parameters = [userId];
+  try {
+    const results = await connection.executeWithParameters(sql, parameters);
+    return results[0];
+  } catch (error) {
+    throw new ServerError(ErrorType.GENERAL_ERROR, email, error);
+  }
+};
+
 const isUserAdmin = async (id) => {
   const sql = 'SELECT * FROM users WHERE id =?';
   const parameters = [id];
   try {
     const results = await connection.executeWithParameters(sql, parameters);
-    const user = results[0]
+    const user = results[0];
     return user.type === 'ADMIN' ? true : false;
   } catch (error) {
     throw new ServerError(ErrorType.GENERAL_ERROR, id, error);
@@ -78,4 +89,5 @@ module.exports = {
   isUserExists,
   isUserAdmin,
   googleRegister,
+  getUserById,
 };

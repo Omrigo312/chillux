@@ -61,15 +61,12 @@ export default function VacationCard({ vacation, index }: VacationCardProps) {
       },
     };
 
-    const updatedFollowers = followers + 1;
     const body = JSON.stringify({ vacationId: id });
-    setFollowersState(updatedFollowers);
-    const body2 = JSON.stringify({ ...vacation, followers: updatedFollowers });
 
     try {
-      await axios.post('http://localhost:3001/api/followed-vacations', body, config);
-      await axios.put(`http://localhost:3001/api/vacations/${id}`, body2, config);
-
+      const res = await axios.post('http://localhost:3001/api/followed-vacations', body, config);
+      const updatedFollowers = res.data.updatedFollowers;
+      setFollowersState(updatedFollowers);
       setIsFollowed(true);
     } catch (error) {
       handleError(error, addAlert);
@@ -81,19 +78,10 @@ export default function VacationCard({ vacation, index }: VacationCardProps) {
       return setIsDialogOpen(true);
     }
 
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-
-    const updatedFollowers = followersState - 1;
-    setFollowersState(updatedFollowers);
-    const body = JSON.stringify({ ...vacation, followers: updatedFollowers });
-
     try {
-      await axios.delete(`http://localhost:3001/api/followed-vacations/${id}`);
-      await axios.put(`http://localhost:3001/api/vacations/${id}`, body, config);
+      const res = await axios.delete(`http://localhost:3001/api/followed-vacations/${id}`);
+      const updatedFollowers = res.data.updatedFollowers;
+      setFollowersState(updatedFollowers);
       setIsFollowed(false);
     } catch (error) {
       handleError(error, addAlert);
@@ -134,8 +122,8 @@ export default function VacationCard({ vacation, index }: VacationCardProps) {
               <div className="vacation-card-header">
                 <h2>{destination}</h2>
                 <p className="vacation-card-date">
-                  {duration(startDateObj, endDateObj)} days, {startDateObj.toLocaleDateString()} -{' '}
-                  {endDateObj.toLocaleDateString()}
+                  {duration(startDateObj, endDateObj)} days, {startDateObj.toLocaleDateString('en-GB')} -{' '}
+                  {endDateObj.toLocaleDateString('en-GB')}
                 </p>
               </div>
 

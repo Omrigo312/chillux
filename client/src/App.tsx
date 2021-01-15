@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Account from './components/auth/Account';
 import Login from './components/auth/Login';
 import PrivateRoute from './components/auth/PrivateRoute';
 import Register from './components/auth/Register';
@@ -44,6 +45,7 @@ export default function App() {
         <Route exact path="/vacations" component={AllVacations} />
         <PrivateRoute exact path="/add-vacation" component={addVacation} />
         <PrivateRoute path="/modify-vacation/:id" component={ModifyVacation} />
+        <PrivateRoute exact path="/account" component={Account} />
       </Switch>
     </Router>
   );

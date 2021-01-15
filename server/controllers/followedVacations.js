@@ -11,8 +11,8 @@ router.post('/', auth, async (req, res, next) => {
   const userId = req.user.id;
 
   try {
-    const newFollowedVacationId = await followedVacationsLogic.followVacation(vacationId, userId);
-    res.json(newFollowedVacationId);
+    const updatedFollowers = await followedVacationsLogic.followVacation(vacationId, userId);
+    res.json({ updatedFollowers });
   } catch (error) {
     return next(error);
   }
@@ -26,8 +26,8 @@ router.delete('/:id', auth, async (req, res, next) => {
   const userId = req.user.id;
 
   try {
-    await followedVacationsLogic.unfollowVacation(vacationId, userId);
-    res.json({ message: 'Vacation unfollowed' });
+    const updatedFollowers = await followedVacationsLogic.unfollowVacation(vacationId, userId);
+    res.json({ updatedFollowers });
   } catch (error) {
     return next(error);
   }

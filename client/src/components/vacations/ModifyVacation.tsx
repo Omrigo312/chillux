@@ -115,7 +115,8 @@ export default function ModifyVacation() {
 
     try {
       await axios.put(`http://localhost:3001/api/vacations/${id}`, body, config);
-      history.push('vacations');
+      addAlert(new Alert('Vacation modified', 'success', 5000));
+      history.push('/vacations');
     } catch (error) {
       handleError(error, addAlert);
     }
@@ -129,7 +130,7 @@ export default function ModifyVacation() {
         <h2>You are not authorized to do that</h2>
       ) : (
         <form className="form" autoComplete="off" onSubmit={onSubmit} method="post">
-          <h2 className="form-header">Add New Vacation</h2>
+          <h2 className="form-header">Modify Vacation</h2>
           <div className="form-duo">
             <TextField
               type="text"

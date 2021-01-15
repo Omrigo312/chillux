@@ -114,7 +114,7 @@ export default function VacationCard({ vacation, index }: VacationCardProps) {
   };
 
   const onModifyButtonClicked = () => {
-    history.push(`modify-vacation/${id}`);
+    history.push(`/modify-vacation/${id}`);
   };
 
   const animationClass = index % 2 === 0 ? 'vacation-card enter-right' : ' vacation-card enter-left';

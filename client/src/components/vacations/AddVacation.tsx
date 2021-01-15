@@ -90,7 +90,8 @@ export default function AddVacation() {
 
     try {
       await axios.post('http://localhost:3001/api/vacations', body, config);
-      history.push('vacations');
+      addAlert(new Alert('Vacation added', 'success', 5000));
+      history.push('/vacations');
     } catch (error) {
       handleError(error, addAlert);
     }

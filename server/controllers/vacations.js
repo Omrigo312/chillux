@@ -66,7 +66,7 @@ router.delete('/:id', auth, admin, async (req, res, next) => {
 // @route     PUT api/vacations/:id
 // @desc      Modify a vacation
 // @access    Admin
-router.put('/:id', auth, admin, async (req, res, next) => {
+router.put('/:id', auth, async (req, res, next) => {
   const id = req.params.id;
   let modifiedVacation = req.body;
   modifiedVacation = {

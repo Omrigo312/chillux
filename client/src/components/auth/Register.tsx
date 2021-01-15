@@ -60,7 +60,7 @@ export default function Register() {
 
     try {
       await axios.post('http://localhost:3001/api/users', body, config);
-      history.push('register-success');
+      history.push('/register-success');
     } catch (error) {
       handleError(error, addAlert);
     }

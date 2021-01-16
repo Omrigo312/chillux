@@ -8,11 +8,9 @@ const followVacation = async (vacationId, userId) => {
   const parameters = [vacationId, userId];
 
   try {
-    const followVacationResult = await connection.executeWithParameters(sql, parameters);
-
-    return followVacationResult.insertId;
+    await connection.executeWithParameters(sql, parameters);
   } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify({ vacationId, userId }), error);
+    throw new ServerError(ErrorType.GENERAL_ERROR, `Error with user (${userId}) following vacation (${vacationId})`, error);
   }
 };
 
@@ -23,7 +21,11 @@ const unfollowVacation = async (vacationId, userId) => {
   try {
     await connection.executeWithParameters(sql, parameters);
   } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify({ vacationId, userId }), error);
+    throw new ServerError(
+      ErrorType.GENERAL_ERROR,
+      `Error with user (${userId}) unfollowing vacation (${vacationId})`,
+      error
+    );
   }
 };
 
@@ -39,7 +41,7 @@ const getFollowedVacations = async (userId) => {
     const followedVacations = await connection.executeWithParameters(sql, parameters);
     return followedVacations;
   } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify({ userId }), error);
+    throw new ServerError(ErrorType.GENERAL_ERROR, `Error with getting all vacations followed by user (${userId})`, error);
   }
 };
 
@@ -50,7 +52,7 @@ const removeAllFollowedByUser = async (userId) => {
   try {
     await connection.executeWithParameters(sql, parameters);
   } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR, 'Error with removing all followed vacations by user', error);
+    throw new ServerError(ErrorType.GENERAL_ERROR, `Error with removing all followed vacations by user (${userId}`, error);
   }
 };
 

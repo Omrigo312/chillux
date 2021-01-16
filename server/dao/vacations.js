@@ -10,20 +10,20 @@ const getAllVacations = async () => {
     const allVacations = await connection.execute(sql);
     return allVacations;
   } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR, 'Error while retrieving vacations', error);
+    throw new ServerError(ErrorType.GENERAL_ERROR, 'Error while retrieving all vacations', error);
   }
 };
 
-const getVacationById = async (id) => {
+const getVacationById = async (vacationId) => {
   const sql =
     'SELECT id, description, destination, price, followers, image_url as imageUrl, start_date as startDate, end_date as endDate FROM vacations WHERE id=?';
-  const parameters = [id];
+  const parameters = [vacationId];
 
   try {
     const vacation = await connection.executeWithParameters(sql, parameters);
     return vacation[0];
   } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR, `Error with retrieving vacation with id=${id}`, error);
+    throw new ServerError(ErrorType.GENERAL_ERROR, `Error with retrieving vacation with id=${vacationId}`, error);
   }
 };
 
@@ -34,31 +34,27 @@ const addVacation = async (newVacation) => {
   const parameters = [description, destination, imageUrl, price, followers, startDate, endDate];
 
   try {
-    const addVacationResult = await connection.executeWithParameters(sql, parameters);
-
-    return addVacationResult.insertId;
+    await connection.executeWithParameters(sql, parameters);
   } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(newVacation), error);
+    throw new ServerError(ErrorType.GENERAL_ERROR, `Error with adding vacation: ${JSON.stringify(newVacation)}`, error);
   }
 };
 
-const modifyVacation = async (id, modifiedVacation) => {
+const modifyVacation = async (vacationId, modifiedVacation) => {
   const { description, destination, imageUrl, price, followers, startDate, endDate } = modifiedVacation;
   const sql = `UPDATE vacations SET description=?, destination=?, image_url=?, price=?, followers=?, start_date=?, end_date=? WHERE id=?`;
-  const parameters = [description, destination, imageUrl, price, followers, startDate, endDate, id];
+  const parameters = [description, destination, imageUrl, price, followers, startDate, endDate, vacationId];
 
   try {
-    const modifyVacationResult = await connection.executeWithParameters(sql, parameters);
-
-    return modifyVacationResult.insertId;
+    await connection.executeWithParameters(sql, parameters);
   } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(modifiedVacation), error);
+    throw new ServerError(ErrorType.GENERAL_ERROR, `Error with modifying vacation (${vacationId})`, error);
   }
 };
 
-const deleteVacation = async (id) => {
+const deleteVacation = async (vacationId) => {
   const sql = 'DELETE FROM vacations WHERE id=?';
-  const parameters = [id];
+  const parameters = [vacationId];
 
   try {
     await connection.executeWithParameters(sql, parameters);
@@ -67,18 +63,18 @@ const deleteVacation = async (id) => {
     const allVacations = await connection.execute(getAllSql);
     return allVacations;
   } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR, 'Error with deleting vacation.', error);
+    throw new ServerError(ErrorType.GENERAL_ERROR, `Error with deleting vacation (${vacationId}).`, error);
   }
 };
 
-const isVacationExists = async (id) => {
+const isVacationExists = async (vacationId) => {
   const sql = 'SELECT * FROM vacations WHERE id =?';
-  const parameters = [id];
+  const parameters = [vacationId];
   try {
     const result = await connection.executeWithParameters(sql, parameters);
     return result.length ? true : false;
   } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR, `Vacation id: ${id}`, error);
+    throw new ServerError(ErrorType.GENERAL_ERROR, `Error with checking if vacation (${vacationId}) exists`, error);
   }
 };
 

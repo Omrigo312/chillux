@@ -34,7 +34,6 @@ const confirmPassword = async (userId, password) => {
   if (!isMatch) {
     throw new ServerError(ErrorType.UNAUTHORIZED);
   }
-  return true;
 };
 
 const googleLogin = async (user) => {
@@ -80,9 +79,7 @@ const register = async (newUser) => {
   const salt = await bcrypt.genSalt();
   newUser.password = await bcrypt.hash(newUser.password, salt);
 
-  const newUserId = await usersDao.register(newUser);
-
-  return newUserId;
+  await usersDao.register(newUser);
 };
 
 const validateRegisterData = async (user) => {
@@ -114,7 +111,7 @@ const getUserById = async (userId) => {
 };
 
 const deleteUser = async (userId) => {
-  await usersDao.removeUser(userId);
+  await usersDao.deleteUser(userId);
 };
 
 module.exports = {

@@ -21,7 +21,7 @@ const unfollowVacation = async (vacationId, userId) => {
 
 const getFollowedVacations = async (userId) => {
   const followedVacations = await followedVacationsDao.getFollowedVacations(userId);
-  return followedVacations;
+  return followedVacations.map((vacation) => (vacation = vacation.id));
 };
 
 module.exports = {

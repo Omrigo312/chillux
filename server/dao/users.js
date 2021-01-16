@@ -11,7 +11,7 @@ const login = async (user) => {
   try {
     loginResult = await connection.executeWithParameters(sql, parameters);
   } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(user), error);
+    throw new ServerError(ErrorType.GENERAL_ERROR, `Error with user login: ${JSON.stringify(user)}`, error);
   }
 
   // User does not exist or incorrect password
@@ -28,11 +28,9 @@ const register = async (newUser) => {
   const parameters = [email, password, type];
 
   try {
-    const registerResult = await connection.executeWithParameters(sql, parameters);
-
-    return registerResult.insertId;
+    await connection.executeWithParameters(sql, parameters);
   } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(newUser), error);
+    throw new ServerError(ErrorType.GENERAL_ERROR, `Error with user registration: ${JSON.stringify(newUser)}`, error);
   }
 };
 
@@ -46,7 +44,7 @@ const googleRegister = async (newUser) => {
 
     return registerResult.insertId;
   } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(newUser), error);
+    throw new ServerError(ErrorType.GENERAL_ERROR, `Error with google registration: ${JSON.stringify(newUser)}`, error);
   }
 };
 
@@ -57,7 +55,7 @@ const isUserExists = async (email) => {
     const results = await connection.executeWithParameters(sql, parameters);
     return results.length ? true : false;
   } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR, email, error);
+    throw new ServerError(ErrorType.GENERAL_ERROR, `Error with checking if user: ${email} exists`, error);
   }
 };
 
@@ -73,15 +71,15 @@ const getUserById = async (userId) => {
   }
 };
 
-const isUserAdmin = async (id) => {
+const isUserAdmin = async (userId) => {
   const sql = 'SELECT * FROM users WHERE id =?';
-  const parameters = [id];
+  const parameters = [userId];
   try {
     const results = await connection.executeWithParameters(sql, parameters);
     const user = results[0];
     return user.type === 'ADMIN' ? true : false;
   } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR, `Error with checking if user: ${id} is admin`, error);
+    throw new ServerError(ErrorType.GENERAL_ERROR, `Error with checking if user (${userId}) is admin`, error);
   }
 };
 
@@ -92,7 +90,7 @@ const changePassword = async (userId, newPassword) => {
   try {
     await connection.executeWithParameters(sql, parameters);
   } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR, 'Error with changing user password', error);
+    throw new ServerError(ErrorType.GENERAL_ERROR, `Error with changing user (${userId}) password`, error);
   }
 };
 
@@ -104,7 +102,7 @@ const updateName = async (userId, fullName) => {
   try {
     await connection.executeWithParameters(sql, parameters);
   } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR, 'Error with updating user name', error);
+    throw new ServerError(ErrorType.GENERAL_ERROR, `Error with updating user (${userId}) name`, error);
   }
 };
 
@@ -115,11 +113,11 @@ const getUserPassword = async (userId) => {
     const res = await connection.executeWithParameters(sql, parameters);
     return res[0];
   } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR, 'Error with getting user password', error);
+    throw new ServerError(ErrorType.GENERAL_ERROR, `Error with getting user (${userId}) password`, error);
   }
 };
 
-const removeUser = async (userId) => {
+const deleteUser = async (userId) => {
   await followedVacationsDao.removeAllFollowedByUser(userId);
 
   const sql = 'DELETE FROM users WHERE id=?';
@@ -127,7 +125,7 @@ const removeUser = async (userId) => {
   try {
     await connection.executeWithParameters(sql, parameters);
   } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR, `Error with deleting user`, error);
+    throw new ServerError(ErrorType.GENERAL_ERROR, `Error with deleting user (${userId})`, error);
   }
 };
 
@@ -141,5 +139,5 @@ module.exports = {
   changePassword,
   updateName,
   getUserPassword,
-  removeUser,
+  deleteUser,
 };

@@ -20,9 +20,9 @@ router.get('/', async (req, res, next) => {
 // @desc      Get vacations by id
 // @access    Public
 router.get('/:id', async (req, res, next) => {
-  const id = req.params.id;
+  const vacationId = req.params.id;
   try {
-    const vacation = await vacationsLogic.getVacationById(id);
+    const vacation = await vacationsLogic.getVacationById(vacationId);
     res.json(vacation);
   } catch (error) {
     return next(error);
@@ -42,8 +42,8 @@ router.post('/', auth, admin, async (req, res, next) => {
   };
 
   try {
-    const newVacationId = await vacationsLogic.addVacation(newVacation);
-    res.json(newVacationId);
+    await vacationsLogic.addVacation(newVacation);
+    res.send('Vacation created');
   } catch (error) {
     return next(error);
   }
@@ -53,10 +53,10 @@ router.post('/', auth, admin, async (req, res, next) => {
 // @desc      Delete a vacation
 // @access    Admin
 router.delete('/:id', auth, admin, async (req, res, next) => {
-  const id = req.params.id;
+  const vacationId = req.params.id;
 
   try {
-    const allVacations = await vacationsLogic.deleteVacation(id);
+    const allVacations = await vacationsLogic.deleteVacation(vacationId);
     res.json(allVacations);
   } catch (error) {
     return next(error);
@@ -67,7 +67,7 @@ router.delete('/:id', auth, admin, async (req, res, next) => {
 // @desc      Modify a vacation
 // @access    Admin
 router.put('/:id', auth, admin, async (req, res, next) => {
-  const id = req.params.id;
+  const vacationId = req.params.id;
   let modifiedVacation = req.body;
   modifiedVacation = {
     ...modifiedVacation,
@@ -76,8 +76,8 @@ router.put('/:id', auth, admin, async (req, res, next) => {
   };
 
   try {
-    const modifyResponse = await vacationsLogic.modifyVacation(id, modifiedVacation);
-    res.json(modifyResponse);
+    await vacationsLogic.modifyVacation(vacationId, modifiedVacation);
+    res.send('Vacation modified');
   } catch (error) {
     return next(error);
   }

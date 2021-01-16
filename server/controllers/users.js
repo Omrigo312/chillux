@@ -26,8 +26,8 @@ router.post('/', async (req, res, next) => {
   newUser = { ...newUser, type: 'USER' };
 
   try {
-    const newUserId = await usersLogic.register(newUser);
-    res.json(newUserId);
+    await usersLogic.register(newUser);
+    res.send('User registered');
   } catch (error) {
     return next(error);
   }

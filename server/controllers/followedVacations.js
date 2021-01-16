@@ -40,7 +40,7 @@ router.get('/', auth, async (req, res, next) => {
   const userId = req.user.id;
   try {
     const followedVacations = await followedVacationsLogic.getFollowedVacations(userId);
-    res.json(followedVacations.map((vacation) => (vacation = vacation.id)));
+    res.json(followedVacations);
   } catch (error) {
     return next(error);
   }

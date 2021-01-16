@@ -8,32 +8,30 @@ const getAllVacations = async () => {
   return allVacations;
 };
 
-const getVacationById = async (id) => {
-  const vacation = await vacationsDao.getVacationById(id);
+const getVacationById = async (vacationId) => {
+  const vacation = await vacationsDao.getVacationById(vacationId);
   return vacation;
 };
 
 const addVacation = async (newVacation) => {
   validateVacationData(newVacation);
 
-  const newVacationId = await vacationsDao.addVacation(newVacation);
-  return newVacationId;
+  await vacationsDao.addVacation(newVacation);
 };
 
-const deleteVacation = async (id) => {
-  if (!(await vacationsDao.isVacationExists(id))) throw new ServerError(ErrorType.VACATION_NOT_FOUND);
+const deleteVacation = async (vacationId) => {
+  if (!(await vacationsDao.isVacationExists(vacationId))) throw new ServerError(ErrorType.VACATION_NOT_FOUND);
 
-  const allVacations = await vacationsDao.deleteVacation(id);
+  const allVacations = await vacationsDao.deleteVacation(vacationId);
   return allVacations;
 };
 
-const modifyVacation = async (id, modifiedVacation) => {
-  if (!(await vacationsDao.isVacationExists(id))) throw new ServerError(ErrorType.VACATION_NOT_FOUND);
+const modifyVacation = async (vacationId, modifiedVacation) => {
+  if (!(await vacationsDao.isVacationExists(vacationId))) throw new ServerError(ErrorType.VACATION_NOT_FOUND);
 
   validateVacationData(modifiedVacation);
 
-  const modifiedVacationId = await vacationsDao.modifyVacation(id, modifiedVacation);
-  return modifiedVacationId;
+  await vacationsDao.modifyVacation(vacationId, modifiedVacation);
 };
 
 const validateVacationData = (vacation) => {

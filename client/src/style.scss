@@ -28,6 +28,15 @@ $small: 768px;
     font-size: 2em;
   }
 
+  .form-header-small {
+    text-align: center;
+    color: #615858;
+    padding-bottom: .5em;
+    border-bottom: solid 1px #e5e5e5;
+    margin-top: .5em;
+    font-size: 1.5em;
+  }
+
   .input-field {
     margin-top: 1.5rem;
   }
@@ -274,6 +283,20 @@ video {
   justify-content: center;
   align-items: center;
 
+  .google-card {
+    display: grid;
+    row-gap: 0.7rem;
+    padding: 2rem 2rem 2.5rem 2rem;
+    margin: 1rem;
+    justify-content: center;
+    text-align: center;
+    width: 60%;
+
+    h2 {
+      margin-bottom: 2rem;
+    }
+  }
+
   h1 {
     text-align: center;
   }
@@ -288,7 +311,7 @@ video {
 
   @media (max-width: $small) {
     h1,
-    .form-header {
+    .form-header-small {
       font-size: 1.4em;
     }
   }

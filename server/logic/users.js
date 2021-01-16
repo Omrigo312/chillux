@@ -27,6 +27,16 @@ const login = async (user) => {
   return { token, userType: authorizedUser.type };
 };
 
+const confirmPassword = async (userId, password) => {
+  const authorizedUser = await usersDao.getUserPassword(userId);
+  const isMatch = await bcrypt.compare(password, authorizedUser.password);
+
+  if (!isMatch) {
+    throw new ServerError(ErrorType.UNAUTHORIZED);
+  }
+  return true;
+};
+
 const googleLogin = async (user) => {
   if (!(await usersDao.isUserExists(user.email))) {
     const newUser = {
@@ -82,6 +92,22 @@ const validateRegisterData = async (user) => {
   if (!validator.isLength(password, { min: 6, max: 30 })) throw new ServerError(ErrorType.INVALID_PASSWORD);
 };
 
+const changePassword = async (userId, newPassword) => {
+  if (!validator.isLength(newPassword, { min: 6, max: 30 })) throw new ServerError(ErrorType.INVALID_PASSWORD);
+
+  const salt = await bcrypt.genSalt();
+  newPassword = await bcrypt.hash(newPassword, salt);
+
+  await usersDao.changePassword(userId, newPassword);
+};
+
+const updateName = async (userId, fullName) => {
+  if (!validator.isLength(fullName.firstName, { min: 0, max: 25 })) throw new ServerError(ErrorType.INVALID_NAME);
+  if (!validator.isLength(fullName.lastName, { min: 0, max: 25 })) throw new ServerError(ErrorType.INVALID_NAME);
+
+  await usersDao.updateName(userId, fullName);
+};
+
 const getUserById = async (userId) => {
   const user = await usersDao.getUserById(userId);
   return user;
@@ -92,4 +118,7 @@ module.exports = {
   googleLogin,
   register,
   getUserById,
+  changePassword,
+  updateName,
+  confirmPassword,
 };

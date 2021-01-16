@@ -114,7 +114,7 @@ export default function Login() {
                   </IconButton>
                 </InputAdornment>
               ),
-              inputProps: {  max: 30 },
+              inputProps: { maxLength: 30 },
             }}
           />
         </div>

@@ -1,136 +1,276 @@
-import { Button, IconButton, InputAdornment, TextField } from '@material-ui/core';
-import GoogleLogin from 'react-google-login';
-import { Link, Redirect } from 'react-router-dom';
-import React, { ChangeEvent, FormEvent, Fragment, useContext, useEffect, useState } from 'react';
+import {
+  Button,
+  Card,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+  InputAdornment,
+  TextField,
+} from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
+import React, { ChangeEvent, FormEvent, Fragment, useContext, useState } from 'react';
 import LockIcon from '@material-ui/icons/Lock';
-import EmailIcon from '@material-ui/icons/Email';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
-import LoginData from '../../models/LoginData';
-import logo from '../../assets/images/logo-circle-transparent.png';
-import { fadingBackground } from '../../utils/window';
-import { googleLogin } from '../../utils/auth';
 import { WindowContext } from '../../context/WindowContext';
 import Alert from '../../models/Alert';
 import { handleError } from '../../utils/error';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import WarningIcon from '@material-ui/icons/Warning';
+import PasswordStrengthBar from 'react-password-strength-bar';
 
 export default function Account() {
-  const { authState } = useContext(AuthContext);
+  const { authState, loadUser } = useContext(AuthContext);
   const { navbarHeight, windowWidth } = useContext(WindowContext);
-  const { email, firstName, lastName } = authState.user;
+  const { addAlert } = useContext(WindowContext);
 
-  const [formData, setFormData] = useState({
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState('');
+  const history = useHistory();
+
+  const { email, firstName, lastName, externalId } = authState.user;
+
+  const [passwordFormData, setPasswordFormData] = useState({
     password: '',
     passwordRepeat: '',
-    firstNameForm: firstName,
-    lastNameForm: lastName,
   });
-
+  const [nameFormData, setNameFormData] = useState({
+    firstNameForm: firstName || '',
+    lastNameForm: lastName || '',
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordRepeat, setShowPasswordRepeat] = useState(false);
-  const { password, passwordRepeat, firstNameForm, lastNameForm } = formData;
+  const [formSelected, setFormSelected] = useState('');
+  const [passwordIncorrect, setPasswordIncorrect] = useState(false);
+  const { password, passwordRepeat } = passwordFormData;
+  const { firstNameForm, lastNameForm } = nameFormData;
 
   const onShowPasswordClicked = () => setShowPassword(!showPassword);
   const onShowPasswordRepeatClicked = () => setShowPasswordRepeat(!showPasswordRepeat);
 
-  const onFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
+  const onPasswordFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setPasswordFormData({ ...passwordFormData, [event.target.name]: event.target.value });
+  };
+
+  const onNameFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setNameFormData({ ...nameFormData, [event.target.name]: event.target.value });
+  };
+
+  const checkPassword = async () => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const body = JSON.stringify({ password: currentPassword });
+
+    try {
+      await axios.post('http://localhost:3001/api/users/confirm-password', body, config);
+    } catch (error) {
+      console.log(error);
+      setPasswordIncorrect(true);
+      return addAlert(new Alert('Password is incorrect', 'error', 3000));
+    }
+
+    switch (formSelected) {
+      case 'name':
+        return nameFormRequest();
+      case 'password':
+        return passwordFormRequest();
+    }
   };
 
   const deleteAccount = () => {};
 
-  const onSubmit = () => { 
-    
+  const nameFormRequest = async () => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const { firstNameForm: firstName, lastNameForm: lastName } = nameFormData;
+
+    const body = JSON.stringify({ firstName, lastName });
+
+    try {
+      await axios.put('http://localhost:3001/api/users/name', body, config);
+      history.push('/vacations');
+      loadUser();
+      addAlert(new Alert('Name updated!', 'success', 5000));
+    } catch (error) {
+      handleError(error, addAlert);
+    }
   };
-  
+  const passwordFormRequest = async () => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    const body = JSON.stringify(passwordFormData);
+
+    try {
+      await axios.put('http://localhost:3001/api/users/password', body, config);
+      history.push('/vacations');
+      addAlert(new Alert('Password updated!', 'success', 5000));
+      loadUser();
+    } catch (error) {
+      handleError(error, addAlert);
+    }
+  };
+
+  const onNameFormSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    setFormSelected('name');
+    clearFieldState();
+  };
+
+  const onPasswordFormSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+
+    if (password !== passwordRepeat) {
+      return addAlert(new Alert('Passwords do not match!', 'error', 3000));
+    }
+
+    setFormSelected('password');
+    clearFieldState();
+  };
+
+  const clearFieldState = () => {
+    setIsDialogOpen(true);
+    setPasswordIncorrect(false);
+    setCurrentPassword('');
+  };
+
   const marginTop = windowWidth < 768 ? navbarHeight + 25 : 0;
+  const passMargin = password.length > 0 ? '5px' : '1.5rem';
 
   return (
     <div className="account">
-      <h1 style={{ marginTop }}>Update Your Account Information:</h1>
-      <form className="form" autoComplete="on" onSubmit={onSubmit} method="post">
-        {firstName && lastName ? (
-          <h2 className="form-header">{`${firstName} ${lastName}`}</h2>
-        ) : (
-          <h2 className="form-header">{email}</h2>
-        )}
-        <div className="input-field-icon">
-          <AccountCircleIcon style={{ marginRight: '0.5rem' }} />
-          <div className="form-duo" style={{ width: '100%' }}>
-            <TextField
-              type="text"
-              value={firstNameForm}
-              label="First name"
-              variant="outlined"
-              placeholder="Add your first name"
-              name="firstNameForm"
-              onChange={onFieldChange}
-            />
-            <TextField
-              type="text"
-              value={lastNameForm}
-              label="Last name"
-              variant="outlined"
-              placeholder="Add your last name"
-              name="lastNameForm"
-              onChange={onFieldChange}
-            />
-          </div>
-        </div>
-        <div className="input-field-icon">
-          <LockIcon style={{ marginRight: '0.5rem' }} />
-          <TextField
-            style={{ width: '100%' }}
-            type={showPassword ? 'text' : 'password'}
-            value={password}
-            label="New password"
-            variant="outlined"
-            placeholder="Choose a new password..."
-            name="password"
-            onChange={onFieldChange}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton aria-label="toggle password visibility" onClick={onShowPasswordClicked}>
-                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-              inputProps: { min: 6, max: 30 },
-            }}
-          />
-        </div>
-        <div className="input-field-icon">
-          <LockIcon style={{ marginRight: '0.5rem' }} />
-          <TextField
-            style={{ width: '100%' }}
-            type={showPasswordRepeat ? 'text' : 'password'}
-            value={passwordRepeat}
-            label="Repeat new password"
-            variant="outlined"
-            placeholder="Repeat your new password"
-            name="passwordRepeat"
-            onChange={onFieldChange}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton aria-label="toggle password visibility" onClick={onShowPasswordRepeatClicked}>
-                    {showPasswordRepeat ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-              inputProps: { max: 30 },
-            }}
-          />
-        </div>
-        <Button className="form-button login-button" variant="contained" color="primary" type="submit">
-          Update information
-        </Button>
-      </form>
+      {!externalId ? (
+        <Fragment>
+          {firstName && lastName ? (
+            <h1 style={{ marginTop }}>{`${firstName} ${lastName}`}</h1>
+          ) : (
+            <h1 style={{ marginTop }}>{email}</h1>
+          )}
+
+          <form className="form" autoComplete="on" onSubmit={onNameFormSubmit} method="post">
+            <h2 className="form-header-small">Add \ Update Your Name</h2>
+            <div className="input-field-icon">
+              <AccountCircleIcon style={{ marginRight: '0.5rem' }} />
+              <div className="form-duo" style={{ width: '100%' }}>
+                <TextField
+                  type="text"
+                  required
+                  value={firstNameForm}
+                  label="First name"
+                  variant="outlined"
+                  placeholder="Add your first name"
+                  name="firstNameForm"
+                  onChange={onNameFieldChange}
+                  inputProps={{ maxLength: 25 }}
+                />
+                <TextField
+                  type="text"
+                  required
+                  value={lastNameForm}
+                  label="Last name"
+                  variant="outlined"
+                  placeholder="Add your last name"
+                  name="lastNameForm"
+                  onChange={onNameFieldChange}
+                  inputProps={{ maxLength: 25 }}
+                />
+              </div>
+            </div>
+
+            <Button className="form-button login-button" variant="contained" color="primary" type="submit">
+              Update Name
+            </Button>
+          </form>
+
+          <form className="form" autoComplete="on" onSubmit={onPasswordFormSubmit} method="post">
+            <h2 className="form-header-small">Change Your Password</h2>
+
+            <div className="input-field-icon">
+              <LockIcon style={{ marginRight: '0.5rem' }} />
+              <TextField
+                style={{ width: '100%' }}
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                required
+                label="New password"
+                variant="outlined"
+                autoComplete="new-password"
+                placeholder="Choose a new password..."
+                name="password"
+                error={password.length < 6 && password.length > 0}
+                onChange={onPasswordFieldChange}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton aria-label="toggle password visibility" onClick={onShowPasswordClicked}>
+                        {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                  inputProps: { minLength: 6, maxLength: 30 },
+                }}
+              />
+            </div>
+            {password.length > 0 && <PasswordStrengthBar minLength={6} password={password} />}
+            <div className="input-field-icon" style={{ marginTop: passMargin }}>
+              <LockIcon style={{ marginRight: '0.5rem' }} />
+              <TextField
+                style={{ width: '100%' }}
+                type={showPasswordRepeat ? 'text' : 'password'}
+                value={passwordRepeat}
+                required
+                label="Repeat new password"
+                variant="outlined"
+                placeholder="Repeat your new password"
+                name="passwordRepeat"
+                error={password !== passwordRepeat}
+                onChange={onPasswordFieldChange}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton aria-label="toggle password visibility" onClick={onShowPasswordRepeatClicked}>
+                        {showPasswordRepeat ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                  inputProps: { minLength: 6, maxLength: 30 },
+                }}
+              />
+            </div>
+            <Button className="form-button login-button" variant="contained" color="primary" type="submit">
+              Change password
+            </Button>
+          </form>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <h1 style={{ marginTop }}>You Are Logged In Using Google</h1>
+          <Card className="google-card">
+            <h2>Google Credentials:</h2>
+            <h3>Email:</h3>
+            <em>{email}</em>
+            <h3>Full Name:</h3>
+            <em>
+              {firstName} {lastName}
+            </em>
+          </Card>
+        </Fragment>
+      )}
       <Button
         className="form-button delete-account"
         variant="contained"
@@ -141,6 +281,32 @@ export default function Account() {
       >
         Delete Account
       </Button>
+      <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">Password Required</DialogTitle>
+        <DialogContent>
+          <DialogContentText>In order to confirm the changes, please insert your password.</DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            value={currentPassword}
+            error={passwordIncorrect}
+            onChange={(event: ChangeEvent<HTMLInputElement>) => {
+              setCurrentPassword(event.target.value);
+            }}
+            label="Current Password"
+            type="password"
+            fullWidth
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setIsDialogOpen(false)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={checkPassword} color="primary">
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

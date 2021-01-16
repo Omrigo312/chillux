@@ -61,7 +61,8 @@ const isUserExists = async (email) => {
 };
 
 const getUserById = async (userId) => {
-  const sql = 'SELECT email, first_name as firstName, last_name as lastName FROM users WHERE id =?';
+  const sql =
+    'SELECT email, first_name as firstName, last_name as lastName, external_id as externalId FROM users WHERE id =?';
   const parameters = [userId];
   try {
     const results = await connection.executeWithParameters(sql, parameters);
@@ -83,6 +84,40 @@ const isUserAdmin = async (id) => {
   }
 };
 
+const changePassword = async (userId, newPassword) => {
+  const sql = `UPDATE users SET password=? WHERE id=?`;
+  const parameters = [newPassword, userId];
+
+  try {
+    await connection.executeWithParameters(sql, parameters);
+  } catch (error) {
+    throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(newPassword), error);
+  }
+};
+
+const updateName = async (userId, fullName) => {
+  const { firstName, lastName } = fullName;
+  const sql = `UPDATE users SET first_name=?, last_name=? WHERE id=?`;
+  const parameters = [firstName, lastName, userId];
+
+  try {
+    await connection.executeWithParameters(sql, parameters);
+  } catch (error) {
+    throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(newPassword), error);
+  }
+};
+
+const getUserPassword = async (userId) => {
+  const sql = 'SELECT password FROM users WHERE id =?';
+  const parameters = [userId];
+  try {
+    const res = await connection.executeWithParameters(sql, parameters);
+    return res[0];
+  } catch (error) {
+    throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(newPassword), error);
+  }
+};
+
 module.exports = {
   login,
   register,
@@ -90,4 +125,7 @@ module.exports = {
   isUserAdmin,
   googleRegister,
   getUserById,
+  changePassword,
+  updateName,
+  getUserPassword,
 };

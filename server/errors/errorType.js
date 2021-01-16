@@ -6,6 +6,7 @@ const ErrorType = {
   UNAUTHORIZED: new Error(3, 401, 'Email or password is incorrect.', false),
   INVALID_EMAIL: new Error(4, 602, 'Please include a valid email.', false),
   EMPTY_PASSWORD: new Error(5, 602, 'A password is required.', false),
+  INVALID_NAME: new Error(19, 602, 'First name and last name must be under 25 characters', false),
   INVALID_PASSWORD: new Error(6, 602, 'Your password must be 6-30 characters long.', false),
   DESCRIPTION_TOO_SHORT: new Error(7, 603, 'Description must be at least 10 characters long.', false),
   INVALID_DESTINATION: new Error(9, 603, 'Please include a destination.', false),

@@ -25,7 +25,7 @@ import WarningIcon from '@material-ui/icons/Warning';
 import PasswordStrengthBar from 'react-password-strength-bar';
 
 export default function Account() {
-  const { authState, loadUser } = useContext(AuthContext);
+  const { authState, loadUser, logout } = useContext(AuthContext);
   const { navbarHeight, windowWidth } = useContext(WindowContext);
   const { addAlert } = useContext(WindowContext);
 
@@ -45,8 +45,9 @@ export default function Account() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordRepeat, setShowPasswordRepeat] = useState(false);
-  const [formSelected, setFormSelected] = useState('');
+  const [requestName, setRequestName] = useState('');
   const [passwordIncorrect, setPasswordIncorrect] = useState(false);
+  const [isDangerDialog, setIsDangerDialog] = useState(false);
   const { password, passwordRepeat } = passwordFormData;
   const { firstNameForm, lastNameForm } = nameFormData;
 
@@ -78,15 +79,33 @@ export default function Account() {
       return addAlert(new Alert('Password is incorrect', 'error', 3000));
     }
 
-    switch (formSelected) {
+    switch (requestName) {
       case 'name':
         return nameFormRequest();
       case 'password':
         return passwordFormRequest();
+      case 'delete':
+        return deleteRequest();
     }
   };
 
-  const deleteAccount = () => {};
+  const deleteAccount = () => {
+    clearFieldState();
+    setIsDialogOpen(true);
+    setIsDangerDialog(true);
+    setRequestName('delete');
+  };
+
+  const deleteRequest = async () => {
+    try {
+      await axios.delete('http://localhost:3001/api/users');
+      logout();
+      history.push('/');
+      addAlert(new Alert('Account Deleted', 'success', 5000));
+    } catch (error) {
+      handleError(error, addAlert);
+    }
+  };
 
   const nameFormRequest = async () => {
     const config = {
@@ -101,8 +120,8 @@ export default function Account() {
 
     try {
       await axios.put('http://localhost:3001/api/users/name', body, config);
-      history.push('/vacations');
       loadUser();
+      history.push('/vacations');
       addAlert(new Alert('Name updated!', 'success', 5000));
     } catch (error) {
       handleError(error, addAlert);
@@ -118,9 +137,9 @@ export default function Account() {
 
     try {
       await axios.put('http://localhost:3001/api/users/password', body, config);
+      loadUser();
       history.push('/vacations');
       addAlert(new Alert('Password updated!', 'success', 5000));
-      loadUser();
     } catch (error) {
       handleError(error, addAlert);
     }
@@ -128,8 +147,9 @@ export default function Account() {
 
   const onNameFormSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    setFormSelected('name');
+    setRequestName('name');
     clearFieldState();
+    setIsDialogOpen(true);
   };
 
   const onPasswordFormSubmit = async (event: FormEvent) => {
@@ -139,18 +159,25 @@ export default function Account() {
       return addAlert(new Alert('Passwords do not match!', 'error', 3000));
     }
 
-    setFormSelected('password');
+    setRequestName('password');
     clearFieldState();
+    setIsDialogOpen(true);
   };
 
   const clearFieldState = () => {
-    setIsDialogOpen(true);
+    setIsDangerDialog(false);
     setPasswordIncorrect(false);
     setCurrentPassword('');
   };
 
   const marginTop = windowWidth < 768 ? navbarHeight + 25 : 0;
   const passMargin = password.length > 0 ? '5px' : '1.5rem';
+  const dialogHeader = isDangerDialog ? 'PERMANENTLY DELETE ACCOUNT' : 'Password Required';
+  const dialogText = isDangerDialog
+    ? 'You are about to permanently remove your account! Insert your password to confirm.'
+    : 'In order to confirm the changes, please insert your password.';
+  const confirmColor = isDangerDialog ? 'secondary' : 'primary';
+  const confirmText = isDangerDialog ? 'Delete Account' : 'Confirm';
 
   return (
     <div className="account">
@@ -282,11 +309,12 @@ export default function Account() {
         Delete Account
       </Button>
       <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Password Required</DialogTitle>
+        <DialogTitle id="form-dialog-title">{dialogHeader}</DialogTitle>
         <DialogContent>
-          <DialogContentText>In order to confirm the changes, please insert your password.</DialogContentText>
+          <DialogContentText>{dialogText}</DialogContentText>
           <TextField
             autoFocus
+            required
             margin="dense"
             value={currentPassword}
             error={passwordIncorrect}
@@ -302,8 +330,9 @@ export default function Account() {
           <Button onClick={() => setIsDialogOpen(false)} color="primary">
             Cancel
           </Button>
-          <Button onClick={checkPassword} color="primary">
-            Confirm
+          <Button onClick={checkPassword} color={confirmColor}>
+            {confirmText}
+            {isDangerDialog && <WarningIcon style={{ color: 'red' }} />}
           </Button>
         </DialogActions>
       </Dialog>

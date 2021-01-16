@@ -97,4 +97,18 @@ router.post('/confirm-password', auth, async (req, res, next) => {
   }
 });
 
+// @route     DELETE api/users
+// @desc      Remove user
+// @access    Private
+router.delete('/', auth, async (req, res, next) => {
+  const userId = req.user.id;
+
+  try {
+    await usersLogic.deleteUser(userId);
+    res.send('User removed');
+  } catch (error) {
+    return next(error);
+  }
+});
+
 module.exports = router;

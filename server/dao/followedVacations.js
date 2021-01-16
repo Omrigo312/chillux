@@ -43,8 +43,20 @@ const getFollowedVacations = async (userId) => {
   }
 };
 
+const removeAllFollowedByUser = async (userId) => {
+  const sql = 'DELETE FROM followed_vacations WHERE user_id=?';
+  const parameters = [userId];
+
+  try {
+    await connection.executeWithParameters(sql, parameters);
+  } catch (error) {
+    throw new ServerError(ErrorType.GENERAL_ERROR, 'Error with removing all followed vacations by user', error);
+  }
+};
+
 module.exports = {
   followVacation,
   unfollowVacation,
   getFollowedVacations,
+  removeAllFollowedByUser,
 };

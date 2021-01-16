@@ -113,6 +113,10 @@ const getUserById = async (userId) => {
   return user;
 };
 
+const deleteUser = async (userId) => {
+  await usersDao.removeUser(userId);
+};
+
 module.exports = {
   login,
   googleLogin,
@@ -121,4 +125,5 @@ module.exports = {
   changePassword,
   updateName,
   confirmPassword,
+  deleteUser,
 };

@@ -1,6 +1,7 @@
 const connection = require('./connectionWrapper');
 const ErrorType = require('../errors/errorType');
 const ServerError = require('../errors/serverError');
+const followedVacationsDao = require('../dao/followedVacations');
 
 const login = async (user) => {
   const sql = 'SELECT * FROM users WHERE email =?';
@@ -68,7 +69,7 @@ const getUserById = async (userId) => {
     const results = await connection.executeWithParameters(sql, parameters);
     return results[0];
   } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR, email, error);
+    throw new ServerError(ErrorType.GENERAL_ERROR, `Error with getting user: ${userId}`, error);
   }
 };
 
@@ -80,7 +81,7 @@ const isUserAdmin = async (id) => {
     const user = results[0];
     return user.type === 'ADMIN' ? true : false;
   } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR, id, error);
+    throw new ServerError(ErrorType.GENERAL_ERROR, `Error with checking if user: ${id} is admin`, error);
   }
 };
 
@@ -91,7 +92,7 @@ const changePassword = async (userId, newPassword) => {
   try {
     await connection.executeWithParameters(sql, parameters);
   } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(newPassword), error);
+    throw new ServerError(ErrorType.GENERAL_ERROR, 'Error with changing user password', error);
   }
 };
 
@@ -103,7 +104,7 @@ const updateName = async (userId, fullName) => {
   try {
     await connection.executeWithParameters(sql, parameters);
   } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(newPassword), error);
+    throw new ServerError(ErrorType.GENERAL_ERROR, 'Error with updating user name', error);
   }
 };
 
@@ -114,7 +115,19 @@ const getUserPassword = async (userId) => {
     const res = await connection.executeWithParameters(sql, parameters);
     return res[0];
   } catch (error) {
-    throw new ServerError(ErrorType.GENERAL_ERROR, JSON.stringify(newPassword), error);
+    throw new ServerError(ErrorType.GENERAL_ERROR, 'Error with getting user password', error);
+  }
+};
+
+const removeUser = async (userId) => {
+  await followedVacationsDao.removeAllFollowedByUser(userId);
+
+  const sql = 'DELETE FROM users WHERE id=?';
+  const parameters = [userId];
+  try {
+    await connection.executeWithParameters(sql, parameters);
+  } catch (error) {
+    throw new ServerError(ErrorType.GENERAL_ERROR, `Error with deleting user`, error);
   }
 };
 
@@ -128,4 +141,5 @@ module.exports = {
   changePassword,
   updateName,
   getUserPassword,
+  removeUser,
 };

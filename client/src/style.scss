@@ -454,11 +454,10 @@ video {
   font-family: 'Comfortaa', cursive;
 
   .vacation-card-text {
-    align-self: center;
     display: grid;
+    grid-template-rows: 1fr 2fr;
     text-align: center;
-    // grid-template-rows: 5fr 7fr 2fr;
-    padding: 0.5em;
+    padding: 0 0.5em;
     height: 100%;
     row-gap: 1rem;
 
@@ -466,13 +465,10 @@ video {
       padding-top: 0.1em;
       display: flex;
       color: #111;
-      justify-content: flex-start;
-      position: relative;
+      justify-content: space-between;
+      height: fit-content;
 
       .vacation-card-header {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
         width: 80%;
 
         h2 {
@@ -486,7 +482,6 @@ video {
       }
 
       .vacation-card-star {
-        margin-left: auto;
         display: flex;
 
         .star-icon {
@@ -527,55 +522,29 @@ video {
 
     .vacation-card-mid {
       width: 90%;
-      margin-top: 0.5em;
       justify-self: center;
       text-align: left;
       letter-spacing: 1px;
       line-height: 1.4em;
-      overflow-y: scroll;
+      overflow-y: auto;
       padding-right: 0.5em;
       max-height: 140px;
       color: #444;
-    }
-
-    .vacation-card-bottom {
-      display: flex;
-      justify-content: flex-start;
-      position: relative;
-      // min-height: 2.3em;
-      align-items: baseline;
-
-      .more-info-button {
-        position: absolute;
-        left: 50%;
-        bottom: 0;
-        transform: translateX(-50%);
-        transition: 0.5s;
-      }
-
-      .more-info-button:hover {
-        letter-spacing: 2px;
-      }
-
-      p {
-        margin-top: auto;
-        font-size: 1.4em;
-        margin-left: auto;
-      }
     }
   }
 
   @media (max-width: 1024px) {
     height: 200px;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     width: 98%;
+    row-gap: 0.5rem;
+
     .vacation-card-header {
-      font-size: 0.8em;
+      font-size: 0.9em;
     }
     .vacation-card-text {
       .vacation-card-mid {
         max-height: 90px;
-        margin-top: 0.2em;
       }
     }
   }
@@ -584,11 +553,6 @@ video {
     font-size: 0.7rem;
     width: 98%;
     height: 160px;
-
-    .more-info-button {
-      font-size: 0.7em;
-      height: fit-content;
-    }
 
     .vacation-card-star {
       font-size: 0.9em;
@@ -605,7 +569,6 @@ video {
     .vacation-card-text {
       .vacation-card-mid {
         max-height: 90px;
-        margin-top: 2.5em;
       }
     }
   }

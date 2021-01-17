@@ -115,6 +115,8 @@ export default function VacationCard({ vacation, index }: VacationCardProps) {
         <Grid item xs={7} style={{ alignSelf: 'center', height: '90%' }}>
           <div className="vacation-card-text">
             <div className="vacation-card-top">
+              <p>{price}$</p>
+
               <div className="vacation-card-header">
                 <h2>{destination}</h2>
                 <p className="vacation-card-date">
@@ -157,9 +159,6 @@ export default function VacationCard({ vacation, index }: VacationCardProps) {
               )}
             </div>
             <div className="vacation-card-mid">{description}</div>
-            <div className="vacation-card-bottom">
-              <p>{price}$</p>
-            </div>
           </div>
         </Grid>
       </Grid>

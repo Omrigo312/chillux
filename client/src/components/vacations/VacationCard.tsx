@@ -31,7 +31,7 @@ interface VacationCardProps {
 
 export default function VacationCard({ vacation, index }: VacationCardProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { windowWidth, addAlert } = useContext(WindowContext);
+  const { addAlert } = useContext(WindowContext);
   const { authState } = useContext(AuthContext);
   const { setVacations, followedVacations } = useContext(VacationsContext);
   const history = useHistory();
@@ -43,7 +43,6 @@ export default function VacationCard({ vacation, index }: VacationCardProps) {
   const startDateObj = new Date(startDate);
   const endDateObj = new Date(endDate);
   const image = imageUrl.length ? imageUrl : noImage;
-  const maxLength = windowWidth > 768 ? 125 : 40;
 
   const duration = (startDate: Date, endDate: Date): number => {
     const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
@@ -109,14 +108,11 @@ export default function VacationCard({ vacation, index }: VacationCardProps) {
 
   return (
     <Card className={animationClass}>
-      <Grid container spacing={3}>
-        <Grid item xs={5}>
-          <div
-            className="vacation-card-image"
-            style={{ background: `url(${image}) no-repeat center center/cover`, height: '100%' }}
-          ></div>
+      <Grid container style={{ height: '100%' }}>
+        <Grid item xs={5} style={{ height: '100%' }}>
+          <div style={{ background: `url(${image}) no-repeat center center/cover`, height: '100%' }}></div>
         </Grid>
-        <Grid item xs={7}>
+        <Grid item xs={7} style={{ alignSelf: 'center', height: '90%' }}>
           <div className="vacation-card-text">
             <div className="vacation-card-top">
               <div className="vacation-card-header">
@@ -160,20 +156,8 @@ export default function VacationCard({ vacation, index }: VacationCardProps) {
                 </div>
               )}
             </div>
-            <div className="vacation-card-mid">
-              {description.length > maxLength ? (
-                <div>{`${description.substring(0, maxLength)}...`}</div>
-              ) : (
-                <p>{description}</p>
-              )}
-              <span></span>
-            </div>
+            <div className="vacation-card-mid">{description}</div>
             <div className="vacation-card-bottom">
-              <Link to="/vacations/id" style={{ textDecoration: 'none' }}>
-                <Button color="primary" variant="contained" className="more-info-button">
-                  More info
-                </Button>
-              </Link>
               <p>{price}$</p>
             </div>
           </div>

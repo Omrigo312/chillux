@@ -49,7 +49,7 @@ export default function AllVacations() {
   }, [authState]);
 
   return (
-    <div className="all-vacations" style={{ marginTop: navbarHeight + 15 }}>
+    <div className="all-vacations" style={{ marginTop: navbarHeight + 25 }}>
       {loadingVacations || authState.loading ? (
         <CircularProgress style={{ justifySelf: 'center' }} />
       ) : !vacations.length ? (

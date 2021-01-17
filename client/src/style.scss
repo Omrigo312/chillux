@@ -459,7 +459,7 @@ video {
     text-align: center;
     padding: 0 0.5em;
     height: 100%;
-    row-gap: 1rem;
+    row-gap: 0.8em;
 
     .vacation-card-top {
       padding-top: 0.1em;
@@ -468,8 +468,13 @@ video {
       justify-content: space-between;
       height: fit-content;
 
+      p {
+        font-size: 1.2em;
+      }
+
       .vacation-card-header {
         width: 80%;
+        margin: 0 0.5em;
 
         h2 {
           font-size: 2em;
@@ -537,12 +542,12 @@ video {
     height: 200px;
     font-size: 0.9rem;
     width: 98%;
-    row-gap: 0.5rem;
 
     .vacation-card-header {
       font-size: 0.9em;
     }
     .vacation-card-text {
+      row-gap: 0.5rem;
       .vacation-card-mid {
         max-height: 90px;
       }
@@ -574,9 +579,6 @@ video {
   }
 
   @media (max-width: 430px) {
-    h2 {
-      margin-right: 30px;
-    }
     font-size: 0.6rem;
   }
 }

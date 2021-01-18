@@ -13,7 +13,9 @@ export default function AllVacations() {
   const [loadingVacations, setLoadingVacations] = useState(true);
   const { authState } = useContext(AuthContext);
 
-  const { vacations, setVacations, setFollowedVacations, followedVacations, resetState } = useContext(VacationsContext);
+  const { vacations, setVacations, setFollowedVacations, followedVacations, resetVacationsState } = useContext(
+    VacationsContext
+  );
   const { navbarHeight, addAlert } = useContext(WindowContext);
 
   const fetchVacations = async () => {
@@ -35,7 +37,7 @@ export default function AllVacations() {
   };
 
   useEffect(() => {
-    resetState()
+    resetVacationsState();
     if (authState.loading) {
       return;
     }

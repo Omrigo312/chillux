@@ -134,7 +134,7 @@ export default function Register() {
           cookiePolicy={'single_host_origin'}
         />
         <p className="form-footer">
-          Already have an account? <a href="/login">Sign in</a>
+          Already have an account? <Link to="/login">Sign in</Link>
         </p>
       </form>
     </div>

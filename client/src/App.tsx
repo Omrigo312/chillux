@@ -9,11 +9,12 @@ import RegisterSuccess from './components/auth/RegisterSuccess';
 import Alerts from './components/layout/Alerts';
 import Landing from './components/layout/Landing';
 import Navbar from './components/layout/Navbar';
-import addVacation from './components/vacations/AddVacation';
+import addVacation from './components/admin/AddVacation';
 import AllVacations from './components/vacations/AllVacations';
-import ModifyVacation from './components/vacations/ModifyVacation';
+import ModifyVacation from './components/admin/ModifyVacation';
 import { AuthContext } from './context/AuthContext';
 import { setToken } from './utils/auth';
+import Analytics from './components/admin/Analytics';
 
 export default function App() {
   const { logout, loadUser } = useContext(AuthContext);
@@ -46,6 +47,7 @@ export default function App() {
         <PrivateRoute exact path="/add-vacation" component={addVacation} />
         <PrivateRoute path="/modify-vacation/:id" component={ModifyVacation} />
         <PrivateRoute exact path="/account" component={Account} />
+        <PrivateRoute exact path="/analytics" component={Analytics} />
       </Switch>
     </Router>
   );

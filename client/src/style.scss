@@ -618,3 +618,10 @@ video {
     }
   }
 }
+
+.analytics {
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  height: 80vh;
+}

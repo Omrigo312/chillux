@@ -131,7 +131,7 @@ export default function Login() {
           // isSignedIn={true}
         />
         <p className="form-footer">
-          Not a member? <a href="/register">Sign up now!</a>
+          Not a member? <Link to="/register">Sign up now!</Link>
         </p>
       </form>
     </div>

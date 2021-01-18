@@ -4,7 +4,7 @@ const ServerError = require('../errors/serverError');
 
 const getAllVacations = async () => {
   const sql =
-    'SELECT id, description, destination, price, followers, image_url as imageUrl, start_date as startDate, end_date as endDate FROM vacations';
+    'SELECT id, description, destination, price, followers, image_url as imageUrl, start_date as startDate, end_date as endDate FROM vacations ORDER BY start_date';
 
   try {
     const allVacations = await connection.execute(sql);

@@ -6,7 +6,7 @@ interface StateInterface {
   setVacations: (vacations: Vacation[]) => void;
   followedVacations: number[];
   setFollowedVacations: (followedVacationsId: number[]) => void;
-  resetState: () => void;
+  resetVacationsState: () => void;
 }
 
 const initialState: StateInterface = {
@@ -14,7 +14,7 @@ const initialState: StateInterface = {
   setVacations: null,
   followedVacations: [],
   setFollowedVacations: null,
-  resetState: null,
+  resetVacationsState: null,
 };
 
 export const VacationsContext = createContext<StateInterface>(initialState);
@@ -23,13 +23,15 @@ export const VacationsProvider = ({ children }: any) => {
   const [vacations, setVacations] = useState(initialState.vacations);
   const [followedVacations, setFollowedVacations] = useState(initialState.followedVacations);
 
-  const resetState = () => {
+  const resetVacationsState = () => {
     setVacations(initialState.vacations);
     setFollowedVacations(initialState.followedVacations);
   };
 
   return (
-    <VacationsContext.Provider value={{ vacations, setVacations, followedVacations, setFollowedVacations, resetState }}>
+    <VacationsContext.Provider
+      value={{ vacations, setVacations, followedVacations, setFollowedVacations, resetVacationsState }}
+    >
       {children}
     </VacationsContext.Provider>
   );

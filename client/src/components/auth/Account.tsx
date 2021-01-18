@@ -26,7 +26,7 @@ import PasswordStrengthBar from 'react-password-strength-bar';
 
 export default function Account() {
   const { authState, loadUser, logout } = useContext(AuthContext);
-  const { navbarHeight, windowWidth } = useContext(WindowContext);
+  const { navbarHeight } = useContext(WindowContext);
   const { addAlert } = useContext(WindowContext);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -170,7 +170,7 @@ export default function Account() {
     setCurrentPassword('');
   };
 
-  const marginTop = windowWidth < 768 ? navbarHeight + 25 : 0;
+  const marginTop = navbarHeight + 35;
   const passMargin = password.length > 0 ? '5px' : '1.5rem';
   const dialogHeader = isDangerDialog ? 'PERMANENTLY DELETE ACCOUNT' : 'Password Required';
   const dialogText = isDangerDialog
@@ -178,9 +178,10 @@ export default function Account() {
     : 'In order to confirm the changes, please insert your password.';
   const confirmColor = isDangerDialog ? 'secondary' : 'primary';
   const confirmText = isDangerDialog ? 'Delete Account' : 'Confirm';
+  const errorHelperText = password !== passwordRepeat ? 'Passwords do not match!' : '';
 
   return (
-    <div className="account">
+    <div className="account" style={{ marginBottom: '50px' }}>
       {!externalId ? (
         <Fragment>
           {firstName && lastName ? (
@@ -267,6 +268,7 @@ export default function Account() {
                 name="passwordRepeat"
                 error={password !== passwordRepeat}
                 onChange={onPasswordFieldChange}
+                helperText={errorHelperText}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -275,7 +277,7 @@ export default function Account() {
                       </IconButton>
                     </InputAdornment>
                   ),
-                  inputProps: { minLength: 6, maxLength: 30 },
+                  inputProps: { maxLength: 30 },
                 }}
               />
             </div>

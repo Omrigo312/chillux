@@ -22,10 +22,13 @@ const GOOGLE_CLIENT_ID = '1333376791-188hppfhtekbpieohomh2j1a2tsrv3ip.apps.googl
 export default function Register() {
   const { authState, login } = useContext(AuthContext);
   const { addAlert } = useContext(WindowContext);
-  const [formData, setFormData] = useState({ email: '', password: '' });
+
+  const [formData, setFormData] = useState({ email: '', password: '', passwordRepeat: '' });
   const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordRepeat, setShowPasswordRepeat] = useState(false);
+
   const history = useHistory();
-  const { email, password } = formData;
+  const { email, password, passwordRepeat } = formData;
 
   // background load effect
   useEffect(() => {
@@ -37,6 +40,7 @@ export default function Register() {
   };
 
   const onShowPasswordClicked = () => setShowPassword(!showPassword);
+  const onShowPasswordRepeatClicked = () => setShowPasswordRepeat(!showPasswordRepeat);
 
   const googleSuccessResponse = async (response: any) => {
     const res = await googleLogin(response, addAlert);
@@ -50,6 +54,10 @@ export default function Register() {
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
+
+    if (password !== passwordRepeat) {
+      return addAlert(new Alert('Passwords do not match!', 'error', 3000));
+    }
 
     const config = {
       headers: {
@@ -69,6 +77,9 @@ export default function Register() {
   if (authState.isAuthenticated) {
     return <Redirect to="/vacations" />;
   }
+
+  const passMargin = password.length > 0 ? '5px' : '1.5rem';
+  const errorHelperText = password !== passwordRepeat ? 'Passwords do not match!' : '';
 
   return (
     <div className="island-background-auth">
@@ -122,6 +133,32 @@ export default function Register() {
           />
         </div>
         {password.length > 0 && <PasswordStrengthBar minLength={6} password={password} />}
+        <div className="input-field-icon" style={{ marginTop: passMargin }}>
+          <LockIcon style={{ marginRight: '0.5rem' }} />
+          <TextField
+            style={{ width: '100%' }}
+            type={showPasswordRepeat ? 'text' : 'password'}
+            required
+            value={passwordRepeat}
+            label="Repeat Password"
+            error={password !== passwordRepeat}
+            variant="outlined"
+            placeholder="Repeat your password"
+            name="passwordRepeat"
+            onChange={onFieldChange}
+            helperText={errorHelperText}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton aria-label="toggle password visibility" onClick={onShowPasswordRepeatClicked}>
+                    {showPasswordRepeat ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+              inputProps: { maxLength: 30 },
+            }}
+          />
+        </div>
         <Button className="form-button register-button" variant="contained" color="primary" type="submit">
           Sign Up
         </Button>

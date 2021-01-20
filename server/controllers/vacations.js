@@ -42,7 +42,7 @@ router.post('/', auth, admin, async (req, res, next) => {
   };
 
   try {
-    await vacationsLogic.addVacation(newVacation);
+    await vacationsLogic.addVacation(newVacation, req.user.id);
     res.send('Vacation created');
   } catch (error) {
     return next(error);
@@ -56,7 +56,7 @@ router.delete('/:id', auth, admin, async (req, res, next) => {
   const vacationId = req.params.id;
 
   try {
-    const allVacations = await vacationsLogic.deleteVacation(vacationId);
+    const allVacations = await vacationsLogic.deleteVacation(vacationId, req.user.id);
     res.json(allVacations);
   } catch (error) {
     return next(error);
@@ -76,7 +76,7 @@ router.put('/:id', auth, admin, async (req, res, next) => {
   };
 
   try {
-    await vacationsLogic.modifyVacation(vacationId, modifiedVacation);
+    await vacationsLogic.modifyVacation(vacationId, modifiedVacation, req.user.id);
     res.send('Vacation modified');
   } catch (error) {
     return next(error);

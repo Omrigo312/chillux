@@ -15,11 +15,28 @@ import ModifyVacation from './components/admin/ModifyVacation';
 import { AuthContext } from './context/AuthContext';
 import { setToken } from './utils/auth';
 import Analytics from './components/admin/Analytics';
+import io from 'socket.io-client';
+import { VacationsContext } from './context/VacationsContext';
+import { Vacation } from './models/Vacation';
 
 export default function App() {
   const { logout, loadUser } = useContext(AuthContext);
+  const { setVacations } = useContext(VacationsContext);
 
   useEffect(() => {
+    const socket = io.connect('http://localhost:3001', {
+      query: { token: localStorage.getItem('token') },
+    });
+
+    socket.on('new-vacation', (vacations: Vacation[]) => {
+      setVacations(vacations);
+    });
+
+    // client-side
+    socket.on('connect_error', (error: any) => {
+      console.error(error.message);
+    });
+
     if (localStorage.token) {
       setToken(localStorage.token);
     }

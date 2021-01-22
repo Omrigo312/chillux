@@ -200,13 +200,6 @@ $small: 768px;
     text-decoration: none;
   }
 
-  .search {
-    margin: auto auto;
-    width: 40%;
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 8px;
-  }
-
   .logo-container {
     width: 60%;
     display: flex;
@@ -244,19 +237,6 @@ $small: 768px;
   .logo {
     margin: 0.5em 0.5em;
     width: 80px;
-  }
-
-  .search * {
-    border: 0;
-  }
-
-  .search:hover {
-    background: rgba(255, 255, 255, 0.25);
-  }
-
-  .search div {
-    width: 100%;
-    color: white;
   }
 
   @media (max-width: $small) {

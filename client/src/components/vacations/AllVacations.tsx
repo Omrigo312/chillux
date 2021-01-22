@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, InputAdornment, TextField } from '@material-ui/core';
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
@@ -7,6 +7,8 @@ import { VacationsContext } from '../../context/VacationsContext';
 import { WindowContext } from '../../context/WindowContext';
 import { Vacation } from '../../models/Vacation';
 import { handleError } from '../../utils/error';
+import SearchIcon from '@material-ui/icons/Search';
+
 import VacationCard from './VacationCard';
 
 export default function AllVacations() {
@@ -51,7 +53,22 @@ export default function AllVacations() {
   }, [authState]);
 
   return (
-    <div className="all-vacations" style={{ marginTop: navbarHeight + 25 }}>
+    <div className="all-vacations" style={{ marginTop: `${navbarHeight + 10}px` }}>
+      <div className="search" style={{ justifySelf: 'center', width: '80%' }}>
+        <TextField
+          style={{ width: '100%' }}
+          variant="outlined"
+          placeholder="Find a vacation..."
+          onChange={() => {}}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </div>
       {loadingVacations || authState.loading ? (
         <CircularProgress style={{ justifySelf: 'center' }} />
       ) : !vacations.length ? (

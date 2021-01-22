@@ -152,17 +152,3 @@ export default function Navbar() {
   );
 }
 
-/* <Box className="search">
-<TextField
-variant="outlined"
-placeholder="Find a vacation..."
-onChange={() => {}}
-InputProps={{
-  startAdornment: (
-    <InputAdornment position="start">
-      <SearchIcon />
-    </InputAdornment>
-  ),
-}}
-/>
-</Box> */

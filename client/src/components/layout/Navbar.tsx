@@ -38,11 +38,13 @@ export default function Navbar() {
     window.addEventListener('resize', (event: any) => setWindowWidth(event.target.innerWidth));
   });
 
+  const height = elementRef.current ? elementRef.current.clientHeight : 0;
+
   useEffect(() => {
     if (isShowNavbar) {
-      setNavbarHeight(elementRef.current.clientHeight);
+      setNavbarHeight(height);
     }
-  }, [isShowNavbar, setNavbarHeight]);
+  }, [isShowNavbar, setNavbarHeight, height]);
 
   const userBarLinks = [
     new NavbarLink('/vacations', 'All Offers'),
@@ -151,4 +153,3 @@ export default function Navbar() {
     </Fragment>
   );
 }
-

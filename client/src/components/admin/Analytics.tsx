@@ -33,7 +33,7 @@ export default function Analytics() {
     }));
 
   return (
-    <div className="analytics" style={{ marginTop: navbarHeight + 15 }}>
+    <div className="analytics" style={{ marginTop: `${navbarHeight + 15}px` }}>
       {authState.userType !== 'ADMIN' ? (
         <h1>You are not authorized to do that</h1>
       ) : (

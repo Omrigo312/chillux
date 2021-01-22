@@ -5,7 +5,7 @@ import { Alert } from '@material-ui/lab';
 export default function Alerts() {
   const { alerts, navbarHeight } = useContext(WindowContext);
   return (
-    <section className="alerts-box" style={{ marginTop: navbarHeight + 15 }}>
+    <section className="alerts-box" style={{ marginTop: `${navbarHeight + 10}px` }}>
       {alerts !== null &&
         alerts.length > 0 &&
         alerts.map((alert) => (

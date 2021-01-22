@@ -97,7 +97,7 @@ export default function VacationForm({ vacationData, header, serverRequest }: Va
   const { destination, description, imageUrl, price, startDate, endDate } = formData;
 
   return (
-    <div className="add-vacation" style={{ marginTop: navbarHeight + 15 }}>
+    <div className="add-vacation" style={{ marginTop: `${navbarHeight + 15}px` }}>
       {authState.userType !== 'ADMIN' ? (
         <h2>You are not authorized to do that</h2>
       ) : (

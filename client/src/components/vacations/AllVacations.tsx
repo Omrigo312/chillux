@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { CircularProgress, InputAdornment, TextField } from '@material-ui/core';
 import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { VacationsContext } from '../../context/VacationsContext';
 import { WindowContext } from '../../context/WindowContext';
@@ -13,12 +13,17 @@ import VacationCard from './VacationCard';
 
 export default function AllVacations() {
   const [loadingVacations, setLoadingVacations] = useState(true);
+  const [searchString, setSearchString] = useState('');
   const { authState } = useContext(AuthContext);
 
   const { vacations, setVacations, setFollowedVacations, followedVacations, resetVacationsState } = useContext(
     VacationsContext
   );
   const { navbarHeight, addAlert } = useContext(WindowContext);
+
+  const onSearchFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchString(event.target.value);
+  };
 
   const fetchVacations = async () => {
     try {
@@ -52,14 +57,18 @@ export default function AllVacations() {
     })();
   }, [authState]);
 
+  const filteredVacations = vacations.filter((vacation) => vacation.destination.toLowerCase().includes(searchString));
+
   return (
-    <div className="all-vacations" style={{ marginTop: `${navbarHeight + 10}px` }}>
-      <div className="search" style={{ justifySelf: 'center', width: '80%' }}>
+    <div className="all-vacations" style={{ marginTop: `${navbarHeight + 15}px` }}>
+      <div style={{ justifySelf: 'center', width: '80%' }}>
         <TextField
           style={{ width: '100%' }}
           variant="outlined"
-          placeholder="Find a vacation..."
-          onChange={() => {}}
+          value={searchString}
+          placeholder="Find a vacation by destination..."
+          label="Search"
+          onChange={onSearchFieldChange}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -71,10 +80,10 @@ export default function AllVacations() {
       </div>
       {loadingVacations || authState.loading ? (
         <CircularProgress style={{ justifySelf: 'center' }} />
-      ) : !vacations.length ? (
+      ) : !filteredVacations.length ? (
         <h1 style={{ justifySelf: 'center' }}>No Vacations Found!</h1>
       ) : (
-        vacations
+        filteredVacations
           .sort((a: any, b: any) => +followedVacations.includes(b.id) - +followedVacations.includes(a.id))
           .map((vacation: Vacation, index: number) => {
             return <VacationCard vacation={vacation} key={vacation.id} index={index} />;

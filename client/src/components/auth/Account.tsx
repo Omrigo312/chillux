@@ -170,7 +170,6 @@ export default function Account() {
     setCurrentPassword('');
   };
 
-  const marginTop = navbarHeight + 35;
   const passMargin = password.length > 0 ? '5px' : '1.5rem';
   const dialogHeader = isDangerDialog ? 'PERMANENTLY DELETE ACCOUNT' : 'Password Required';
   const dialogText = isDangerDialog
@@ -181,14 +180,10 @@ export default function Account() {
   const errorHelperText = password !== passwordRepeat ? 'Passwords do not match!' : '';
 
   return (
-    <div className="account" style={{ marginBottom: '50px' }}>
+    <div className="account" style={{ marginBottom: '30px', marginTop: `${navbarHeight + 10}px` }}>
       {!externalId ? (
         <Fragment>
-          {firstName && lastName ? (
-            <h1 style={{ marginTop }}>{`${firstName} ${lastName}`}</h1>
-          ) : (
-            <h1 style={{ marginTop }}>{email}</h1>
-          )}
+          {firstName && lastName ? <h1>{`${firstName} ${lastName}`}</h1> : <h1>{email}</h1>}
 
           <form className="form" autoComplete="on" onSubmit={onNameFormSubmit} method="post">
             <h2 className="form-header-small">Add \ Update Your Name</h2>
@@ -288,7 +283,7 @@ export default function Account() {
         </Fragment>
       ) : (
         <Fragment>
-          <h1 style={{ marginTop }}>You Are Logged In Using Google</h1>
+          <h1>You Are Logged In Using Google</h1>
           <Card className="google-card">
             <h2>Google Credentials:</h2>
             <h3>Email:</h3>

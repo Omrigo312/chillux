@@ -1,13 +1,12 @@
-import axios from 'axios';
 import Alert from '../models/Alert';
 import { app } from './axiosConfig';
 import { handleError } from './error';
 
 export const setToken = (token: string) => {
   if (token) {
-    axios.defaults.headers.common['x-auth-token'] = token;
+    app.defaults.headers.common['x-auth-token'] = token;
   } else {
-    delete axios.defaults.headers.common['x-auth-token'];
+    delete app.defaults.headers.common['x-auth-token'];
   }
 };
 

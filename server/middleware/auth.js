@@ -6,7 +6,7 @@ const ServerError = require('../errors/serverError');
 module.exports = function (req, res, next) {
   // Get token from header
   const token = req.header('x-auth-token');
-
+  
   // Check if not token
   if (!token) {
     throw new ServerError(ErrorType.NO_TOKEN);

@@ -48,5 +48,4 @@ app.use('/api/followed-vacations', require('./controllers/followedVacations'));
 
 app.use(errorHandler);
 
-// io.listen(httpServer);
 httpServer.listen(PORT, () => console.log(`Server started on port ${PORT}`));

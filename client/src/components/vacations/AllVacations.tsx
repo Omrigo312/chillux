@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { CircularProgress, InputAdornment, TextField } from '@material-ui/core';
-import axios from 'axios';
 import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { VacationsContext } from '../../context/VacationsContext';
@@ -10,6 +9,7 @@ import { handleError } from '../../utils/error';
 import SearchIcon from '@material-ui/icons/Search';
 
 import VacationCard from './VacationCard';
+import { app } from '../../utils/axiosConfig';
 
 export default function AllVacations() {
   const [loadingVacations, setLoadingVacations] = useState(true);
@@ -27,7 +27,7 @@ export default function AllVacations() {
 
   const fetchVacations = async () => {
     try {
-      const res = await axios.get('http://localhost:3001/api/vacations');
+      const res = await app.get('vacations');
       setVacations(res.data);
     } catch (error) {
       handleError(error, addAlert);
@@ -36,7 +36,7 @@ export default function AllVacations() {
 
   const fetchFollowedVacations = async () => {
     try {
-      const res = await axios.get('http://localhost:3001/api/followed-vacations');
+      const res = await app.get('followed-vacations');
       setFollowedVacations(res.data);
     } catch (error) {
       handleError(error, addAlert);

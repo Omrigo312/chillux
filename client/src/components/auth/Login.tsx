@@ -6,7 +6,6 @@ import LockIcon from '@material-ui/icons/Lock';
 import EmailIcon from '@material-ui/icons/Email';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
 import LoginData from '../../models/LoginData';
 import logo from '../../assets/images/logo-circle-transparent.png';
@@ -15,6 +14,7 @@ import { googleLogin } from '../../utils/auth';
 import { WindowContext } from '../../context/WindowContext';
 import Alert from '../../models/Alert';
 import { handleError } from '../../utils/error';
+import { app } from '../../utils/axiosConfig';
 
 const GOOGLE_CLIENT_ID = '1333376791-188hppfhtekbpieohomh2j1a2tsrv3ip.apps.googleusercontent.com';
 
@@ -57,7 +57,7 @@ export default function Login() {
     const body = JSON.stringify(formData);
 
     try {
-      const res = await axios.post('http://localhost:3001/api/users/login', body, config);
+      const res = await app.post('users/login', body, config);
       login(new LoginData(res.data.token, res.data.userType));
     } catch (error) {
       handleError(error, addAlert);

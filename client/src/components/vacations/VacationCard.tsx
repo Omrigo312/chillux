@@ -20,9 +20,9 @@ import { Vacation } from '../../models/Vacation';
 import noImage from '../../assets/images/logo-no-image.png';
 import { WindowContext } from '../../context/WindowContext';
 import { AuthContext } from '../../context/AuthContext';
-import axios from 'axios';
 import { VacationsContext } from '../../context/VacationsContext';
 import { handleError } from '../../utils/error';
+import { app } from '../../utils/axiosConfig';
 
 interface VacationCardProps {
   vacation: Vacation;
@@ -63,7 +63,7 @@ export default function VacationCard({ vacation, index }: VacationCardProps) {
     const body = JSON.stringify({ vacationId: id });
 
     try {
-      const res = await axios.post('http://localhost:3001/api/followed-vacations', body, config);
+      const res = await app.post('followed-vacations', body, config);
       const updatedFollowers = res.data.updatedFollowers;
       setFollowersState(updatedFollowers);
       setIsFollowed(true);
@@ -78,7 +78,7 @@ export default function VacationCard({ vacation, index }: VacationCardProps) {
     }
 
     try {
-      const res = await axios.delete(`http://localhost:3001/api/followed-vacations/${id}`);
+      const res = await app.delete(`followed-vacations/${id}`);
       const updatedFollowers = res.data.updatedFollowers;
       setFollowersState(updatedFollowers);
       setIsFollowed(false);
@@ -93,7 +93,7 @@ export default function VacationCard({ vacation, index }: VacationCardProps) {
     }
 
     try {
-      const res = await axios.delete(`http://localhost:3001/api/vacations/${id}`);
+      const res = await app.delete(`vacations/${id}`);
       setVacations(res.data);
     } catch (error) {
       handleError(error, addAlert);

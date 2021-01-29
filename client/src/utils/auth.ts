@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Alert from '../models/Alert';
+import { app } from './axiosConfig';
 import { handleError } from './error';
 
 export const setToken = (token: string) => {
@@ -21,7 +22,7 @@ export const googleLogin = async (response: any, addAlert: (alert: Alert) => voi
   const body = JSON.stringify(googleProfile);
 
   try {
-    return await axios.post('http://localhost:3001/api/users/login', body, config);
+    return await app.post('users/login', body, config);
   } catch (error) {
     handleError(error, addAlert);
   }

@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from 'react';
 import { WindowContext } from '../../context/WindowContext';
-import axios from 'axios';
 import { useHistory, useParams } from 'react-router-dom';
 import Alert from '../../models/Alert';
 import { handleError } from '../../utils/error';
 import VacationForm from './VacationForm';
+import { app } from '../../utils/axiosConfig';
 
 export default function ModifyVacation() {
   const [vacationData, setVacationData] = useState({
@@ -23,7 +23,7 @@ export default function ModifyVacation() {
 
   const getVacation = async () => {
     try {
-      const res = await axios.get(`http://localhost:3001/api/vacations/${id}`);
+      const res = await app.get(`vacations/${id}`);
       if (!res.data) {
         return addAlert(new Alert(`No vacation with id ${id}`, 'warning', 3000));
       }
@@ -42,7 +42,7 @@ export default function ModifyVacation() {
 
   const serverRequest = async (body: string, config: object) => {
     try {
-      await axios.put(`http://localhost:3001/api/vacations/${id}`, body, config);
+      await app.put(`vacations/${id}`, body, config);
       addAlert(new Alert('Vacation modified', 'success', 5000));
       history.push('/vacations');
     } catch (error) {

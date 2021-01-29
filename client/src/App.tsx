@@ -19,12 +19,17 @@ import io from 'socket.io-client';
 import { VacationsContext } from './context/VacationsContext';
 import { Vacation } from './models/Vacation';
 
+const SOCKET_ENDPOINT =
+  process.env.NODE_ENV === 'production'
+    ? 'http://3.123.26.182:8080'
+    : 'http://localhost:3001';
+
 export default function App() {
   const { logout, loadUser } = useContext(AuthContext);
   const { setVacations } = useContext(VacationsContext);
 
   useEffect(() => {
-    const socket = io.connect('http://localhost:3001', {
+    const socket = io.connect(SOCKET_ENDPOINT, {
       query: { token: localStorage.getItem('token') },
     });
 

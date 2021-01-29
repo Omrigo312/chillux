@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { WindowContext } from '../../context/WindowContext';
-import axios from 'axios';
 import Alert from '../../models/Alert';
 import { handleError } from '../../utils/error';
 import { useHistory } from 'react-router-dom';
 import VacationForm from './VacationForm';
+import { app } from '../../utils/axiosConfig';
 
 export default function AddVacation() {
   const vacationData = {
@@ -20,7 +20,7 @@ export default function AddVacation() {
 
   const serverRequest = async (body: string, config: object) => {
     try {
-      await axios.post('http://localhost:3001/api/vacations', body, config);
+      await app.post('vacations', body, config);
       addAlert(new Alert('Vacation added', 'success', 5000));
       history.push('/vacations');
     } catch (error) {

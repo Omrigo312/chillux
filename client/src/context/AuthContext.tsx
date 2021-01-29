@@ -1,7 +1,7 @@
-import axios from 'axios';
 import React, { createContext, useState } from 'react';
 import LoginData from '../models/LoginData';
 import { setToken } from '../utils/auth';
+import { app } from '../utils/axiosConfig';
 
 interface AuthStateInterFace {
   isAuthenticated: boolean;
@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }: any) => {
       setToken(localStorage.token);
     }
     try {
-      const res = await axios.get('http://localhost:3001/api/users');
+      const res = await app.get('users');
       const user = res.data;
 
       setAuthState({

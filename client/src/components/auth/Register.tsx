@@ -1,5 +1,4 @@
 import { Button, IconButton, InputAdornment, TextField } from '@material-ui/core';
-import axios from 'axios';
 import React, { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
 import LockIcon from '@material-ui/icons/Lock';
 import EmailIcon from '@material-ui/icons/Email';
@@ -16,6 +15,7 @@ import LoginData from '../../models/LoginData';
 import { WindowContext } from '../../context/WindowContext';
 import Alert from '../../models/Alert';
 import { handleError } from '../../utils/error';
+import { app } from '../../utils/axiosConfig';
 
 const GOOGLE_CLIENT_ID = '1333376791-188hppfhtekbpieohomh2j1a2tsrv3ip.apps.googleusercontent.com';
 
@@ -67,7 +67,7 @@ export default function Register() {
     const body = JSON.stringify(formData);
 
     try {
-      await axios.post('http://localhost:3001/api/users', body, config);
+      await app.post('users', body, config);
       history.push('/register-success');
     } catch (error) {
       handleError(error, addAlert);

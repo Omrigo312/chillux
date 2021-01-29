@@ -15,7 +15,6 @@ import React, { ChangeEvent, FormEvent, Fragment, useContext, useState } from 'r
 import LockIcon from '@material-ui/icons/Lock';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
 import { WindowContext } from '../../context/WindowContext';
 import Alert from '../../models/Alert';
@@ -23,6 +22,7 @@ import { handleError } from '../../utils/error';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import WarningIcon from '@material-ui/icons/Warning';
 import PasswordStrengthBar from 'react-password-strength-bar';
+import { app } from '../../utils/axiosConfig';
 
 export default function Account() {
   const { authState, loadUser, logout } = useContext(AuthContext);
@@ -72,7 +72,7 @@ export default function Account() {
     const body = JSON.stringify({ password: currentPassword });
 
     try {
-      await axios.post('http://localhost:3001/api/users/confirm-password', body, config);
+      await app.post('users/confirm-password', body, config);
     } catch (error) {
       console.log(error);
       setPasswordIncorrect(true);
@@ -98,7 +98,7 @@ export default function Account() {
 
   const deleteRequest = async () => {
     try {
-      await axios.delete('http://localhost:3001/api/users');
+      await app.delete('users');
       logout();
       history.push('/');
       addAlert(new Alert('Account Deleted', 'success', 5000));
@@ -119,7 +119,7 @@ export default function Account() {
     const body = JSON.stringify({ firstName, lastName });
 
     try {
-      await axios.put('http://localhost:3001/api/users/name', body, config);
+      await app.put('users/name', body, config);
       loadUser();
       history.push('/vacations');
       addAlert(new Alert('Name updated!', 'success', 5000));
@@ -136,7 +136,7 @@ export default function Account() {
     const body = JSON.stringify(passwordFormData);
 
     try {
-      await axios.put('http://localhost:3001/api/users/password', body, config);
+      await app.put('users/password', body, config);
       loadUser();
       history.push('/vacations');
       addAlert(new Alert('Password updated!', 'success', 5000));

@@ -1,9 +1,9 @@
-import axios from 'axios';
 import React, { Fragment, useContext, useEffect } from 'react';
 import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme } from 'victory';
 import { AuthContext } from '../../context/AuthContext';
 import { VacationsContext } from '../../context/VacationsContext';
 import { WindowContext } from '../../context/WindowContext';
+import { app } from '../../utils/axiosConfig';
 import { handleError } from '../../utils/error';
 
 export default function Analytics() {
@@ -15,7 +15,7 @@ export default function Analytics() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get('http://localhost:3001/api/vacations');
+        const res = await app.get('vacations');
         setVacations(res.data);
       } catch (error) {
         handleError(error, addAlert);

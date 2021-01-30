@@ -7,6 +7,7 @@ const ServerError = require('./errors/serverError');
 const pushService = require('./services/push');
 const jwt = require('jsonwebtoken');
 const config = require('./config.json');
+const path = require('path');
 
 const app = express();
 const httpServer = http.createServer(app);

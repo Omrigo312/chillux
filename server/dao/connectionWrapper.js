@@ -3,7 +3,7 @@ const config = require('../config.json');
 
 // Connection to the database
 const connection = mysql.createConnection({
-  host: 'localhost', // Computer
+  host: config.dbHost, // Computer
   user: config.dbName, // Username
   password: config.dbPass, // Password
   database: 'chillux', // Database name

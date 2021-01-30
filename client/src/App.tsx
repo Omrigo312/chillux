@@ -21,7 +21,7 @@ import { Vacation } from './models/Vacation';
 
 const SOCKET_ENDPOINT =
   process.env.NODE_ENV === 'production'
-    ? 'http://3.123.26.182:8080'
+    ? 'http://3.123.26.182'
     : 'http://localhost:3001';
 
 export default function App() {

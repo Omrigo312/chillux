@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/static/css/main.ae379da8.chunk.css",
-    "main.js": "/static/js/main.eabc3caa.chunk.js",
-    "main.js.map": "/static/js/main.eabc3caa.chunk.js.map",
+    "main.css": "/static/css/main.a720754e.chunk.css",
+    "main.js": "/static/js/main.fa3bcb40.chunk.js",
+    "main.js.map": "/static/js/main.fa3bcb40.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.54146256.js",
     "runtime-main.js.map": "/static/js/runtime-main.54146256.js.map",
     "static/js/2.7d29cdc0.chunk.js": "/static/js/2.7d29cdc0.chunk.js",
     "static/js/2.7d29cdc0.chunk.js.map": "/static/js/2.7d29cdc0.chunk.js.map",
     "index.html": "/index.html",
-    "static/css/main.ae379da8.chunk.css.map": "/static/css/main.ae379da8.chunk.css.map",
+    "static/css/main.a720754e.chunk.css.map": "/static/css/main.a720754e.chunk.css.map",
     "static/js/2.7d29cdc0.chunk.js.LICENSE.txt": "/static/js/2.7d29cdc0.chunk.js.LICENSE.txt",
     "static/media/style.min.css": "/static/media/landing-background.60d98e08.jpg",
     "static/media/logo-circle-transparent.74b90e8b.png": "/static/media/logo-circle-transparent.74b90e8b.png",
@@ -17,7 +17,7 @@
   "entrypoints": [
     "static/js/runtime-main.54146256.js",
     "static/js/2.7d29cdc0.chunk.js",
-    "static/css/main.ae379da8.chunk.css",
-    "static/js/main.eabc3caa.chunk.js"
+    "static/css/main.a720754e.chunk.css",
+    "static/js/main.fa3bcb40.chunk.js"
   ]
 }

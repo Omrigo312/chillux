@@ -247,12 +247,6 @@ $small: 768px;
   }
 }
 
-.showcase {
-  display: grid;
-  background: black;
-  align-items: center;
-}
-
 video {
   position: absolute;
   top: 0;
@@ -332,12 +326,17 @@ video {
     url('../../assets/images/landing-background.jpg') no-repeat center center/cover;
 }
 
+.showcase {
+  display: grid;
+  background: black;
+}
+
 .landing {
   display: grid;
   color: white;
   text-align: center;
   z-index: 2;
-  align-self: flex-start;
+  align-self: center;
 
   .landing-header {
     margin: auto 1em;

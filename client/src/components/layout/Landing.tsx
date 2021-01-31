@@ -3,7 +3,7 @@ import { Button, CircularProgress } from '@material-ui/core';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
-import { WindowContext, WindowProvider } from '../../context/WindowContext';
+import { WindowContext } from '../../context/WindowContext';
 
 export default function Landing() {
   const [isLoading, setIsLoading] = useState(true);
@@ -27,18 +27,18 @@ export default function Landing() {
   const background = isLoading ? 'white' : null;
 
   return (
-    <WindowProvider>
+    <Fragment>
+      <video
+        id="video"
+        src="https://drive.google.com/uc?export=download&id=135XjCsDqFeniYO9goOoeexaZERYWvGZW"
+        loop
+        muted
+        autoPlay
+        preload="auto"
+      ></video>
+      <div className="overlay" style={{ background: background }}></div>
+      
       <div className="showcase" style={{ height: '100vh' }}>
-        <video
-          id="video"
-          src="https://drive.google.com/uc?export=download&id=135XjCsDqFeniYO9goOoeexaZERYWvGZW"
-          loop
-          muted
-          autoPlay
-          preload="auto"
-        ></video>
-        <div className="overlay" style={{ background: background }}></div>
-
         {authState.isAuthenticated ? (
           <Redirect to="/vacations" />
         ) : (
@@ -68,6 +68,6 @@ export default function Landing() {
           </div>
         )}
       </div>
-    </WindowProvider>
+    </Fragment>
   );
 }

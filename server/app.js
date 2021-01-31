@@ -34,7 +34,7 @@ io.use((socket, next) => {
       }
     });
   } catch (error) {
-    console.log(error.errorType);
+    // console.log(error.errorType);
     return next(error.errorType);
   }
 }).on('connection', (socket) => {

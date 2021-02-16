@@ -1,4 +1,4 @@
-### Chillux
+# Chillux
 
 ## Overall:
 This is a full scale web application.
